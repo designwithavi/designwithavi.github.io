@@ -113,7 +113,7 @@ export const MinimalistHero = ({
         </motion.div>
 
         {/* Centre: orb, name, portrait */}
-        <div className="relative order-1 flex h-full min-h-[380px] items-center justify-center lg:order-2 md:min-h-[520px]">
+        <div className="relative order-1 mb-14 flex h-full min-h-[380px] items-center justify-center md:min-h-[520px] lg:order-2 lg:mb-0">
           <motion.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -137,7 +137,7 @@ export const MinimalistHero = ({
           <motion.img
             src={imageSrc}
             alt={imageAlt}
-            className="hero-portrait relative z-10 h-auto max-h-[78svh] w-[min(92vw,360px)] max-w-none shrink-0 object-contain md:w-[440px] lg:w-[540px] lg:translate-y-16"
+            className="hero-portrait relative z-10 h-auto max-h-[78svh] w-[min(92vw,360px)] max-w-none shrink-0 object-contain md:w-[440px] lg:w-[540px] translate-y-14 lg:translate-y-16"
             style={{ maskImage: "linear-gradient(to bottom, #000 78%, transparent 100%)", WebkitMaskImage: "linear-gradient(to bottom, #000 78%, transparent 100%)" }}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
