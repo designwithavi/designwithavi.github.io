@@ -36,10 +36,10 @@ export const site = {
 
   contact: {
     email: "kaleavishkar11@gmail.com",
-    phone: "+91 00000 00000",
-    instagram: "https://instagram.com/yourhandle",
-    linkedin: "https://linkedin.com/in/yourname",
-    behance: "https://behance.net/yourname",
+    phone: "", // leave empty to hide the phone number
+    instagram: "https://www.instagram.com/avixkar",
+    linkedin: "https://www.linkedin.com/in/avishkar-kale-b018b3296/",
+    behance: "https://www.behance.net/avishkarkale1",
   },
 }
 

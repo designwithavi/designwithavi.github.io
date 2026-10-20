@@ -185,7 +185,7 @@ function Contact() {
         >
           {site.contact.email}
         </a>
-        <p className="mt-4 text-white/60">{site.contact.phone}</p>
+        {site.contact.phone && <p className="mt-4 text-white/60">{site.contact.phone}</p>}
         <div className="mt-16 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/10 pt-6 text-sm">
           {links.map(([label, url]) => (
             <a key={label} href={url} target="_blank" rel="noreferrer" className="hover:opacity-70">
