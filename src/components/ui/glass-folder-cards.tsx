@@ -451,6 +451,7 @@ function ArtCanvas({
   density,
   priority,
   className,
+  frost = false,
 }: {
   art: ArtPreset | ArtRecipe
   seed: number
@@ -459,7 +460,10 @@ function ArtCanvas({
   density: number
   priority: number
   className?: string
+  /** Bake the glass's blur into the pixels, so nothing is blurred per frame. */
+  frost?: boolean
 }) {
+  const [baked, setBaked] = React.useState(false)
   const ref = React.useRef<HTMLCanvasElement>(null)
   const [ready, setReady] = React.useState(false)
   const recipe = recipeOf(art)
@@ -475,13 +479,18 @@ function ArtCanvas({
       if (!live || !c) return
       c.width = src.width
       c.height = src.height
-      c.getContext("2d")?.drawImage(src, 0, 0)
+      const ctx = c.getContext("2d")
+      if (!ctx) return
+      const canBake = frost && "filter" in ctx
+      if (canBake) ctx.filter = `blur(${Math.round(22 * (src.width / w))}px) saturate(1.5)`
+      ctx.drawImage(src, 0, 0)
+      setBaked(canBake)
       setReady(true)
     })
     return () => {
       live = false
     }
-  }, [key, seed, pw, ph, priority])
+  }, [key, seed, pw, ph, priority, frost, w])
 
   return (
     <canvas
@@ -489,6 +498,7 @@ function ArtCanvas({
       aria-hidden="true"
       className={className}
       data-ready={ready || undefined}
+      data-baked={baked || undefined}
       style={{ width: w, height: h, maxWidth: "none" }}
     />
   )
@@ -759,15 +769,15 @@ export default function GlassFolder({
           >
             {/* a pre-blurred copy of the back art; stands in for backdrop-filter while
                 the page is drawn from view-transition snapshots, which drop it */}
-            <div className="gf-frost" aria-hidden="true">
+            <div className="gf-frost" aria-hidden="true" style={{ clipPath: "path('" + FRONT_PATH + "')" }}>
               {image ? (
                 <img className="gf-frost-art" src={image} alt="" width={W + 24} height={H + 24} draggable={false} />
               ) : art !== "none" ? (
-                <ArtCanvas className="gf-frost-art" art={art} seed={seed} w={W + 24} h={H + 24} density={density} priority={0} />
+                <ArtCanvas className="gf-frost-art" art={art} seed={seed} w={W + 24} h={H + 24} density={density} priority={0} frost />
               ) : null}
             </div>
-            <div className="gf-tint" aria-hidden="true" />
-            <div className="gf-spec" aria-hidden="true" />
+            <div className="gf-tint" aria-hidden="true" style={{ clipPath: "path('" + FRONT_PATH + "')" }} />
+            <div className="gf-spec" aria-hidden="true" style={{ clipPath: "path('" + FRONT_PATH + "')" }} />
             <svg className="gf-rim gf-front-rim" viewBox={"0 0 " + W + " " + FRONT_H} aria-hidden="true">
               <defs>
                 <linearGradient id={"gf-rim-" + uid} x1="0" y1="0" x2="0" y2="1">
@@ -1193,7 +1203,10 @@ canvas.gf-sheet-art[data-ready] { opacity: 1; filter: none; }
   transform: scale(1.12);
   filter: blur(22px) saturate(1.5);
 }
+.gf-frost-art[data-baked] { filter: none; }
 html.owl-frost .gf-frost { opacity: 1; }
+/* once the stand-in covers the glass, stop blurring the live backdrop under it */
+html.owl-frost-on .gf-front { -webkit-backdrop-filter: none; backdrop-filter: none; }
 .gf-front-rim { width: 340px; height: 198px; }
 .gf-front-rim path { stroke-width: 2.4; transition: stroke-width .3s var(--gf-ease); }
 .gf-root[data-tone="dark"] .gf-front-rim { opacity: .55; }

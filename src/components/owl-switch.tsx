@@ -19,10 +19,33 @@ const BACK_START = 0.38 // turn round off-screen, then glide home
 const FLARE_START = 0.64 // brake, nose up
 const HOVER_START = 0.73 // turned to face you: hover on beating wings
 const DROP_START = 0.88 // drop onto the branch
+const FRAME_MS = 16 // keyframes are sampled about once per screen refresh
 const FEATHER = 220 // softness of night's edge, px
 const FROST_FADE_MS = 350 // folders' glass swaps to a snapshot-safe frost over this long
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms))
+
+/**
+ * The folders' frosted glass (backdrop-filter) doesn't survive view-transition
+ * snapshots and is costly to redraw every frame, so for the length of a switch
+ * a pre-blurred copy fades in over it and the live blur is switched off.
+ */
+let frostTimer = 0
+function frostOn() {
+  const html = document.documentElement
+  clearTimeout(frostTimer)
+  html.classList.add("owl-frost")
+  frostTimer = window.setTimeout(() => html.classList.add("owl-frost-on"), FROST_FADE_MS)
+}
+function frostOff() {
+  const html = document.documentElement
+  clearTimeout(frostTimer)
+  html.classList.remove("owl-frost-on")
+  // let the live blur come back under the cover for a frame, then fade the cover away
+  frostTimer = window.setTimeout(() => html.classList.remove("owl-frost"), 50)
+}
+
+const THEME_EVENT = "owl-theme"
 
 function setDark(dark: boolean) {
   document.documentElement.classList.toggle("dark", dark)
@@ -31,16 +54,18 @@ function setDark(dark: boolean) {
   } catch {
     /* private mode — the theme just won't be remembered */
   }
+  // tell listeners synchronously, so inside flushSync the whole page (folders
+  // included) is redrawn in the new theme before the transition snapshots it
+  window.dispatchEvent(new Event(THEME_EVENT))
 }
 
 /** True while the page is in night mode; follows the class on <html>. */
 export function useIsDark() {
   const [dark, setDarkState] = useState(() => document.documentElement.classList.contains("dark"))
   useEffect(() => {
-    const html = document.documentElement
-    const mo = new MutationObserver(() => setDarkState(html.classList.contains("dark")))
-    mo.observe(html, { attributes: true, attributeFilter: ["class"] })
-    return () => mo.disconnect()
+    const sync = () => setDarkState(document.documentElement.classList.contains("dark"))
+    window.addEventListener(THEME_EVENT, sync)
+    return () => window.removeEventListener(THEME_EVENT, sync)
   }, [])
   return dark
 }
@@ -379,8 +404,8 @@ const OWL_CSS = `
 @keyframes owl-fold { from { transform: rotate(80deg) scaleY(1.3); } 55% { transform: rotate(-6deg); } }
 
 /* watching the cursor */
-.owl-look { transform-box: view-box; transform-origin: 32px 56px; transition: transform .45s cubic-bezier(.3, 1.3, .5, 1); }
-.owl-pupils { transition: transform .14s ease-out; }
+.owl-look { transform-box: view-box; transform-origin: 32px 56px; transition: transform .22s cubic-bezier(.2, .8, .3, 1); }
+.owl-pupils { transition: transform .05s linear; }
 .owl-eyes { transform-box: fill-box; transform-origin: center; animation: owl-blink 4.5s infinite; }
 @keyframes owl-blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
 
@@ -455,7 +480,7 @@ export function OwlSwitch() {
       const dx = x - (r.left + r.width / 2)
       const dy = y - (r.top + r.height * 0.45)
       const d = Math.hypot(dx, dy) || 1
-      const reach = Math.min(1, d / 160) // close in: the eyes barely move; far off: as far as they go
+      const reach = Math.min(1, d / 90) // close in: the eyes barely move; far off: as far as they go
       const ex = (dx / d) * 2.2 * reach
       const ey = (dy / d) * 2 * reach
       if (pupilsRef.current) pupilsRef.current.style.transform = `translate(${ex}px, ${ey}px)`
@@ -519,32 +544,32 @@ export function OwlSwitch() {
       at: (u: number) => Pt,
       from: number,
       to: number,
-      steps: number,
       shape: (u: number, p: Pt, prev: Pt) => string,
     ) => {
+      const steps = Math.max(2, Math.round(((to - from) * FLIGHT_MS) / FRAME_MS))
       let prev = at(0)
       for (let i = 0; i <= steps; i++) {
         const u = i / steps
         const p = at(u)
-        frames.push({ transform: shape(u, p, i ? prev : at(0.01)), offset: from + u * (to - from) })
+        frames.push({ transform: shape(u, p, i ? prev : at(0.002)), offset: from + u * (to - from) })
         prev = p
       }
     }
     // out, low and fast, growing as it leaves the branch
-    segment(path.out, 0, OUT_END, 28, (u, p, prev) => side(p, prev, true, 0.45 + 0.55 * clamp(u / 0.15, 0, 1)))
+    segment(path.out, 0, OUT_END, (u, p, prev) => side(p, prev, true, 0.45 + 0.55 * clamp(u / 0.15, 0, 1)))
     // home: a long glide…
-    segment(path.glide, BACK_START, FLARE_START, 24, (_, p, prev) => side(p, prev, false, 1))
+    segment(path.glide, BACK_START, FLARE_START, (_, p, prev) => side(p, prev, false, 1))
     // …a flare up to just above the branch: nose up, shrinking, turning to face you…
-    segment(path.flare, FLARE_START, HOVER_START, 12, (u, p) =>
+    segment(path.flare, FLARE_START, HOVER_START, (u, p) =>
       side(p, p, false, 1 - 0.35 * u, -8 - 24 * u, 1 - clamp((u - 0.7) / 0.3, 0, 1)),
     )
     // …a hover on beating wings…
-    segment(path.hover, HOVER_START, DROP_START, 16, (_, p) => front(p))
+    segment(path.hover, HOVER_START, DROP_START, (_, p) => front(p))
     // …and a gentle drop onto the branch
-    segment(path.drop, DROP_START, 1, 10, (_, p) => front(p))
+    segment(path.drop, DROP_START, 1, (_, p) => front(p))
 
     // fade the folders' glass over to a frost that survives the snapshot
-    if (canSpread) html.classList.add("owl-frost")
+    if (canSpread) frostOn()
 
     // wake up, crouch, then take off
     setAwake(true)
@@ -580,13 +605,17 @@ export function OwlSwitch() {
     if (transition) {
       const reach = Math.hypot(W + 200, H + 200)
       const ink: Keyframe[] = []
-      for (let i = 0; i <= 28; i++) {
-        const u = i / 28
+      const steps = Math.round((OUT_END * FLIGHT_MS) / FRAME_MS)
+      for (let i = 0; i <= steps; i++) {
+        const u = i / steps
         const p = path.out(u)
         ink.push({ "--owl-x": `${p.x}px`, "--owl-y": `${p.y}px`, "--owl-r": `${reach * u ** 1.4 - FEATHER * (1 - u)}px` })
       }
       html.animate(ink, { duration: FLIGHT_MS * OUT_END, pseudoElement: "::view-transition-new(root)", fill: "forwards" })
-      transition.finished.finally(() => html.classList.remove("owl-night", "owl-frost"))
+      transition.finished.finally(() => {
+        html.classList.remove("owl-night")
+        frostOff()
+      })
     }
 
     await anim.finished
@@ -595,20 +624,22 @@ export function OwlSwitch() {
       setFlying(false)
       setLanded(true)
     })
-    await wait(800)
-    setLanded(false)
+    setTimeout(() => setLanded(false), 800) // the settle plays on; the owl can be tapped again now
   }
 
   const sleep = async () => {
     const html = document.documentElement
     const canTransition = "startViewTransition" in document
-    if (canTransition) html.classList.add("owl-frost")
+    if (canTransition) frostOn()
     setAwake(false)
     await wait(FROST_FADE_MS)
     if (canTransition) {
       html.classList.add("owl-day")
-      const t = document.startViewTransition(() => setDark(false))
-      t.finished.finally(() => html.classList.remove("owl-day", "owl-frost"))
+      const t = document.startViewTransition(() => flushSync(() => setDark(false)))
+      t.finished.finally(() => {
+        html.classList.remove("owl-day")
+        frostOff()
+      })
     } else {
       setDark(false)
     }
