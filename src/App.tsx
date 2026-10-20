@@ -24,7 +24,7 @@ function Cover({ project, className = "" }: { project: Project; className?: stri
       className={`flex h-full w-full items-end p-6 ${className}`}
       style={{ backgroundColor: project.color }}
     >
-      <span className="font-heading text-4xl italic text-black/40">{project.title}</span>
+      <span className="font-heading text-4xl text-black/40">{project.title}</span>
     </div>
   )
 }
@@ -140,7 +140,7 @@ function About() {
       <div className="grid gap-12 border-t border-line pt-10 md:grid-cols-[1fr_2fr]">
         <h2 className="font-heading text-4xl">About</h2>
         <div>
-          <p className="font-heading text-2xl leading-snug sm:text-3xl">{site.about}</p>
+          <p className="text-xl leading-relaxed text-ink-2 sm:text-2xl">{site.about}</p>
 
           <div className="mt-12 grid gap-10 sm:grid-cols-2">
             <div>
@@ -194,7 +194,7 @@ function Contact() {
         <p className="text-xs uppercase tracking-[0.2em] text-white/50">Let's work together</p>
         <a
           href={`mailto:${site.contact.email}`}
-          className="mt-6 block break-words font-heading text-5xl italic hover:opacity-70 sm:text-7xl"
+          className="mt-6 block break-words font-heading text-5xl hover:opacity-70 sm:text-7xl"
         >
           {site.contact.email}
         </a>
@@ -298,7 +298,7 @@ function ProjectView({ project, onClose }: { project: Project; onClose: () => vo
         </div>
         {project.behance && (
           <div className="mt-20 flex flex-col items-center gap-5 border-t border-line pt-14 text-center">
-            <p className="font-heading text-3xl italic text-ink sm:text-4xl">Check out the entire project</p>
+            <p className="font-heading text-3xl text-ink sm:text-4xl">Check out the entire project</p>
             <p className="max-w-md text-sm text-ink-3">See the full story of this project on Behance.</p>
             <a
               href={project.behance}

@@ -158,7 +158,7 @@ export const MinimalistHero = ({
           className="z-20 order-3 text-center lg:ml-auto lg:max-w-[16rem] lg:self-start lg:pt-16 lg:text-right"
         >
           <p className="text-xs uppercase tracking-[0.2em] text-ink/60">{sideText.title}</p>
-          <p className="mt-2 font-heading text-2xl italic text-ink">{sideText.detail}</p>
+          <p className="mt-2 font-heading text-2xl text-ink">{sideText.detail}</p>
         </motion.div>
       </div>
 
