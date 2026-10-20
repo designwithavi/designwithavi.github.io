@@ -21,7 +21,8 @@ const HOVER_START = 0.73 // turned to face you: hover on beating wings
 const DROP_START = 0.88 // drop onto the branch
 const FRAME_MS = 16 // keyframes are sampled about once per screen refresh
 const FEATHER = 220 // softness of night's edge, px
-const FROST_FADE_MS = 350 // folders' glass swaps to a snapshot-safe frost over this long
+const FROST_FADE_MS = 350
+const SKY_BLEND_MS = 2000 // how long the landing page's sun takes to become the moon (see celestial-orb) // folders' glass swaps to a snapshot-safe frost over this long
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
@@ -37,12 +38,13 @@ function frostOn() {
   html.classList.add("owl-frost")
   frostTimer = window.setTimeout(() => html.classList.add("owl-frost-on"), FROST_FADE_MS)
 }
+/** Call only once everything has stopped moving: bringing the live blur back costs a frame or two. */
 function frostOff() {
   const html = document.documentElement
   clearTimeout(frostTimer)
   html.classList.remove("owl-frost-on")
-  // let the live blur come back under the cover for a frame, then fade the cover away
-  frostTimer = window.setTimeout(() => html.classList.remove("owl-frost"), 50)
+  // let the live blur come back under the cover, then fade the cover away
+  requestAnimationFrame(() => requestAnimationFrame(() => html.classList.remove("owl-frost")))
 }
 
 const THEME_EVENT = "owl-theme"
@@ -612,14 +614,12 @@ export function OwlSwitch() {
         ink.push({ "--owl-x": `${p.x}px`, "--owl-y": `${p.y}px`, "--owl-r": `${reach * u ** 1.4 - FEATHER * (1 - u)}px` })
       }
       html.animate(ink, { duration: FLIGHT_MS * OUT_END, pseudoElement: "::view-transition-new(root)", fill: "forwards" })
-      transition.finished.finally(() => {
-        html.classList.remove("owl-night")
-        frostOff()
-      })
+      transition.finished.finally(() => html.classList.remove("owl-night"))
     }
 
     await anim.finished
     cues.forEach(clearTimeout)
+    if (canSpread) setTimeout(frostOff, 900) // after the landing has settled
     flushSync(() => {
       setFlying(false)
       setLanded(true)
@@ -636,10 +636,9 @@ export function OwlSwitch() {
     if (canTransition) {
       html.classList.add("owl-day")
       const t = document.startViewTransition(() => flushSync(() => setDark(false)))
-      t.finished.finally(() => {
-        html.classList.remove("owl-day")
-        frostOff()
-      })
+      t.finished.finally(() => html.classList.remove("owl-day"))
+      // wait for the moon to finish turning back into the sun before restoring the glass
+      Promise.allSettled([t.finished, wait(SKY_BLEND_MS + 150)]).then(frostOff)
     } else {
       setDark(false)
     }

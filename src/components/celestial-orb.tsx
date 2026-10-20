@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react"
 import { motion, useReducedMotion } from "framer-motion"
 
 /**
@@ -5,11 +6,11 @@ import { motion, useReducedMotion } from "framer-motion"
  * Fills its parent; give the parent a size.
  */
 
-const BLEND = { duration: 1.8, ease: [0.65, 0, 0.35, 1] as const }
+const BLEND = { duration: 2, ease: [0.65, 0, 0.35, 1] as const }
 
 const ORB_CSS = `
 .orb { position: relative; width: 100%; height: 100%; }
-.orb-halo { position: absolute; inset: -38%; border-radius: 50%; pointer-events: none; transition: opacity 1.8s ease; animation: orb-breathe 6s ease-in-out infinite; }
+.orb-halo { position: absolute; inset: -38%; border-radius: 50%; pointer-events: none; transition: opacity 2s ease; animation: orb-breathe 6s ease-in-out infinite; }
 .orb-halo--sun { background: radial-gradient(circle, rgba(255, 196, 92, .55) 0%, rgba(255, 170, 70, .28) 34%, rgba(255, 160, 60, .08) 52%, transparent 68%); }
 .orb-halo--moon { opacity: 0; background: radial-gradient(circle, rgba(196, 214, 255, .42) 0%, rgba(150, 178, 240, .18) 36%, rgba(130, 160, 230, .05) 54%, transparent 68%); }
 .orb[data-night] .orb-halo--sun { opacity: 0; }
@@ -74,6 +75,17 @@ const CRATERS = [
 export function CelestialOrb({ night }: { night: boolean }) {
   const reduce = useReducedMotion()
   const t = reduce ? { duration: 0 } : BLEND
+  // a whole turn on every change, always the same way round, so the light
+  // (the highlight, top left) ends up where it started
+  const [turns, setTurns] = useState(0)
+  const first = useRef(true)
+  useEffect(() => {
+    if (first.current) {
+      first.current = false
+      return
+    }
+    setTurns((n) => n + 1)
+  }, [night])
   return (
     <div className="orb" data-night={night || undefined} aria-hidden="true">
       <style>{ORB_CSS}</style>
@@ -88,8 +100,8 @@ export function CelestialOrb({ night }: { night: boolean }) {
       >
         <Rays />
       </motion.div>
-      {/* the disc turns half a revolution while the sun melts into the moon */}
-      <motion.div className="orb-disc" initial={false} animate={{ rotate: night ? 180 : 0 }} transition={t}>
+      {/* the disc turns a full revolution while the sun melts into the moon */}
+      <motion.div className="orb-disc" initial={false} animate={{ rotate: turns * 360 }} transition={t}>
         <div className="orb-face orb-moon">
           {CRATERS.map((c) => (
             <span
