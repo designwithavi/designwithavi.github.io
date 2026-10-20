@@ -33,6 +33,30 @@ interface MinimalistHeroProps {
 
 const ease = [0.22, 1, 0.36, 1] as const
 
+/**
+ * Sizes `text` so it spans `box`'s content width exactly, edge to edge.
+ * Text width scales linearly with font size, so one measurement is enough.
+ */
+function useFitWidth(box: React.RefObject<HTMLElement | null>, text: React.RefObject<HTMLElement | null>) {
+  React.useLayoutEffect(() => {
+    const b = box.current
+    const t = text.current
+    if (!b || !t) return
+    const fit = () => {
+      const cs = getComputedStyle(b)
+      const target = b.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)
+      t.style.fontSize = "100px"
+      const w = t.scrollWidth
+      if (w > 0) t.style.fontSize = `${(100 * target) / w}px`
+    }
+    fit()
+    document.fonts?.ready.then(fit) // re-measure once the real font has loaded
+    const ro = new ResizeObserver(fit)
+    ro.observe(b)
+    return () => ro.disconnect()
+  }, [box, text])
+}
+
 const SocialIcon = ({ href, icon: Icon, label }: { href: string; icon: IconType; label: string }) => (
   <a
     href={href}
@@ -59,8 +83,12 @@ export const MinimalistHero = ({
   orb,
   className,
 }: MinimalistHeroProps) => {
+  const heroRef = React.useRef<HTMLDivElement>(null)
+  const nameRef = React.useRef<HTMLSpanElement>(null)
+  useFitWidth(heroRef, nameRef)
   return (
     <div
+      ref={heroRef}
       className={cn(
         "relative flex min-h-[100svh] w-full flex-col items-center justify-between overflow-hidden px-5 pt-24 pb-8 font-sans sm:px-8 md:px-12",
         className,
@@ -73,7 +101,7 @@ export const MinimalistHero = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
-          className="z-20 order-2 text-center lg:order-1 lg:text-left"
+          className="z-20 order-2 text-center lg:order-1 lg:self-start lg:pt-16 lg:text-left"
         >
           <p className="mx-auto max-w-xs text-sm leading-relaxed text-ink/80 lg:mx-0">{mainText}</p>
           <a
@@ -99,9 +127,11 @@ export const MinimalistHero = ({
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease, delay: 0.5 }}
-            className="pointer-events-none absolute left-1/2 top-1/2 z-[5] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap text-[19vw] lg:text-[clamp(4.5rem,10.5vw,11rem)] leading-none font-extrabold tracking-tighter text-ink"
+            className="pointer-events-none absolute left-1/2 top-1/2 z-[5] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap leading-[.8] font-extrabold tracking-tighter text-ink"
           >
-            {name}
+            <span ref={nameRef} className="inline-block">
+              {name}
+            </span>
           </motion.h1>
 
           <motion.img
@@ -124,7 +154,7 @@ export const MinimalistHero = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1 }}
-          className="z-20 order-3 text-center lg:ml-auto lg:max-w-[16rem] lg:text-right"
+          className="z-20 order-3 text-center lg:ml-auto lg:max-w-[16rem] lg:self-start lg:pt-16 lg:text-right"
         >
           <p className="text-xs uppercase tracking-[0.2em] text-ink/60">{sideText.title}</p>
           <p className="mt-2 font-heading text-2xl italic text-ink">{sideText.detail}</p>
