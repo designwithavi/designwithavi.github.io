@@ -100,7 +100,8 @@ function Work({ onOpen }: { onOpen: (p: Project) => void }) {
         </div>
         <div className="mx-auto flex max-w-[1120px] flex-wrap items-end justify-center gap-x-8 gap-y-12">
           {categories.map((c, i) => {
-            const items = projects.filter((p) => p.category === c.name)
+            // the folder shows its last file at the front, so reverse: the first project listed sits on top
+            const items = projects.filter((p) => p.category === c.name).reverse()
             return (
               <GlassFolder
                 key={c.name}
@@ -237,9 +238,13 @@ function ProjectView({ project, onClose }: { project: Project; onClose: () => vo
         <h2 className="mt-3 font-heading text-5xl sm:text-7xl">{project.title}</h2>
         <p className="mt-6 max-w-2xl text-lg text-ink-2">{project.description}</p>
         <div className="mt-12 space-y-6">
-          <div className="aspect-[16/10] overflow-hidden rounded-sm">
-            <Cover project={project} />
-          </div>
+          {project.cover ? (
+            <img src={project.cover} alt={project.title} className="w-full rounded-sm" />
+          ) : (
+            <div className="aspect-[16/10] overflow-hidden rounded-sm">
+              <Cover project={project} />
+            </div>
+          )}
           {project.images.map((src) => (
             <img key={src} src={src} alt="" loading="lazy" className="w-full rounded-sm" />
           ))}

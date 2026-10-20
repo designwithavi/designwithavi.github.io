@@ -93,13 +93,15 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "Set Design Project 1",
+    title: "Chumbak",
     category: "Set Design",
-    year: "2026",
-    summary: "A short one-line hook about this project.",
-    description: "Explain the brief, your research, the process and the outcome. Recruiters love seeing how you think, not just the final result.",
-    cover: "",
-    images: [],
+    year: "2025", // TODO: check the year
+    // DRAFT text, written from the images — rewrite in your own words
+    summary: "A playful in-store display: a city roundabout in miniature, with Chumbak's owl-faced autos doing the rounds.",
+    description:
+      "A tabletop set for a Chumbak store. A two-tier drum dressed as a little city — arched windows, a ring road with lane markings, a folk-pattern border — with hand-built paper auto-rickshaws wearing the brand's owl face. Shot in the studio and against the city skyline, then placed in the store.",
+    cover: "work/set-design/chumbak/01-in-store.jpg",
+    images: ["work/set-design/chumbak/02-model-and-process.jpg", "work/set-design/chumbak/03-detail.jpg"],
     color: "#c9b8c8",
   },
   {

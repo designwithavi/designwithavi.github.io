@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# original project files (PDFs etc.) — the site uses the web copies in public/work
+work/
