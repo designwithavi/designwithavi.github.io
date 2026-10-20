@@ -17,11 +17,25 @@ const ORB_CSS = `
 .orb[data-night] .orb-halo--moon { opacity: 1; }
 @keyframes orb-breathe { 50% { transform: scale(1.06); } }
 
-.orb-rays-wrap { position: absolute; inset: -16%; pointer-events: none; }
+/* rays shine from the top and sides only — below, they'd show through the portrait's faded edge */
+.orb-rays-wrap {
+  position: absolute; inset: -16%; pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, #000 42%, transparent 66%);
+  mask-image: linear-gradient(to bottom, #000 42%, transparent 66%);
+}
 .orb-rays { width: 100%; height: 100%; animation: orb-spin 20s linear infinite; }
 @keyframes orb-spin { to { transform: rotate(360deg); } }
 
 .orb-disc { position: absolute; inset: 0; border-radius: 50%; }
+
+/* at night the moon floats, its glow breathes, and its face turns very slowly */
+.orb-float { position: absolute; inset: 0; }
+.orb[data-night] .orb-float { animation: orb-float 9s ease-in-out infinite; }
+@keyframes orb-float { 0%, 100% { transform: translate(0, 0); } 30% { transform: translate(4px, -10px); } 65% { transform: translate(-3px, -4px); } }
+.orb[data-night] .orb-halo--moon { animation: orb-moonglow 5s ease-in-out infinite; }
+@keyframes orb-moonglow { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.12); filter: brightness(1.35); } }
+.orb-moon-face { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; }
+.orb[data-night] .orb-moon-face { animation: orb-spin 160s linear infinite; }
 .orb-face { position: absolute; inset: 0; border-radius: 50%; }
 .orb-sun {
   background: radial-gradient(circle at 40% 35%, #fff6d2 0%, #ffd866 30%, #fbb240 68%, #ef8b2b 100%);
@@ -34,7 +48,7 @@ const ORB_CSS = `
 .orb-crater { position: absolute; border-radius: 50%; background: radial-gradient(circle at 60% 62%, rgba(255, 255, 255, .5), rgba(150, 160, 178, .55) 55%, rgba(120, 130, 150, .4)); box-shadow: inset 2px 3px 5px rgba(80, 90, 110, .35); }
 
 @media (prefers-reduced-motion: reduce) {
-  .orb-halo, .orb-rays { animation: none; }
+  .orb-halo, .orb-rays, .orb-float, .orb-moon-face { animation: none !important; }
 }
 `
 
@@ -122,18 +136,22 @@ export function CelestialOrb({ night: theme }: { night: boolean }) {
         <Rays />
       </motion.div>
       {/* the disc turns a full revolution while the sun melts into the moon */}
-      <motion.div className="orb-disc" initial={false} animate={{ rotate: turns * 360 }} transition={t}>
-        <div className="orb-face orb-moon">
-          {CRATERS.map((c) => (
-            <span
-              key={`${c.x}-${c.y}`}
-              className="orb-crater"
-              style={{ left: `${c.x}%`, top: `${c.y}%`, width: `${c.s}%`, height: `${c.s}%` }}
-            />
-          ))}
-        </div>
-        <motion.div className="orb-face orb-sun" initial={false} animate={{ opacity: night ? 0 : 1 }} transition={t} />
-      </motion.div>
+      <div className="orb-float">
+        <motion.div className="orb-disc" initial={false} animate={{ rotate: turns * 360 }} transition={t}>
+          <div className="orb-face orb-moon">
+            <div className="orb-moon-face">
+              {CRATERS.map((c) => (
+                <span
+                  key={`${c.x}-${c.y}`}
+                  className="orb-crater"
+                  style={{ left: `${c.x}%`, top: `${c.y}%`, width: `${c.s}%`, height: `${c.s}%` }}
+                />
+              ))}
+            </div>
+          </div>
+          <motion.div className="orb-face orb-sun" initial={false} animate={{ opacity: night ? 0 : 1 }} transition={t} />
+        </motion.div>
+      </div>
     </div>
   )
 }
