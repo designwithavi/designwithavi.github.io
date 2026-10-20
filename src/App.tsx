@@ -4,6 +4,7 @@ import { OwlSwitch, useIsDark } from "@/components/owl-switch"
 import { BehanceIcon, InstagramIcon, LinkedInIcon } from "@/components/brand-icons"
 import { CelestialOrb } from "@/components/celestial-orb"
 import { MinimalistHero } from "@/components/ui/minimalist-hero"
+import { ProjectGallery } from "@/components/project-gallery"
 import { categories, projects, site, type Project } from "@/content"
 
 function Cover({ project, className = "" }: { project: Project; className?: string }) {
@@ -231,23 +232,24 @@ function ProjectView({ project, onClose }: { project: Project; onClose: () => vo
       >
         Close ✕
       </button>
-      <article className="mx-auto max-w-5xl px-5 pt-20 pb-24 sm:px-8">
+      <article className="mx-auto max-w-6xl px-4 pt-20 pb-24 sm:px-8">
         <p className="text-xs uppercase tracking-[0.2em] text-ink-4">
           {project.category} · {project.year}
         </p>
         <h2 className="mt-3 font-heading text-5xl sm:text-7xl">{project.title}</h2>
         <p className="mt-6 max-w-2xl text-lg text-ink-2">{project.description}</p>
-        <div className="mt-12 space-y-6">
+        <div className="mt-12">
           {project.cover ? (
-            <img src={project.cover} alt={project.title} className="w-full rounded-sm" />
+            <ProjectGallery
+              images={[{ src: project.cover, caption: project.coverCaption }, ...project.images]}
+              title={project.title}
+              tint={project.color}
+            />
           ) : (
-            <div className="aspect-[16/10] overflow-hidden rounded-sm">
+            <div className="aspect-[16/10] overflow-hidden rounded-3xl">
               <Cover project={project} />
             </div>
           )}
-          {project.images.map((src) => (
-            <img key={src} src={src} alt="" loading="lazy" className="w-full rounded-sm" />
-          ))}
         </div>
       </article>
     </div>

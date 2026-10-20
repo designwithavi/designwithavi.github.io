@@ -1,3 +1,5 @@
+import type { GalleryImage } from "@/components/project-gallery"
+
 // ─────────────────────────────────────────────────────────────
 //  EDIT THIS FILE to change everything written on your portfolio.
 //  Only change the text inside the quotes "like this".
@@ -87,8 +89,11 @@ export type Project = {
   summary: string
   description: string
   cover: string
-  images: string[]
-  color: string // placeholder colour, used when there is no image yet
+  /** Optional label for the cover in the image grid. */
+  coverCaption?: string
+  /** More images, shown in the grid after the cover. Each can be just a path, or { src, caption }. */
+  images: GalleryImage[]
+  color: string // tints the image cards (and is the placeholder colour when there's no cover)
 }
 
 export const projects: Project[] = [
@@ -103,7 +108,11 @@ export const projects: Project[] = [
       "is combined with the Chumbak owl to give it a quirky character. The moving backdrop makes the prop dynamic, " +
       "and the motifs on the border follow a dawn-to-dusk colour scheme, reflecting the relentless elegance of Chumbak.",
     cover: "work/visual-merchandising/chumbak/01-in-store.jpg",
-    images: ["work/visual-merchandising/chumbak/02-model-and-process.jpg", "work/visual-merchandising/chumbak/03-detail.jpg"],
+    coverCaption: "In store",
+    images: [
+      { src: "work/visual-merchandising/chumbak/02-model-and-process.jpg", caption: "The set, in studio and against the city" },
+      { src: "work/visual-merchandising/chumbak/03-detail.jpg", caption: "Detail" },
+    ],
     color: "#c9b8c8",
   },
   {
