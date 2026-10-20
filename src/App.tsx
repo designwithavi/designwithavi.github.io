@@ -35,7 +35,6 @@ function Nav() {
           <a href="#work" className="hover:text-ink">Work</a>
           <a href="#about" className="hover:text-ink">About</a>
           <a href="#contact" className="hover:text-ink">Contact</a>
-          <OwlSwitch />
         </div>
       </nav>
     </header>
@@ -245,6 +244,7 @@ function App() {
   return (
     <div className="min-h-screen bg-paper text-ink">
       <Nav />
+      <OwlSwitch />
       <main>
         <Hero />
         <Work onOpen={setOpen} />
