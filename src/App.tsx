@@ -281,7 +281,9 @@ function ProjectView({ project, onClose }: { project: Project; onClose: () => vo
             <h2 className="mt-3 font-heading text-5xl sm:text-7xl">{project.title}</h2>
           </>
         )}
-        <p className={`max-w-2xl text-lg text-ink-2 ${project.hero ? "" : "mt-6"}`}>{project.description}</p>
+        <p className={`mx-auto max-w-2xl text-center text-lg leading-relaxed text-ink-2 ${project.hero ? "" : "mt-6"}`}>
+          {project.description}
+        </p>
         <div className="mt-12">
           {project.cover ? (
             <ProjectGallery
@@ -294,6 +296,22 @@ function ProjectView({ project, onClose }: { project: Project; onClose: () => vo
             </div>
           )}
         </div>
+        {project.behance && (
+          <div className="mt-20 flex flex-col items-center gap-5 border-t border-line pt-14 text-center">
+            <p className="font-heading text-3xl italic text-ink sm:text-4xl">Check out the entire project</p>
+            <p className="max-w-md text-sm text-ink-3">See the full story of this project on Behance.</p>
+            <a
+              href={project.behance}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group mt-2 inline-flex items-center gap-3 rounded-full bg-ink px-7 py-3.5 text-sm font-medium text-paper transition hover:opacity-85"
+            >
+              <BehanceIcon className="h-5 w-5" />
+              View on Behance
+              <span className="transition-transform group-hover:translate-x-1">→</span>
+            </a>
+          </div>
+        )}
       </article>
     </div>
   )

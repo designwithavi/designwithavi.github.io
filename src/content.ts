@@ -89,6 +89,8 @@ export type Project = {
   summary: string
   description: string
   cover: string
+  /** Optional link to the full project on Behance — adds a button at the end of the project page. */
+  behance?: string
   /** Optional cut-out (transparent PNG/WebP) shown full screen at the top of the project page. */
   hero?: string
   /** Optional label for the cover in the image grid. */
@@ -109,6 +111,7 @@ export const projects: Project[] = [
       "The auto-rickshaw — an icon of Mumbai's local commute — is the main element: its traditional form " +
       "is combined with the Chumbak owl to give it a quirky character. The moving backdrop makes the prop dynamic, " +
       "and the motifs on the border follow a dawn-to-dusk colour scheme, reflecting the relentless elegance of Chumbak.",
+    behance: "https://www.behance.net/gallery/215517643/CHUMBAK-IN-MUMBAI-FROM-DAWN-TO-DUSK",
     hero: "work/visual-merchandising/chumbak/00-hero-cutout.webp",
     cover: "work/visual-merchandising/chumbak/01-in-store.jpg",
     coverCaption: "In store",
