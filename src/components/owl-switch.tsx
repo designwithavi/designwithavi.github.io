@@ -21,8 +21,8 @@ const HOVER_START = 0.73 // turned to face you: hover on beating wings
 const DROP_START = 0.88 // drop onto the branch
 const FRAME_MS = 16 // keyframes are sampled about once per screen refresh
 const FEATHER = 220 // softness of night's edge, px
-const FROST_FADE_MS = 350
-const SKY_BLEND_MS = 2000 // how long the landing page's sun takes to become the moon (see celestial-orb) // folders' glass swaps to a snapshot-safe frost over this long
+const FROST_FADE_MS = 350 // folders' glass swaps to a snapshot-safe frost over this long
+const SKY_BLEND_MS = 2000 // how long the landing page's sun takes to become the moon (see celestial-orb)
 
 const wait = (ms: number) => new Promise((r) => setTimeout(r, ms))
 
@@ -637,8 +637,8 @@ export function OwlSwitch() {
       html.classList.add("owl-day")
       const t = document.startViewTransition(() => flushSync(() => setDark(false)))
       t.finished.finally(() => html.classList.remove("owl-day"))
-      // wait for the moon to finish turning back into the sun before restoring the glass
-      Promise.allSettled([t.finished, wait(SKY_BLEND_MS + 150)]).then(frostOff)
+      // the sun starts turning back once the page has switched; restore the glass after it has
+      t.finished.catch(() => {}).then(() => wait(SKY_BLEND_MS + 150)).then(frostOff)
     } else {
       setDark(false)
     }

@@ -72,7 +72,28 @@ const CRATERS = [
   { x: 22, y: 50, s: 6 },
 ]
 
-export function CelestialOrb({ night }: { night: boolean }) {
+/**
+ * While the page is switching theme it's drawn from snapshots (see owl-switch),
+ * and an orb changing underneath them shows up half sun, half moon. So the orb
+ * follows the theme only once the switch has finished.
+ */
+function useSettled(night: boolean) {
+  const [shown, setShown] = useState(night)
+  useEffect(() => {
+    const html = document.documentElement
+    let raf = 0
+    const check = () => {
+      if (html.classList.contains("owl-night") || html.classList.contains("owl-day")) raf = requestAnimationFrame(check)
+      else setShown(night)
+    }
+    check()
+    return () => cancelAnimationFrame(raf)
+  }, [night])
+  return shown
+}
+
+export function CelestialOrb({ night: theme }: { night: boolean }) {
+  const night = useSettled(theme)
   const reduce = useReducedMotion()
   const t = reduce ? { duration: 0 } : BLEND
   // a whole turn on every change, always the same way round, so the light
