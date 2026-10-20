@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react"
 import GlassFolder from "@/components/ui/glass-folder-cards"
 import { OwlSwitch, useIsDark } from "@/components/owl-switch"
+import { BehanceIcon, InstagramIcon, LinkedInIcon } from "@/components/brand-icons"
+import { CelestialOrb } from "@/components/celestial-orb"
+import { MinimalistHero } from "@/components/ui/minimalist-hero"
 import { categories, projects, site, type Project } from "@/content"
 
 function Cover({ project, className = "" }: { project: Project; className?: string }) {
@@ -42,19 +45,26 @@ function Nav() {
 }
 
 function Hero() {
+  const dark = useIsDark()
   return (
-    <section id="top" className="mx-auto max-w-6xl px-5 pt-40 pb-20 sm:px-8 sm:pt-48">
-      <p className="mb-6 flex items-center gap-2 text-sm text-ink-3">
-        <span className="h-2 w-2 rounded-full bg-emerald-500" />
-        {site.availability}
-      </p>
-      <h1 className="font-heading text-6xl leading-[0.95] tracking-tight sm:text-8xl lg:text-9xl">
-        {site.name}
-      </h1>
-      <p className="mt-6 text-sm uppercase tracking-[0.2em] text-ink-4">{site.role}</p>
-      <p className="mt-10 max-w-xl font-heading text-3xl italic leading-snug text-ink-2 sm:text-4xl">
-        {site.tagline}
-      </p>
+    <section id="top">
+      <MinimalistHero
+        name={site.nickname}
+        mainText={site.tagline}
+        readMoreLink="#about"
+        readMoreLabel="About me"
+        imageSrc={site.portrait}
+        fallbackImageSrc="me-placeholder.svg"
+        imageAlt={`Portrait of ${site.name}`}
+        sideText={{ title: site.role, detail: site.availability }}
+        socialLinks={[
+          { icon: InstagramIcon, href: site.contact.instagram, label: "Instagram" },
+          { icon: LinkedInIcon, href: site.contact.linkedin, label: "LinkedIn" },
+          { icon: BehanceIcon, href: site.contact.behance, label: "Behance" },
+        ]}
+        locationText={site.location}
+        orb={<CelestialOrb night={dark} />}
+      />
     </section>
   )
 }

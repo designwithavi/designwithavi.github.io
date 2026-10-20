@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#5b4a3e"/>
+      <stop offset="1" stop-color="#2d241e"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#g)" d="M150 40c-38 0-64 30-64 70 0 26 10 48 26 62l-4 26c-58 10-92 44-104 102-3 16-4 50-4 100h300c0-50-1-84-4-100-12-58-46-92-104-102l-4-26c16-14 26-36 26-62 0-40-26-70-64-70z"/>
+  <text x="150" y="330" text-anchor="middle" font-family="Helvetica, Arial, sans-serif" font-size="16" fill="#e9dfd2" opacity=".75">your cut-out photo here</text>
+</svg>
