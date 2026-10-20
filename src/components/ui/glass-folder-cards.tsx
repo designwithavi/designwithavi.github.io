@@ -743,6 +743,15 @@ export default function GlassFolder({
             className={"gf-front" + (bump ? " gf-front--bump" : "")}
             style={{ clipPath: "path('" + FRONT_PATH + "')" }}
           >
+            {/* a pre-blurred copy of the back art; stands in for backdrop-filter while
+                the page is drawn from view-transition snapshots, which drop it */}
+            <div className="gf-frost" aria-hidden="true">
+              {image ? (
+                <img className="gf-frost-art" src={image} alt="" width={W + 24} height={H + 24} draggable={false} />
+              ) : art !== "none" ? (
+                <ArtCanvas className="gf-frost-art" art={art} seed={seed} w={W + 24} h={H + 24} density={density} priority={0} />
+              ) : null}
+            </div>
             <div className="gf-tint" aria-hidden="true" />
             <div className="gf-spec" aria-hidden="true" />
             <svg className="gf-rim gf-front-rim" viewBox={"0 0 " + W + " " + FRONT_H} aria-hidden="true">
@@ -1159,6 +1168,18 @@ canvas.gf-sheet-art[data-ready] { opacity: 1; filter: none; }
   pointer-events: none;
 }
 .gf-root[data-tone="dark"] .gf-spec { mix-blend-mode: screen; opacity: .16; }
+.gf-frost { position: absolute; inset: 0; overflow: hidden; display: none; background: #e9e9ec; }
+.gf-root[data-tone="dark"] .gf-frost { background: #1c1c1f; }
+.gf-frost-art {
+  position: absolute;
+  left: -12px;
+  top: -86px; /* the back art's position, seen from the front panel */
+  max-width: none;
+  object-fit: cover;
+  transform: scale(1.12);
+  filter: blur(22px) saturate(1.5);
+}
+html.owl-night .gf-frost, html.owl-day .gf-frost { display: block; }
 .gf-front-rim { width: 340px; height: 198px; }
 .gf-front-rim path { stroke-width: 2.4; transition: stroke-width .3s var(--gf-ease); }
 .gf-root[data-tone="dark"] .gf-front-rim { opacity: .55; }
