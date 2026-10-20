@@ -52,7 +52,7 @@ export const site = {
 //  CATEGORIES — each one is shown as a glass folder.
 //  art:   the swirl pattern on the folder — "aurora", "ember", "dusk", "glacier" or "verdant"
 //  tone:  "light" (milk glass) or "dark" (smoked glass)
-//  image: put a photo path here (e.g. "work/set-design/cover.jpg") to use it instead of the swirl
+//  image: put a photo path here (e.g. "work/visual-merchandising/cover.jpg") to use it instead of the swirl
 // ─────────────────────────────────────────────────────────────
 
 export type ArtStyle = "aurora" | "ember" | "dusk" | "glacier" | "verdant"
@@ -65,7 +65,7 @@ export type Category = {
 }
 
 export const categories: Category[] = [
-  { name: "Set Design", art: "dusk", tone: "light", image: "" },
+  { name: "Visual Merchandising", art: "dusk", tone: "light", image: "" },
   { name: "Photography", art: "aurora", tone: "light", image: "" },
   { name: "Videography", art: "ember", tone: "dark", image: "" },
   { name: "Branding", art: "verdant", tone: "light", image: "" },
@@ -94,7 +94,7 @@ export type Project = {
 export const projects: Project[] = [
   {
     title: "Chumbak",
-    category: "Set Design",
+    category: "Visual Merchandising",
     year: "2024",
     summary: "Mumbai's auto-rickshaw meets the Chumbak owl in a moving in-store display.",
     description:
@@ -102,13 +102,13 @@ export const projects: Project[] = [
       "The auto-rickshaw — an icon of Mumbai's local commute — is the main element: its traditional form " +
       "is combined with the Chumbak owl to give it a quirky character. The moving backdrop makes the prop dynamic, " +
       "and the motifs on the border follow a dawn-to-dusk colour scheme, reflecting the relentless elegance of Chumbak.",
-    cover: "work/set-design/chumbak/01-in-store.jpg",
-    images: ["work/set-design/chumbak/02-model-and-process.jpg", "work/set-design/chumbak/03-detail.jpg"],
+    cover: "work/visual-merchandising/chumbak/01-in-store.jpg",
+    images: ["work/visual-merchandising/chumbak/02-model-and-process.jpg", "work/visual-merchandising/chumbak/03-detail.jpg"],
     color: "#c9b8c8",
   },
   {
-    title: "Set Design Project 2",
-    category: "Set Design",
+    title: "Visual Merchandising Project 2",
+    category: "Visual Merchandising",
     year: "2025",
     summary: "A short one-line hook about this project.",
     description: "Explain the brief, your research, the process and the outcome. Recruiters love seeing how you think, not just the final result.",
