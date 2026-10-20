@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import GlassFolder from "@/components/ui/glass-folder-cards"
+import { OwlSwitch, useIsDark } from "@/components/owl-switch"
 import { categories, projects, site, type Project } from "@/content"
 
 function Cover({ project, className = "" }: { project: Project; className?: string }) {
@@ -25,15 +26,16 @@ function Cover({ project, className = "" }: { project: Project; className?: stri
 
 function Nav() {
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-black/5 bg-[#faf8f5]/80 backdrop-blur">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
-        <a href="#top" className="font-heading text-2xl">
+    <header className="fixed inset-x-0 top-0 z-40 border-b border-line bg-paper/80 backdrop-blur">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 sm:px-8">
+        <a href="#top" className="font-heading text-xl sm:text-2xl">
           {site.name}
         </a>
-        <div className="flex gap-6 text-sm text-neutral-600">
-          <a href="#work" className="hover:text-black">Work</a>
-          <a href="#about" className="hover:text-black">About</a>
-          <a href="#contact" className="hover:text-black">Contact</a>
+        <div className="flex items-center gap-4 text-sm text-ink-3 sm:gap-6">
+          <a href="#work" className="hover:text-ink">Work</a>
+          <a href="#about" className="hover:text-ink">About</a>
+          <a href="#contact" className="hover:text-ink">Contact</a>
+          <OwlSwitch />
         </div>
       </nav>
     </header>
@@ -43,15 +45,15 @@ function Nav() {
 function Hero() {
   return (
     <section id="top" className="mx-auto max-w-6xl px-5 pt-40 pb-20 sm:px-8 sm:pt-48">
-      <p className="mb-6 flex items-center gap-2 text-sm text-neutral-600">
+      <p className="mb-6 flex items-center gap-2 text-sm text-ink-3">
         <span className="h-2 w-2 rounded-full bg-emerald-500" />
         {site.availability}
       </p>
       <h1 className="font-heading text-6xl leading-[0.95] tracking-tight sm:text-8xl lg:text-9xl">
         {site.name}
       </h1>
-      <p className="mt-6 text-sm uppercase tracking-[0.2em] text-neutral-500">{site.role}</p>
-      <p className="mt-10 max-w-xl font-heading text-3xl italic leading-snug text-neutral-700 sm:text-4xl">
+      <p className="mt-6 text-sm uppercase tracking-[0.2em] text-ink-4">{site.role}</p>
+      <p className="mt-10 max-w-xl font-heading text-3xl italic leading-snug text-ink-2 sm:text-4xl">
         {site.tagline}
       </p>
     </section>
@@ -71,6 +73,7 @@ function useFolderWidth() {
 
 function Work({ onOpen }: { onOpen: (p: Project) => void }) {
   const width = useFolderWidth()
+  const dark = useIsDark()
   return (
     <section id="work" className="relative scroll-mt-20 overflow-hidden py-20">
       <div
@@ -82,9 +85,9 @@ function Work({ onOpen }: { onOpen: (p: Project) => void }) {
         }}
       />
       <div className="relative mx-auto max-w-6xl px-4 sm:px-8">
-        <div className="mb-14 flex items-baseline justify-between border-b border-black/10 pb-4">
+        <div className="mb-14 flex items-baseline justify-between border-b border-line pb-4">
           <h2 className="font-heading text-4xl">Selected Work</h2>
-          <span className="text-sm text-neutral-500">{projects.length} projects</span>
+          <span className="text-sm text-ink-4">{projects.length} projects</span>
         </div>
         <div className="mx-auto flex max-w-[1120px] flex-wrap items-end justify-center gap-x-8 gap-y-12">
           {categories.map((c, i) => {
@@ -94,7 +97,7 @@ function Work({ onOpen }: { onOpen: (p: Project) => void }) {
                 key={c.name}
                 label={c.name}
                 art={c.art}
-                tone={c.tone}
+                tone={dark ? "dark" : c.tone}
                 image={c.image || undefined}
                 seed={i * 7 + 3}
                 action="none"
@@ -111,7 +114,7 @@ function Work({ onOpen }: { onOpen: (p: Project) => void }) {
             )
           })}
         </div>
-        <p className="mt-14 text-center font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-500">
+        <p className="mt-14 text-center font-mono text-[11px] uppercase tracking-[0.18em] text-ink-4">
           Click a folder to open · pick a project to view
         </p>
       </div>
@@ -122,19 +125,19 @@ function Work({ onOpen }: { onOpen: (p: Project) => void }) {
 function About() {
   return (
     <section id="about" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-20 sm:px-8">
-      <div className="grid gap-12 border-t border-black/10 pt-10 md:grid-cols-[1fr_2fr]">
+      <div className="grid gap-12 border-t border-line pt-10 md:grid-cols-[1fr_2fr]">
         <h2 className="font-heading text-4xl">About</h2>
         <div>
           <p className="font-heading text-2xl leading-snug sm:text-3xl">{site.about}</p>
 
           <div className="mt-12 grid gap-10 sm:grid-cols-2">
             <div>
-              <h3 className="mb-4 text-xs uppercase tracking-[0.2em] text-neutral-500">Education & Experience</h3>
+              <h3 className="mb-4 text-xs uppercase tracking-[0.2em] text-ink-4">Education & Experience</h3>
               <ul className="space-y-4">
                 {site.education.map((e) => (
                   <li key={e.title}>
                     <p className="font-medium">{e.title}</p>
-                    <p className="text-sm text-neutral-600">
+                    <p className="text-sm text-ink-3">
                       {e.detail} · {e.years}
                     </p>
                   </li>
@@ -142,10 +145,10 @@ function About() {
               </ul>
             </div>
             <div>
-              <h3 className="mb-4 text-xs uppercase tracking-[0.2em] text-neutral-500">Skills</h3>
+              <h3 className="mb-4 text-xs uppercase tracking-[0.2em] text-ink-4">Skills</h3>
               <div className="flex flex-wrap gap-2">
                 {site.skills.map((s) => (
-                  <span key={s} className="rounded-full border border-black/15 px-3 py-1 text-sm">
+                  <span key={s} className="rounded-full border border-line px-3 py-1 text-sm">
                     {s}
                   </span>
                 ))}
@@ -157,7 +160,7 @@ function About() {
             href={site.cvFile}
             target="_blank"
             rel="noreferrer"
-            className="mt-12 inline-block rounded-full bg-black px-6 py-3 text-sm text-white transition hover:bg-neutral-700"
+            className="mt-12 inline-block rounded-full bg-ink px-6 py-3 text-sm text-paper transition hover:opacity-80"
           >
             Download CV ↓
           </a>
@@ -174,7 +177,7 @@ function Contact() {
     ["Behance", site.contact.behance],
   ]
   return (
-    <section id="contact" className="scroll-mt-20 bg-[#1a1816] text-[#faf8f5]">
+    <section id="contact" className="scroll-mt-20 bg-night text-night-ink">
       <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8">
         <p className="text-xs uppercase tracking-[0.2em] text-white/50">Let's work together</p>
         <a
@@ -211,19 +214,19 @@ function ProjectView({ project, onClose }: { project: Project; onClose: () => vo
   }, [onClose])
 
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-[#faf8f5] animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-paper animate-in fade-in duration-300">
       <button
         onClick={onClose}
-        className="fixed top-4 right-4 z-10 rounded-full bg-black px-4 py-2 text-sm text-white hover:bg-neutral-700"
+        className="fixed top-4 right-4 z-10 rounded-full bg-ink px-4 py-2 text-sm text-paper hover:opacity-80"
       >
         Close ✕
       </button>
       <article className="mx-auto max-w-5xl px-5 pt-20 pb-24 sm:px-8">
-        <p className="text-xs uppercase tracking-[0.2em] text-neutral-500">
+        <p className="text-xs uppercase tracking-[0.2em] text-ink-4">
           {project.category} · {project.year}
         </p>
         <h2 className="mt-3 font-heading text-5xl sm:text-7xl">{project.title}</h2>
-        <p className="mt-6 max-w-2xl text-lg text-neutral-700">{project.description}</p>
+        <p className="mt-6 max-w-2xl text-lg text-ink-2">{project.description}</p>
         <div className="mt-12 space-y-6">
           <div className="aspect-[16/10] overflow-hidden rounded-sm">
             <Cover project={project} />
@@ -240,7 +243,7 @@ function ProjectView({ project, onClose }: { project: Project; onClose: () => vo
 function App() {
   const [open, setOpen] = useState<Project | null>(null)
   return (
-    <div className="min-h-screen bg-[#faf8f5] text-[#1a1816]">
+    <div className="min-h-screen bg-paper text-ink">
       <Nav />
       <main>
         <Hero />

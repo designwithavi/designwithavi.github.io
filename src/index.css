@@ -130,3 +130,36 @@
     @apply font-sans;
     }
 }
+/* ---- portfolio palette: day (light) and night (dark) -------------------- */
+:root {
+  --paper: #faf8f5;
+  --ink: #1a1816;
+  --ink-2: #44403c;
+  --ink-3: #57534e;
+  --ink-4: #78716c;
+  --line: rgb(0 0 0 / 0.1);
+  --night: #1a1816;
+  --night-ink: #faf8f5;
+}
+.dark {
+  --paper: #121110;
+  --ink: #f1ece4;
+  --ink-2: #d6d0c6;
+  --ink-3: #b5ada2;
+  --ink-4: #8f877c;
+  --line: rgb(255 255 255 / 0.12);
+  --night: #080707;
+  --night-ink: #f1ece4;
+}
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ink-4: var(--ink-4);
+  --color-line: var(--line);
+  --color-night: var(--night);
+  --color-night-ink: var(--night-ink);
+}
+html { background: var(--paper); color-scheme: light; }
+html.dark { color-scheme: dark; }

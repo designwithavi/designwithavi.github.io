@@ -6,6 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Avishkar Kale — Design Portfolio</title>
     <meta name="description" content="Design portfolio of Avishkar Kale, NIFT Mumbai." />
+    <script>
+      // apply the saved day/night choice before the page paints (default: day)
+      try { if (localStorage.getItem("theme") === "dark") document.documentElement.classList.add("dark") } catch {}
+    </script>
   </head>
   <body>
     <div id="root"></div>
