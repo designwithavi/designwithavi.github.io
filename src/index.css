@@ -163,3 +163,9 @@
 }
 html { background: var(--paper); color-scheme: light; }
 html.dark { color-scheme: dark; }
+
+/* While the owl switches day/night the page is drawn from snapshots, and some
+   browsers drop the folders' frosted-glass blur in them — which would show the
+   projects tucked inside. Keep closed folders' contents hidden until it's done. */
+html.owl-night .gf-root:not([data-open]) .gf-sheet,
+html.owl-day .gf-root:not([data-open]) .gf-sheet { visibility: hidden; }
