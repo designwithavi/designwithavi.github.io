@@ -127,7 +127,7 @@ export const MinimalistHero = ({
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease, delay: 0.5 }}
-            className="pointer-events-none absolute left-1/2 top-1/2 z-[5] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap leading-[.8] font-extrabold tracking-tighter text-ink"
+            className="pointer-events-none absolute left-1/2 top-1/2 z-[5] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-display leading-[.78] font-black uppercase tracking-[-0.01em] text-ink"
           >
             <span ref={nameRef} className="inline-block">
               {name}
