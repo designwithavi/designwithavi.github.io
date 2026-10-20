@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
-import { projects, site, type Project } from "@/content"
+import GlassFolder from "@/components/ui/glass-folder-cards"
+import { categories, projects, site, type Project } from "@/content"
 
 function Cover({ project, className = "" }: { project: Project; className?: string }) {
   if (project.cover) {
@@ -57,34 +58,62 @@ function Hero() {
   )
 }
 
+function useFolderWidth() {
+  const fit = () => Math.min(340, window.innerWidth - 32)
+  const [width, setWidth] = useState(fit)
+  useEffect(() => {
+    const onResize = () => setWidth(fit())
+    window.addEventListener("resize", onResize)
+    return () => window.removeEventListener("resize", onResize)
+  }, [])
+  return width
+}
+
 function Work({ onOpen }: { onOpen: (p: Project) => void }) {
+  const width = useFolderWidth()
   return (
-    <section id="work" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-20 sm:px-8">
-      <div className="mb-10 flex items-baseline justify-between border-b border-black/10 pb-4">
-        <h2 className="font-heading text-4xl">Selected Work</h2>
-        <span className="text-sm text-neutral-500">{projects.length} projects</span>
-      </div>
-      <div className="grid gap-x-8 gap-y-14 sm:grid-cols-2">
-        {projects.map((p, i) => (
-          <button
-            key={p.title}
-            onClick={() => onOpen(p)}
-            className={`group text-left ${i % 2 === 1 ? "sm:mt-24" : ""}`}
-          >
-            <div className="aspect-[4/5] overflow-hidden rounded-sm">
-              <Cover
-                project={p}
-                className="transition-transform duration-700 ease-out group-hover:scale-105"
+    <section id="work" className="relative scroll-mt-20 overflow-hidden py-20">
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 opacity-[0.13]"
+        style={{
+          backgroundImage: "radial-gradient(currentColor 1.1px, transparent 1.4px)",
+          backgroundSize: "22px 22px",
+        }}
+      />
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-8">
+        <div className="mb-14 flex items-baseline justify-between border-b border-black/10 pb-4">
+          <h2 className="font-heading text-4xl">Selected Work</h2>
+          <span className="text-sm text-neutral-500">{projects.length} projects</span>
+        </div>
+        <div className="mx-auto flex max-w-[1120px] flex-wrap items-end justify-center gap-x-8 gap-y-12">
+          {categories.map((c, i) => {
+            const items = projects.filter((p) => p.category === c.name)
+            return (
+              <GlassFolder
+                key={c.name}
+                label={c.name}
+                art={c.art}
+                tone={c.tone}
+                image={c.image || undefined}
+                seed={i * 7 + 3}
+                action="none"
+                width={width}
+                appearDelay={i * 120}
+                files={items.map((p) => ({
+                  name: p.title,
+                  meta: p.year,
+                  image: p.cover || undefined,
+                  art: p.cover ? undefined : c.art,
+                }))}
+                onFileSelect={(_, index) => onOpen(items[index])}
               />
-            </div>
-            <div className="mt-4 flex items-baseline justify-between gap-4">
-              <h3 className="font-heading text-2xl">{p.title}</h3>
-              <span className="shrink-0 text-xs text-neutral-500">{p.year}</span>
-            </div>
-            <p className="text-xs uppercase tracking-[0.15em] text-neutral-500">{p.category}</p>
-            <p className="mt-2 text-neutral-600">{p.summary}</p>
-          </button>
-        ))}
+            )
+          })}
+        </div>
+        <p className="mt-14 text-center font-mono text-[11px] uppercase tracking-[0.18em] text-neutral-500">
+          Click a folder to open · pick a project to view
+        </p>
       </div>
     </section>
   )

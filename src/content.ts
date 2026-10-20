@@ -44,10 +44,35 @@ export const site = {
 }
 
 // ─────────────────────────────────────────────────────────────
+//  CATEGORIES — each one is shown as a glass folder.
+//  art:   the swirl pattern on the folder — "aurora", "ember", "dusk", "glacier" or "verdant"
+//  tone:  "light" (milk glass) or "dark" (smoked glass)
+//  image: put a photo path here (e.g. "work/set-design/cover.jpg") to use it instead of the swirl
+// ─────────────────────────────────────────────────────────────
+
+export type ArtStyle = "aurora" | "ember" | "dusk" | "glacier" | "verdant"
+
+export type Category = {
+  name: string
+  art: ArtStyle
+  tone: "light" | "dark"
+  image: string
+}
+
+export const categories: Category[] = [
+  { name: "Set Design", art: "dusk", tone: "light", image: "" },
+  { name: "Photography", art: "aurora", tone: "light", image: "" },
+  { name: "Videography", art: "ember", tone: "dark", image: "" },
+  { name: "Branding", art: "verdant", tone: "light", image: "" },
+  { name: "Graphic Design", art: "glacier", tone: "light", image: "" },
+]
+
+// ─────────────────────────────────────────────────────────────
 //  PROJECTS
+//  category: must match one of the category names above exactly.
 //  To add images: put them in  public/work/<project-folder>/
 //  then write the file names below, e.g.  "work/kalamkari/cover.jpg"
-//  Leave  cover: ""  to show a coloured placeholder instead.
+//  Leave  cover: ""  to show a placeholder instead.
 // ─────────────────────────────────────────────────────────────
 
 export type Project = {
@@ -63,65 +88,103 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    title: "Project One",
-    category: "Collection",
+    title: "Set Design Project 1",
+    category: "Set Design",
     year: "2026",
     summary: "A short one-line hook about this project.",
-    description:
-      "Explain the brief, your research, the process and the outcome. " +
-      "Recruiters love seeing how you think, not just the final result.",
-    cover: "",
-    images: [],
-    color: "#d9c8b4",
-  },
-  {
-    title: "Project Two",
-    category: "Craft Documentation",
-    year: "2026",
-    summary: "A short one-line hook about this project.",
-    description: "Explain the brief, your research, the process and the outcome.",
-    cover: "",
-    images: [],
-    color: "#b9c4b0",
-  },
-  {
-    title: "Project Three",
-    category: "Branding",
-    year: "2025",
-    summary: "A short one-line hook about this project.",
-    description: "Explain the brief, your research, the process and the outcome.",
+    description: "Explain the brief, your research, the process and the outcome. Recruiters love seeing how you think, not just the final result.",
     cover: "",
     images: [],
     color: "#c9b8c8",
   },
   {
-    title: "Project Four",
-    category: "Textile",
+    title: "Set Design Project 2",
+    category: "Set Design",
     year: "2025",
     summary: "A short one-line hook about this project.",
-    description: "Explain the brief, your research, the process and the outcome.",
+    description: "Explain the brief, your research, the process and the outcome. Recruiters love seeing how you think, not just the final result.",
+    cover: "",
+    images: [],
+    color: "#c9b8c8",
+  },
+  {
+    title: "Photography Project 1",
+    category: "Photography",
+    year: "2026",
+    summary: "A short one-line hook about this project.",
+    description: "Explain the brief, your research, the process and the outcome. Recruiters love seeing how you think, not just the final result.",
+    cover: "",
+    images: [],
+    color: "#e3c9bf",
+  },
+  {
+    title: "Photography Project 2",
+    category: "Photography",
+    year: "2025",
+    summary: "A short one-line hook about this project.",
+    description: "Explain the brief, your research, the process and the outcome. Recruiters love seeing how you think, not just the final result.",
+    cover: "",
+    images: [],
+    color: "#e3c9bf",
+  },
+  {
+    title: "Videography Project 1",
+    category: "Videography",
+    year: "2026",
+    summary: "A short one-line hook about this project.",
+    description: "Explain the brief, your research, the process and the outcome. Recruiters love seeing how you think, not just the final result.",
     cover: "",
     images: [],
     color: "#b4c3cf",
   },
   {
-    title: "Project Five",
-    category: "Illustration",
-    year: "2024",
+    title: "Videography Project 2",
+    category: "Videography",
+    year: "2025",
     summary: "A short one-line hook about this project.",
-    description: "Explain the brief, your research, the process and the outcome.",
+    description: "Explain the brief, your research, the process and the outcome. Recruiters love seeing how you think, not just the final result.",
     cover: "",
     images: [],
-    color: "#d6c9a6",
+    color: "#b4c3cf",
   },
   {
-    title: "Project Six",
-    category: "Photography",
-    year: "2024",
+    title: "Branding Project 1",
+    category: "Branding",
+    year: "2026",
     summary: "A short one-line hook about this project.",
-    description: "Explain the brief, your research, the process and the outcome.",
+    description: "Explain the brief, your research, the process and the outcome. Recruiters love seeing how you think, not just the final result.",
     cover: "",
     images: [],
-    color: "#c8b0a6",
+    color: "#b9c4b0",
+  },
+  {
+    title: "Branding Project 2",
+    category: "Branding",
+    year: "2025",
+    summary: "A short one-line hook about this project.",
+    description: "Explain the brief, your research, the process and the outcome. Recruiters love seeing how you think, not just the final result.",
+    cover: "",
+    images: [],
+    color: "#b9c4b0",
+  },
+  {
+    title: "Graphic Design Project 1",
+    category: "Graphic Design",
+    year: "2026",
+    summary: "A short one-line hook about this project.",
+    description: "Explain the brief, your research, the process and the outcome. Recruiters love seeing how you think, not just the final result.",
+    cover: "",
+    images: [],
+    color: "#d6dde4",
+  },
+  {
+    title: "Graphic Design Project 2",
+    category: "Graphic Design",
+    year: "2025",
+    summary: "A short one-line hook about this project.",
+    description: "Explain the brief, your research, the process and the outcome. Recruiters love seeing how you think, not just the final result.",
+    cover: "",
+    images: [],
+    color: "#d6dde4",
   },
 ]
