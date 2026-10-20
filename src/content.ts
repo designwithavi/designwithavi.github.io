@@ -8,8 +8,9 @@ export const site = {
   name: "Avishkar Kale",
   nickname: "avixkar", // the big word on the landing page
   location: "Mumbai, India",
-  // Your cut-out photo: a PNG with a transparent background, saved as public/me.png
-  portrait: "me.png",
+  // Your cut-out photo (PNG, transparent background). public/me.png is the original;
+  // the site loads a smaller copy, me-web.png — ask to regenerate it if you swap the photo.
+  portrait: "me-web.png",
   role: "Design student · NIFT Mumbai",
   tagline: "I design thoughtful things where craft meets culture.",
   availability: "Open to internships & full-time roles — 2027",

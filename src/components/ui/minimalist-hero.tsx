@@ -137,7 +137,8 @@ export const MinimalistHero = ({
           <motion.img
             src={imageSrc}
             alt={imageAlt}
-            className="relative z-10 h-auto max-h-[70svh] w-56 object-contain md:w-72 lg:w-80"
+            className="hero-portrait relative z-10 h-auto max-h-[78svh] w-[min(92vw,360px)] max-w-none shrink-0 object-contain md:w-[440px] lg:w-[540px] lg:translate-y-16"
+            style={{ maskImage: "linear-gradient(to bottom, #000 78%, transparent 100%)", WebkitMaskImage: "linear-gradient(to bottom, #000 78%, transparent 100%)" }}
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1, ease, delay: 0.4 }}
