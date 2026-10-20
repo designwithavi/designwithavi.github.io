@@ -610,21 +610,35 @@ export default function GlassFolder({
     let raf = 0
     let px = 0
     let py = 0
+    let tx = 0
+    let ty = 0
+    // ease towards the cursor, and glide back to centre when it leaves —
+    // the glass's highlight is a gradient, which can't transition by itself
+    let ease = 0.3
     const write = () => {
-      raf = 0
+      px += (tx - px) * ease
+      py += (ty - py) * ease
+      const done = Math.abs(tx - px) < 0.002 && Math.abs(ty - py) < 0.002
+      if (done) {
+        px = tx
+        py = ty
+      }
       el.style.setProperty("--gf-px", px.toFixed(3))
       el.style.setProperty("--gf-py", py.toFixed(3))
+      raf = done ? 0 : requestAnimationFrame(write)
     }
     const move = (e: PointerEvent) => {
       if (e.pointerType === "touch") return
       const r = el.getBoundingClientRect()
-      px = ((e.clientX - r.left) / r.width) * 2 - 1
-      py = ((e.clientY - r.top) / r.height) * 2 - 1
+      tx = ((e.clientX - r.left) / r.width) * 2 - 1
+      ty = ((e.clientY - r.top) / r.height) * 2 - 1
+      ease = 0.3
       if (!raf) raf = requestAnimationFrame(write)
     }
     const leave = () => {
-      px = 0
-      py = 0
+      tx = 0
+      ty = 0
+      ease = 0.07
       if (!raf) raf = requestAnimationFrame(write)
     }
     el.addEventListener("pointermove", move)
