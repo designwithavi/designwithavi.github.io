@@ -1,9 +1,10 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
+import { motion } from "framer-motion"
 import GlassFolder from "@/components/ui/glass-folder-cards"
 import { OwlSwitch, useIsDark } from "@/components/owl-switch"
 import { BehanceIcon, InstagramIcon, LinkedInIcon } from "@/components/brand-icons"
 import { CelestialOrb } from "@/components/celestial-orb"
-import { MinimalistHero } from "@/components/ui/minimalist-hero"
+import { MinimalistHero, useFitWidth } from "@/components/ui/minimalist-hero"
 import { ProjectGallery } from "@/components/project-gallery"
 import { categories, projects, site, type Project } from "@/content"
 
@@ -213,6 +214,44 @@ function Contact() {
   )
 }
 
+/** A project's opening screen: its name across the width, the cut-out rising in front. */
+function ProjectHero({ project, hero }: { project: Project; hero: string }) {
+  const box = useRef<HTMLElement>(null)
+  const name = useRef<HTMLSpanElement>(null)
+  useFitWidth(box, name)
+  const ease = [0.22, 1, 0.36, 1] as const
+  return (
+    <section ref={box} className="relative h-[78svh] overflow-hidden px-4 sm:px-8 md:h-[100svh]">
+      <motion.p
+        initial={{ opacity: 0, y: 12 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, delay: 0.1 }}
+        className="pt-20 text-center text-xs uppercase tracking-[0.2em] text-ink-4"
+      >
+        {project.category} · {project.year}
+      </motion.p>
+      <motion.h2
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.9, ease, delay: 0.15 }}
+        className="pointer-events-none absolute left-1/2 top-[42%] -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-display font-black uppercase leading-[.78] tracking-[-0.01em] text-ink"
+      >
+        <span ref={name} className="inline-block">
+          {project.title}
+        </span>
+      </motion.h2>
+      <motion.img
+        src={hero}
+        alt={project.title}
+        initial={{ opacity: 0, y: 60 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.1, ease, delay: 0.3 }}
+        className="absolute bottom-0 left-1/2 z-10 max-h-[62svh] w-[min(96vw,880px)] max-w-none -translate-x-1/2 object-contain object-bottom"
+      />
+    </section>
+  )
+}
+
 function ProjectView({ project, onClose }: { project: Project; onClose: () => void }) {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose()
@@ -232,18 +271,22 @@ function ProjectView({ project, onClose }: { project: Project; onClose: () => vo
       >
         Close ✕
       </button>
-      <article className="mx-auto max-w-6xl px-4 pt-20 pb-24 sm:px-8">
-        <p className="text-xs uppercase tracking-[0.2em] text-ink-4">
-          {project.category} · {project.year}
-        </p>
-        <h2 className="mt-3 font-heading text-5xl sm:text-7xl">{project.title}</h2>
-        <p className="mt-6 max-w-2xl text-lg text-ink-2">{project.description}</p>
+      {project.hero && <ProjectHero project={project} hero={project.hero} />}
+      <article className={`mx-auto max-w-6xl px-4 pb-24 sm:px-8 ${project.hero ? "pt-14" : "pt-20"}`}>
+        {!project.hero && (
+          <>
+            <p className="text-xs uppercase tracking-[0.2em] text-ink-4">
+              {project.category} · {project.year}
+            </p>
+            <h2 className="mt-3 font-heading text-5xl sm:text-7xl">{project.title}</h2>
+          </>
+        )}
+        <p className={`max-w-2xl text-lg text-ink-2 ${project.hero ? "" : "mt-6"}`}>{project.description}</p>
         <div className="mt-12">
           {project.cover ? (
             <ProjectGallery
               images={[{ src: project.cover, caption: project.coverCaption }, ...project.images]}
               title={project.title}
-              tint={project.color}
             />
           ) : (
             <div className="aspect-[16/10] overflow-hidden rounded-3xl">

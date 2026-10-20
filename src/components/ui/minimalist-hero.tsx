@@ -37,7 +37,7 @@ const ease = [0.22, 1, 0.36, 1] as const
  * Sizes `text` so it spans `box`'s content width exactly, edge to edge.
  * Text width scales linearly with font size, so one measurement is enough.
  */
-function useFitWidth(box: React.RefObject<HTMLElement | null>, text: React.RefObject<HTMLElement | null>) {
+export function useFitWidth(box: React.RefObject<HTMLElement | null>, text: React.RefObject<HTMLElement | null>) {
   React.useLayoutEffect(() => {
     const b = box.current
     const t = text.current

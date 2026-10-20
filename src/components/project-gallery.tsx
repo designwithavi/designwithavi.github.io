@@ -3,10 +3,11 @@ import { AnimatePresence, motion } from "framer-motion"
 import { ChevronLeft, ChevronRight, X } from "lucide-react"
 
 /**
- * A project's images as an asymmetric grid of softly tinted cards — in the
- * spirit of uiable's "Portfolio Showcase Grid" on 21st.dev. The first image is
- * the wide feature; the rest pair up 7/5, then 5/7, and so on. Any image opens
- * full screen; arrow keys step through them.
+ * A project's images as an asymmetric grid — in the spirit of uiable's
+ * "Portfolio Showcase Grid" on 21st.dev, without the tinted cards: each image
+ * with its caption written underneath. The first image is the wide feature; the
+ * rest pair up 7/5, then 5/7, and so on. Any image opens full screen; arrow
+ * keys step through them.
  */
 
 export type GalleryImage = string | { src: string; caption?: string }
@@ -16,22 +17,21 @@ const captionOf = (img: GalleryImage) => (typeof img === "string" ? undefined : 
 
 /** Column span (out of 12) and card height for each position in the grid. */
 function layout(i: number, count: number) {
-  if (i === 0) return { span: "md:col-span-12", height: "md:h-[560px]" }
+  if (i === 0) return { span: "md:col-span-12", height: "" }
   const k = i - 1
   const lastAlone = k === count - 2 && (count - 1) % 2 === 1
-  if (lastAlone) return { span: "md:col-span-12", height: "md:h-[480px]" }
+  if (lastAlone) return { span: "md:col-span-12", height: "" }
   const wideFirst = Math.floor(k / 2) % 2 === 0
   const wide = (k % 2 === 0) === wideFirst
   return { span: wide ? "md:col-span-7" : "md:col-span-5", height: "md:h-[420px]" }
 }
 
-export function ProjectGallery({ images, title, tint }: { images: GalleryImage[]; title: string; tint: string }) {
+export function ProjectGallery({ images, title }: { images: GalleryImage[]; title: string }) {
   const [zoom, setZoom] = useState<number | null>(null)
-  const card = { background: `color-mix(in oklab, ${tint} 38%, var(--paper))` }
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-12 md:gap-5">
+      <div className="grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-12 md:gap-y-14">
         {images.map((img, i) => {
           const { span, height } = layout(i, images.length)
           const caption = captionOf(img)
@@ -42,13 +42,12 @@ export function ProjectGallery({ images, title, tint }: { images: GalleryImage[]
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: (i % 2) * 0.08 }}
-              className={`group flex flex-col overflow-hidden rounded-3xl p-3 sm:p-4 ${span} ${height}`}
-              style={card}
+              className={`group flex flex-col ${span} ${height}`}
             >
               <button
                 type="button"
                 onClick={() => setZoom(i)}
-                className="relative flex min-h-0 flex-1 cursor-zoom-in items-center justify-center rounded-2xl"
+                className="relative flex min-h-0 flex-1 cursor-zoom-in items-center justify-center"
                 aria-label={`View ${caption ?? `image ${i + 1}`} of ${title} full screen`}
               >
                 <img
@@ -59,7 +58,7 @@ export function ProjectGallery({ images, title, tint }: { images: GalleryImage[]
                 />
               </button>
               {caption && (
-                <figcaption className="flex items-baseline justify-between gap-4 px-1 pt-3 text-xs uppercase tracking-[0.18em] text-ink-3">
+                <figcaption className="flex items-baseline justify-between gap-4 border-t border-line pt-3 mt-3 text-xs uppercase tracking-[0.18em] text-ink-3">
                   <span>{caption}</span>
                   <span className="text-ink-4">{String(i + 1).padStart(2, "0")}</span>
                 </figcaption>

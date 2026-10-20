@@ -89,6 +89,8 @@ export type Project = {
   summary: string
   description: string
   cover: string
+  /** Optional cut-out (transparent PNG/WebP) shown full screen at the top of the project page. */
+  hero?: string
   /** Optional label for the cover in the image grid. */
   coverCaption?: string
   /** More images, shown in the grid after the cover. Each can be just a path, or { src, caption }. */
@@ -107,12 +109,10 @@ export const projects: Project[] = [
       "The auto-rickshaw — an icon of Mumbai's local commute — is the main element: its traditional form " +
       "is combined with the Chumbak owl to give it a quirky character. The moving backdrop makes the prop dynamic, " +
       "and the motifs on the border follow a dawn-to-dusk colour scheme, reflecting the relentless elegance of Chumbak.",
+    hero: "work/visual-merchandising/chumbak/00-hero-cutout.webp",
     cover: "work/visual-merchandising/chumbak/01-in-store.jpg",
     coverCaption: "In store",
-    images: [
-      { src: "work/visual-merchandising/chumbak/02-model-and-process.jpg", caption: "The set, in studio and against the city" },
-      { src: "work/visual-merchandising/chumbak/03-detail.jpg", caption: "Detail" },
-    ],
+    images: [{ src: "work/visual-merchandising/chumbak/02-model-and-process.jpg", caption: "The set, in studio and against the city" }],
     color: "#c9b8c8",
   },
   {
