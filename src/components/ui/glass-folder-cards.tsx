@@ -1168,7 +1168,7 @@ canvas.gf-sheet-art[data-ready] { opacity: 1; filter: none; }
   pointer-events: none;
 }
 .gf-root[data-tone="dark"] .gf-spec { mix-blend-mode: screen; opacity: .16; }
-.gf-frost { position: absolute; inset: 0; overflow: hidden; display: none; background: #e9e9ec; }
+.gf-frost { position: absolute; inset: 0; overflow: hidden; opacity: 0; transition: opacity .35s ease; background: #e9e9ec; }
 .gf-root[data-tone="dark"] .gf-frost { background: #1c1c1f; }
 .gf-frost-art {
   position: absolute;
@@ -1179,7 +1179,7 @@ canvas.gf-sheet-art[data-ready] { opacity: 1; filter: none; }
   transform: scale(1.12);
   filter: blur(22px) saturate(1.5);
 }
-html.owl-night .gf-frost, html.owl-day .gf-frost { display: block; }
+html.owl-frost .gf-frost { opacity: 1; }
 .gf-front-rim { width: 340px; height: 198px; }
 .gf-front-rim path { stroke-width: 2.4; transition: stroke-width .3s var(--gf-ease); }
 .gf-root[data-tone="dark"] .gf-front-rim { opacity: .55; }
