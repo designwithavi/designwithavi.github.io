@@ -85,16 +85,7 @@ function useFolderWidth() {
 }
 
 function Work({ onEnter, onOpen }: { onEnter: (c: Category) => void; onOpen: (c: Category, p: Project) => void }) {
-  // a tapped folder opens for a moment — files lifting out — then its page slides in
-  const [opening, setOpening] = useState<string | null>(null)
-  const enter = (c: Category) => {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
-    setOpening(c.name)
-    window.setTimeout(() => {
-      onEnter(c)
-      setOpening(null)
-    }, reduce ? 0 : 650)
-  }
+
   const width = useFolderWidth()
   const dark = useIsDark()
   return (
@@ -127,8 +118,9 @@ function Work({ onEnter, onOpen }: { onEnter: (c: Category) => void; onOpen: (c:
                 action="none"
                 width={width}
                 appearDelay={i * 120}
-                open={opening === c.name}
-                onOpenChange={(o) => (o ? enter(c) : setOpening(null))}
+                // a tapped folder goes straight to its page; it never fans out here
+                open={false}
+                onOpenChange={(o) => o && onEnter(c)}
                 files={items.map((p) => ({
                   name: p.title,
                   meta: p.year,
