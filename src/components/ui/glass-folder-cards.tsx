@@ -1227,7 +1227,7 @@ html.owl-frost-on .gf-front { -webkit-backdrop-filter: none; backdrop-filter: no
   display: flex;
   flex-direction: column;
   gap: 4px;
-  max-width: 200px;
+  max-width: 284px;
   pointer-events: none;
   color: var(--gf-ink);
 }
