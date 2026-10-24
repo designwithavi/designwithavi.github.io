@@ -6,7 +6,9 @@ import { BehanceIcon, InstagramIcon, LinkedInIcon } from "@/components/brand-ico
 import { CelestialOrb } from "@/components/celestial-orb"
 import { MinimalistHero, useFitWidth } from "@/components/ui/minimalist-hero"
 import { ProjectGallery } from "@/components/project-gallery"
-import { categories, projects, site, type Project } from "@/content"
+import { categories, projects, site, type Category, type Project } from "@/content"
+import { CategoryView } from "@/components/category-view"
+import { useRoute } from "@/route"
 
 function Cover({ project, className = "" }: { project: Project; className?: string }) {
   if (project.cover) {
@@ -82,7 +84,17 @@ function useFolderWidth() {
   return width
 }
 
-function Work({ onOpen }: { onOpen: (p: Project) => void }) {
+function Work({ onEnter, onOpen }: { onEnter: (c: Category) => void; onOpen: (c: Category, p: Project) => void }) {
+  // a tapped folder opens for a moment — files lifting out — then its page slides in
+  const [opening, setOpening] = useState<string | null>(null)
+  const enter = (c: Category) => {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    setOpening(c.name)
+    window.setTimeout(() => {
+      onEnter(c)
+      setOpening(null)
+    }, reduce ? 0 : 650)
+  }
   const width = useFolderWidth()
   const dark = useIsDark()
   return (
@@ -115,19 +127,21 @@ function Work({ onOpen }: { onOpen: (p: Project) => void }) {
                 action="none"
                 width={width}
                 appearDelay={i * 120}
+                open={opening === c.name}
+                onOpenChange={(o) => (o ? enter(c) : setOpening(null))}
                 files={items.map((p) => ({
                   name: p.title,
                   meta: p.year,
                   image: p.cover || undefined,
                   art: p.cover ? undefined : c.art,
                 }))}
-                onFileSelect={(_, index) => onOpen(items[index])}
+                onFileSelect={(_, index) => onOpen(c, items[index])}
               />
             )
           })}
         </div>
         <p className="mt-14 text-center font-mono text-[11px] uppercase tracking-[0.18em] text-ink-4">
-          Click a folder to open · pick a project to view
+          Open a folder to see its projects
         </p>
       </div>
     </section>
@@ -253,18 +267,8 @@ function ProjectHero({ project, hero }: { project: Project; hero: string }) {
 }
 
 function ProjectView({ project, onClose }: { project: Project; onClose: () => void }) {
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => e.key === "Escape" && onClose()
-    document.addEventListener("keydown", onKey)
-    document.body.style.overflow = "hidden"
-    return () => {
-      document.removeEventListener("keydown", onKey)
-      document.body.style.overflow = ""
-    }
-  }, [onClose])
-
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto bg-paper animate-in fade-in duration-300">
+    <div className="fixed inset-0 z-[55] overflow-y-auto bg-paper animate-in fade-in duration-300">
       <button
         onClick={onClose}
         className="fixed top-4 right-4 z-10 rounded-full bg-ink px-4 py-2 text-sm text-paper hover:opacity-80"
@@ -318,18 +322,41 @@ function ProjectView({ project, onClose }: { project: Project; onClose: () => vo
 }
 
 function App() {
-  const [open, setOpen] = useState<Project | null>(null)
+  const { route, go, up } = useRoute()
+  const inWork = !!route.category
+
+  // the page underneath shouldn't scroll while a folder or project is open; Escape goes up a level
+  useEffect(() => {
+    if (!inWork) return
+    document.body.style.overflow = "hidden"
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && up()
+    document.addEventListener("keydown", onKey)
+    return () => {
+      document.body.style.overflow = ""
+      document.removeEventListener("keydown", onKey)
+    }
+  }, [inWork, up])
+
   return (
     <div className="min-h-screen bg-paper text-ink">
       <Nav />
       <OwlSwitch />
       <main>
         <Hero />
-        <Work onOpen={setOpen} />
+        <Work onEnter={(c) => go(c)} onOpen={(c, p) => go(c, p)} />
         <About />
       </main>
       <Contact />
-      {open && <ProjectView project={open} onClose={() => setOpen(null)} />}
+      {route.category && (
+        <CategoryView
+          key={route.category.name}
+          category={route.category}
+          projects={projects.filter((p) => p.category === route.category!.name)}
+          onOpen={(p) => go(route.category!, p)}
+          onBack={up}
+        />
+      )}
+      {route.project && <ProjectView key={route.project.title} project={route.project} onClose={up} />}
     </div>
   )
 }
