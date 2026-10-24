@@ -9,6 +9,7 @@ import { ProjectGallery } from "@/components/project-gallery"
 import { categories, projects, site, type Category, type Project } from "@/content"
 import { CategoryView } from "@/components/category-view"
 import { useRoute } from "@/route"
+import { PageLoader, preload } from "@/components/page-loader"
 
 function Cover({ project, className = "" }: { project: Project; className?: string }) {
   if (project.cover) {
@@ -314,8 +315,21 @@ function ProjectView({ project, onClose }: { project: Project; onClose: () => vo
 }
 
 function App() {
-  const { route, go, up } = useRoute()
+  const { route, go: goNow, up } = useRoute()
   const inWork = !!route.category
+
+  // going forward into a folder or project passes through the loading curtain;
+  // the page switches underneath it while its first images load
+  const [loading, setLoading] = useState<{ label: string; kicker?: string } | null>(null)
+  const go = (c: Category, p?: Project) => {
+    const images = p
+      ? [p.hero, p.cover].filter((x): x is string => !!x)
+      : projects.filter((x) => x.category === c.name).slice(0, 6).map((x) => x.cover).filter(Boolean)
+    setLoading(p ? { label: p.title, kicker: c.name } : { label: c.name })
+    // switch once the curtain has covered the screen
+    setTimeout(() => goNow(c, p), 450)
+    preload(images).then(() => setTimeout(() => setLoading(null), 150))
+  }
 
   // the page underneath shouldn't scroll while a folder or project is open; Escape goes up a level
   useEffect(() => {
@@ -349,6 +363,7 @@ function App() {
         />
       )}
       {route.project && <ProjectView key={route.project.title} project={route.project} onClose={up} />}
+      <PageLoader label={loading?.label ?? null} kicker={loading?.kicker} />
     </div>
   )
 }
