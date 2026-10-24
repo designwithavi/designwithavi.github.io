@@ -5,35 +5,40 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react"
 /**
  * A project's images as an asymmetric grid — in the spirit of uiable's
  * "Portfolio Showcase Grid" on 21st.dev, without the tinted cards: each image
- * with its caption written underneath. The first image is the wide feature; the
- * rest pair up 7/5, then 5/7, and so on. Any image opens full screen; arrow
- * keys step through them.
+ * with its caption written underneath. Wide images (slides, landscape photos)
+ * run full width so they stay readable; tall portrait photos pair up side by
+ * side. Any image opens full screen; arrow keys step through them.
  */
 
-export type GalleryImage = string | { src: string; caption?: string }
+/** A path, or { src, caption?, w?, h? } — w/h (pixel size) let portraits pair up. */
+export type GalleryImage = string | { src: string; caption?: string; w?: number; h?: number }
 
 const srcOf = (img: GalleryImage) => (typeof img === "string" ? img : img.src)
 const captionOf = (img: GalleryImage) => (typeof img === "string" ? undefined : img.caption)
 
-/** Column span (out of 12) and card height for each position in the grid. */
-function layout(i: number, count: number) {
-  if (i === 0) return { span: "md:col-span-12", height: "" }
-  const k = i - 1
-  const lastAlone = k === count - 2 && (count - 1) % 2 === 1
-  if (lastAlone) return { span: "md:col-span-12", height: "" }
-  const wideFirst = Math.floor(k / 2) % 2 === 0
-  const wide = (k % 2 === 0) === wideFirst
-  return { span: wide ? "md:col-span-7" : "md:col-span-5", height: "md:h-[420px]" }
+const isPortrait = (img: GalleryImage) => typeof img !== "string" && !!img.w && !!img.h && img.h > img.w * 1.1
+
+/** Column span (out of 12) and card height for every image: full width, or a portrait pair. */
+function layout(images: GalleryImage[]) {
+  const out = images.map(() => ({ span: "md:col-span-12", height: "" }))
+  for (let i = 1; i < images.length - 1; i++) {
+    if (isPortrait(images[i]) && isPortrait(images[i + 1])) {
+      out[i] = out[i + 1] = { span: "md:col-span-6", height: "md:h-[720px]" }
+      i++
+    }
+  }
+  return out
 }
 
 export function ProjectGallery({ images, title }: { images: GalleryImage[]; title: string }) {
   const [zoom, setZoom] = useState<number | null>(null)
+  const spans = layout(images)
 
   return (
     <>
-      <div className="grid grid-cols-1 gap-x-5 gap-y-10 md:grid-cols-12 md:gap-y-14">
+      <div className="grid grid-cols-1 gap-x-5 gap-y-8 md:grid-cols-12 md:gap-y-10">
         {images.map((img, i) => {
-          const { span, height } = layout(i, images.length)
+          const { span, height } = spans[i]
           const caption = captionOf(img)
           return (
             <motion.figure

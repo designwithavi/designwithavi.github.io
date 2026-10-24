@@ -529,7 +529,7 @@ const FRONT_PATH =
   (FRONT_H - 22) +
   "Z"
 
-const MAX_VISIBLE = 4
+const MAX_VISIBLE = 10
 
 const SAMPLE_FILES: FolderFile[] = [
   { name: "Cover — final", meta: "PNG · 4.8 MB", art: "ember" },
@@ -741,6 +741,7 @@ export default function GlassFolder({
       data-open={open || undefined}
       data-entered={entered || undefined}
       data-place={labelPlacement}
+      data-many={visible.length > 4 || undefined}
       style={{ width, height: (H + HEADROOM) * k, ...style }}
     >
       <style>{GF_CSS}</style>
@@ -957,6 +958,10 @@ const GF_CSS = `
 .gf-root[data-tone="dark"] { --gf-ink: #f5f5f7; --gf-ink-soft: rgba(245, 245, 247, .58); }
 .gf-root:hover, .gf-root:focus-within { --gf-hinge: -11deg; --gf-lift: -34px; --gf-spread: 8px; --gf-fan: 1.4deg; --gf-stack: 10px; }
 .gf-root[data-open] { --gf-hinge: -24deg; --gf-lift: -96px; --gf-spread: 40px; --gf-fan: 5deg; --gf-stack: 30px; }
+/* a full folder packs its files tighter, so every one still shows its name */
+.gf-root[data-many]:hover, .gf-root[data-many]:focus-within { --gf-stack: 6px; }
+.gf-root[data-many]:not([data-open]) { --gf-stack: 5px; }
+.gf-root[data-open][data-many] { --gf-lift: -70px; --gf-spread: 14px; --gf-fan: 2.2deg; --gf-stack: 26px; }
 
 .gf-stage {
   position: absolute;
