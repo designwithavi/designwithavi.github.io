@@ -6,6 +6,7 @@ import { BehanceIcon, InstagramIcon, LinkedInIcon } from "@/components/brand-ico
 import { CelestialOrb } from "@/components/celestial-orb"
 import { MinimalistHero, useFitWidth } from "@/components/ui/minimalist-hero"
 import { ProjectGallery } from "@/components/project-gallery"
+import { Flipbook } from "@/components/flipbook"
 import { categories, projects, site, type Category, type Project } from "@/content"
 import { CategoryView } from "@/components/category-view"
 import { useRoute } from "@/route"
@@ -234,6 +235,12 @@ function ProjectView({ project, onClose }: { project: Project; onClose: () => vo
         <p className={`mx-auto max-w-2xl text-center text-lg leading-relaxed text-ink-2 ${project.hero ? "" : "mt-6"}`}>
           {project.description}
         </p>
+        {project.flipbook && (
+          <section className="mt-12">
+            <h3 className="mb-6 font-heading text-3xl sm:text-4xl">{project.flipbook.label}</h3>
+            <Flipbook pages={project.flipbook.pages} ratio={project.flipbook.ratio} title={project.title} />
+          </section>
+        )}
         {project.embed && (
           <section className="mt-12">
             <div className="mb-4 flex items-baseline justify-between gap-4">
