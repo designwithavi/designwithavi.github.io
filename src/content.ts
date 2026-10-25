@@ -78,7 +78,7 @@ export const categories: Category[] = [
   { name: "Visual Merchandising", art: "dusk", tone: "light", image: "" },
   { name: "Photography & Videography", art: "aurora", tone: "light", image: "" },
   { name: "Branding", art: "verdant", tone: "light", image: "" },
-  { name: "Graphic Design", art: "glacier", tone: "light", image: "" },
+  { name: "Graphics & Publication Design", art: "glacier", tone: "light", image: "" },
   { name: "UX Design", art: "ember", tone: "dark", image: "" },
   { name: "Product Design", art: "dusk", tone: "dark", image: "" },
 ]
@@ -384,7 +384,7 @@ export const projects: Project[] = [
   },
   {
     title: "#WhatIsSexy?",
-    category: "Graphic Design",
+    category: "Graphics & Publication Design",
     year: "2026",
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Styling", "Photography", "Editorial"],
@@ -440,7 +440,7 @@ export const projects: Project[] = [
   },
   {
     title: "Verve Magazine Design",
-    category: "Graphic Design",
+    category: "Graphics & Publication Design",
     year: "2024",
     medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Editorial", "Typography"],
@@ -465,7 +465,7 @@ export const projects: Project[] = [
   },
   {
     title: "Cassiopea: Devanagari Script Typeface",
-    category: "Graphic Design",
+    category: "Graphics & Publication Design",
     year: "2024",
     medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Typography"],

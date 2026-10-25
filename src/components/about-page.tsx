@@ -17,7 +17,7 @@ const FOLDER_COLORS: Record<string, { color: string; ink: "dark" | "light" }> = 
   "Visual Merchandising": { color: "#c9a3d6", ink: "dark" },
   "Photography & Videography": { color: "#f2b8a8", ink: "dark" },
   Branding: { color: "#a9cfa4", ink: "dark" },
-  "Graphic Design": { color: "#c3d3e4", ink: "dark" },
+  "Graphics & Publication Design": { color: "#c3d3e4", ink: "dark" },
   "UX Design": { color: "#2f3d6e", ink: "light" },
   "Product Design": { color: "#6b4e71", ink: "light" },
 }
