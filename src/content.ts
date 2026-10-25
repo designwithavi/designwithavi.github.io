@@ -299,7 +299,7 @@ export const projects: Project[] = [
   {
     title: "Flash Cryogenics",
     category: "Branding",
-    year: "2026",
+    year: "2024",
     summary: "Something flashy, something cool: an identity for a cryogenics startup.",
     // DRAFT — written from the images; check it
     description: "Brand identity for Flash Cryogenics, a startup founded by PhD students of IIT Bombay that builds ultra-low-temperature cooling technology — from the logomark and visual language to brand applications.",
@@ -329,7 +329,7 @@ export const projects: Project[] = [
   {
     title: "Verve Magazine Design",
     category: "Graphic Design",
-    year: "2025",
+    year: "2024",
     summary: "Editorial design for Verve magazine: cover, layouts and spreads.",
     // DRAFT — written from the images; check it
     description: "Editorial design for Verve magazine — cover, layouts and spreads. A team project with Aarya Tambe, Keerti Manojna, Gargi Gujar and Komal Vishwakarma. Images used for educational purposes only.",
@@ -350,7 +350,7 @@ export const projects: Project[] = [
   {
     title: "Cassiopea: Devanagari Script Typeface",
     category: "Graphic Design",
-    year: "2026",
+    year: "2024",
     summary: "A Devanagari typeface inspired by the upside-down jellyfish.",
     description: "Cassiopea is a Devanagari typeface derived from the form of the upside-down jellyfish. Organic textures, flowing strokes, and subtle irregularities translate marine movement into letterforms. Cassiopea explores how type can feel alive, balancing readability with fluid, bio-inspired expression.",
     behance: "https://www.behance.net/gallery/248290199/Cassiopea-Typeface-design-Script-Devanagari",
@@ -374,7 +374,7 @@ export const projects: Project[] = [
   {
     title: "NOVUS",
     category: "UX Design",
-    year: "2026",
+    year: "2025",
     summary: "Perfume reimagined as a journey of self-discovery.",
     description: "Novus reimagines perfume as a journey of self-discovery. Instead of choosing a fragrance, users create one that reflects who they are. The project tackles a key challenge: translating scent into a digital experience. Through an archetype-based quiz and cross-sensory design (visuals, motion, and sound), Novus allows users to 'feel' a fragrance before it exists. Extending beyond screens, the physical store becomes a customization lab where users interact, experiment, and co-create their signature scent. Minimal, calm, and intentional, Novus turns perfume from a product into a personal expression. Team: Aashana Ramavati, Keerti Manojna, Avishkar Kale, Jyotsana K, Sivnandan KS.",
     behance: "https://www.behance.net/gallery/248288401/NOVUS-User-Experience-Design",
@@ -409,7 +409,7 @@ export const projects: Project[] = [
   {
     title: "ECO-Amphi: Emergency Medical Transport",
     category: "Product Design",
-    year: "2026",
+    year: "2024",
     summary: "Emergency Care Orbit: an amphibious transport concept for emergency medical services.",
     // DRAFT — written from the images; check it
     description: "ECO (Emergency Care Orbit) is an amphibious transport concept for emergency medical services — from research into the problem and context to a 3D-modelled solution built in Blender.",
