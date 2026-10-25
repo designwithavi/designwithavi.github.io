@@ -10,6 +10,7 @@ import { categories, projects, site, type Category, type Project } from "@/conte
 import { CategoryView } from "@/components/category-view"
 import { useRoute } from "@/route"
 import { PageLoader, preload } from "@/components/page-loader"
+import { AboutPage } from "@/components/about-page"
 
 function Cover({ project, className = "" }: { project: Project; className?: string }) {
   if (project.cover) {
@@ -41,7 +42,7 @@ function Nav() {
         </a>
         <div className="flex items-center gap-4 text-sm text-ink-3 sm:gap-6">
           <a href="#work" className="hover:text-ink">Work</a>
-          <a href="#about" className="hover:text-ink">About</a>
+          <a href="#/about" className="hover:text-ink">About</a>
           <a href="#contact" className="hover:text-ink">Contact</a>
         </div>
       </nav>
@@ -56,7 +57,7 @@ function Hero() {
       <MinimalistHero
         name={site.nickname}
         mainText={site.tagline}
-        readMoreLink="#about"
+        readMoreLink="#/about"
         readMoreLabel="About me"
         imageSrc={site.portrait}
         fallbackImageSrc="me-placeholder.svg"
@@ -136,54 +137,6 @@ function Work({ onEnter, onOpen }: { onEnter: (c: Category) => void; onOpen: (c:
         <p className="mt-14 text-center font-mono text-[11px] uppercase tracking-[0.18em] text-ink-4">
           Open a folder to see its projects
         </p>
-      </div>
-    </section>
-  )
-}
-
-function About() {
-  return (
-    <section id="about" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-20 sm:px-8">
-      <div className="grid gap-12 border-t border-line pt-10 md:grid-cols-[1fr_2fr]">
-        <h2 className="font-heading text-4xl">About</h2>
-        <div>
-          <p className="text-xl leading-relaxed text-ink-2 sm:text-2xl">{site.about}</p>
-
-          <div className="mt-12 grid gap-10 sm:grid-cols-2">
-            <div>
-              <h3 className="mb-4 text-xs uppercase tracking-[0.2em] text-ink-4">Education & Experience</h3>
-              <ul className="space-y-4">
-                {site.education.map((e) => (
-                  <li key={e.title}>
-                    <p className="font-medium">{e.title}</p>
-                    <p className="text-sm text-ink-3">
-                      {e.detail} · {e.years}
-                    </p>
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="mb-4 text-xs uppercase tracking-[0.2em] text-ink-4">Skills</h3>
-              <div className="flex flex-wrap gap-2">
-                {site.skills.map((s) => (
-                  <span key={s} className="rounded-full border border-line px-3 py-1 text-sm">
-                    {s}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <a
-            href={site.cvFile}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-12 inline-block rounded-full bg-ink px-6 py-3 text-sm text-paper transition hover:opacity-80"
-          >
-            Download CV ↓
-          </a>
-        </div>
       </div>
     </section>
   )
@@ -315,8 +268,8 @@ function ProjectView({ project, onClose }: { project: Project; onClose: () => vo
 }
 
 function App() {
-  const { route, go: goNow, up } = useRoute()
-  const inWork = !!route.category
+  const { route, go: goNow, goAbout: goAboutNow, up } = useRoute()
+  const inWork = !!route.category || route.about
 
   // going forward into a folder or project passes through the loading curtain;
   // the page switches underneath it while its first images load
@@ -330,6 +283,23 @@ function App() {
     setTimeout(() => goNow(c, p), 450)
     preload(images).then(() => setTimeout(() => setLoading(null), 150))
   }
+  const goAbout = () => {
+    setLoading({ label: "About" })
+    setTimeout(goAboutNow, 450)
+    preload([site.portrait]).then(() => setTimeout(() => setLoading(null), 150))
+  }
+
+  // every link to #/about (menu, the hero's "About me") opens the About page
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      const a = (e.target as HTMLElement).closest?.('a[href="#/about"]')
+      if (!a) return
+      e.preventDefault()
+      goAbout()
+    }
+    document.addEventListener("click", onClick)
+    return () => document.removeEventListener("click", onClick)
+  })
 
   // the page underneath shouldn't scroll while a folder or project is open; Escape goes up a level
   useEffect(() => {
@@ -350,7 +320,6 @@ function App() {
       <main>
         <Hero />
         <Work onEnter={(c) => go(c)} onOpen={(c, p) => go(c, p)} />
-        <About />
       </main>
       <Contact />
       {route.category && (
@@ -363,6 +332,7 @@ function App() {
         />
       )}
       {route.project && <ProjectView key={route.project.title} project={route.project} onClose={up} />}
+      {route.about && <AboutPage onBack={up} />}
       <PageLoader label={loading?.label ?? null} kicker={loading?.kicker} />
     </div>
   )

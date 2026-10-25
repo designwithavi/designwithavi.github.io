@@ -22,15 +22,23 @@ export const site = {
     "I love research-led projects, material exploration and telling stories through design. " +
     "Replace this paragraph with two or three lines about yourself.",
 
+  // from your projects and the tools tagged on Behance
   skills: [
-    "Design research",
-    "Illustration",
-    "Adobe Illustrator",
-    "Photoshop",
-    "InDesign",
-    "Figma",
-    "Styling",
     "Photography",
+    "Styling",
+    "Visual Merchandising",
+    "Set & Prop Design",
+    "Branding",
+    "Typography",
+    "Editorial Design",
+    "UX Design",
+    "3D (Blender)",
+    "Photoshop",
+    "Illustrator",
+    "InDesign",
+    "Lightroom",
+    "Capture One",
+    "Figma",
   ],
 
   education: [
@@ -90,6 +98,14 @@ export type Project = {
   summary: string
   description: string
   cover: string
+  /** About page: was it made by hand / shot ("hands") or made on screen ("screen")? */
+  medium?: "hands" | "screen"
+  /** About page: skills this project used — they draw the skill radar. */
+  skills?: string[]
+  /** About page: a team project? */
+  team?: boolean
+  /** About page: Behance views and appreciations. */
+  stats?: { views: number; appreciations: number }
   /** Optional link to the full project on Behance — adds a button at the end of the project page. */
   behance?: string
   /** Optional cut-out (transparent PNG/WebP) shown full screen at the top of the project page. */
@@ -106,6 +122,9 @@ export const projects: Project[] = [
     title: "Chumbak",
     category: "Visual Merchandising",
     year: "2024",
+    medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Props", "3D"],
+    stats: { views: 343, appreciations: 17 }, // Behance, 25 Oct 2026
     summary: "Mumbai's auto-rickshaw meets the Chumbak owl in a moving in-store display.",
     description:
       "Designed for a Chumbak store in Mumbai, this set draws its inspiration from the city. " +
@@ -130,6 +149,9 @@ export const projects: Project[] = [
     title: "Fashion Editorial Shoot",
     category: "Photography & Videography",
     year: "2026",
+    medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Photography", "Styling"],
+    stats: { views: 103, appreciations: 7 }, // Behance, 25 Oct 2026
     summary: "An editorial shoot for a designer collection, built on mood and atmosphere.",
     description: "An editorial-style fashion shoot for a designer collection, focusing on mood and atmosphere.",
     behance: "https://www.behance.net/gallery/250810673/Fashion-Editorial-Shoot",
@@ -155,6 +177,10 @@ export const projects: Project[] = [
     title: "Shorona: Costume Styling",
     category: "Photography & Videography",
     year: "2026",
+    medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Styling", "Photography"],
+    team: true,
+    stats: { views: 78, appreciations: 3 }, // Behance, 25 Oct 2026
     summary: "Helena from A Midsummer Night's Dream, reimagined in 1880s colonial Bengal.",
     description: "This project reimagines A Midsummer Night's Dream by adapting the character of Helena into the setting of 1880s colonial Bengal (Alipore, Calcutta). The goal was to reconstruct her identity within a new cultural and historical context, blending Bengali traditions with British colonial influences. Through character study and research on textiles, folktales, and social dynamics, a new visual interpretation of Helena was developed. The final outcome is expressed through a cohesive styling approach, translating the character into a fully realised visual narrative. Team: Aashana Ramavati, Avishkar Kale, Prajakta Mahindrakar, Paraj Parikh, Sanskruti Zankar.",
     behance: "https://www.behance.net/gallery/248551049/Shorona-Costume-Styling",
@@ -189,6 +215,9 @@ export const projects: Project[] = [
     title: "Studio Photography: Keibu Keioiba",
     category: "Photography & Videography",
     year: "2025",
+    medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Photography", "Styling"],
+    stats: { views: 51, appreciations: 5 }, // Behance, 25 Oct 2026
     summary: "Characters from the Manipuri folktale Keibu Keioiba, brought to life in the studio.",
     // DRAFT — written from the images; check it
     description: "A studio photography project that showcases characters from the Manipuri folklore Keibu Keioiba — from the story and its characters to the moodboard, makeup and final portraits.",
@@ -214,6 +243,9 @@ export const projects: Project[] = [
     title: "Studio Photography: Buldak Ramen",
     category: "Photography & Videography",
     year: "2025",
+    medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Photography", "Styling"],
+    stats: { views: 102, appreciations: 4 }, // Behance, 25 Oct 2026
     summary: "Concept-based food photography that turns Buldak's heat into image.",
     description: "This project explores concept-based food photography for Buldak, focusing on visually expressing the intensity of spice. Combining studio photography with illustrative elements, the visuals highlight texture, movement, and heat through bold compositions and high-contrast lighting. By blending real imagery with expressive overlays, the project moves beyond traditional food photography to create a dynamic and sensory representation of Buldak's fiery identity.",
     behance: "https://www.behance.net/gallery/248170591/Studio-Photography-Buldak-Ramen",
@@ -229,6 +261,10 @@ export const projects: Project[] = [
     title: "Faredoon's Food Photography",
     category: "Photography & Videography",
     year: "2025",
+    medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Photography", "Styling", "Props", "3D"],
+    team: true,
+    stats: { views: 31, appreciations: 4 }, // Behance, 25 Oct 2026
     summary: "Food photography and styling for Faredoon's, from moodboard to a planned set.",
     // DRAFT — written from the images; check it
     description: "A food photography and styling project for Faredoon's — from the moodboard and colour palette to a 3D-planned set and the final shoot. Shot on a Sony A7 III and edited in Capture One, Lightroom and Photoshop.",
@@ -253,6 +289,9 @@ export const projects: Project[] = [
     title: "Experience Nashik: Photobook",
     category: "Photography & Videography",
     year: "2024",
+    medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Photography", "Editorial"],
+    stats: { views: 210, appreciations: 8 }, // Behance, 25 Oct 2026
     summary: "A coffee table book: a slow walk through Nashik.",
     description: "This coffee table book is a slow walk through Nashik, seen through my lens and shaped by instinct rather than intent. The photographs move between the sacred and the ordinary — early mornings, restless streets, fading light, and unnoticed details that often go unrecorded. Each image lingers like a pause, inviting the viewer to experience the city not as a destination, but as a feeling: layered, lived-in, and quietly enduring.",
     behance: "https://www.behance.net/gallery/215579545/EXPERIENCE-NASHIK-PHOTOBOOK",
@@ -276,6 +315,9 @@ export const projects: Project[] = [
     title: "Product Advertisement: Sprite Can",
     category: "Photography & Videography",
     year: "2023",
+    medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Photography"],
+    stats: { views: 166, appreciations: 13 }, // Behance, 25 Oct 2026
     summary: "A bold product poster for Sprite, made in Semester 1 of the Foundation Programme at NIFT Hyderabad.",
     description: "A product advertisement for Sprite, made for the Digital Design and Communication course in Semester 1 of the Foundation Programme at NIFT Hyderabad.",
     behance: "https://www.behance.net/gallery/203334665/Product-advertisement-Sprite-Can",
@@ -286,6 +328,9 @@ export const projects: Project[] = [
     title: "Product Advertisement: Zudio Nail Paint",
     category: "Photography & Videography",
     year: "2023",
+    medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Photography"],
+    stats: { views: 144, appreciations: 12 }, // Behance, 25 Oct 2026
     summary: "A product poster for Zudio's nail paint, made in Semester 1 at NIFT Hyderabad.",
     description: "A product advertisement for Zudio nail paint, made for the Digital Design and Communication course in Semester 1 of the Foundation Programme at NIFT Hyderabad.",
     behance: "https://www.behance.net/gallery/203398089/Product-Advertisement-Zudio-Nail-Paint",
@@ -304,6 +349,9 @@ export const projects: Project[] = [
     title: "Flash Cryogenics",
     category: "Branding",
     year: "2024",
+    medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Branding", "3D"],
+    stats: { views: 19, appreciations: 2 }, // Behance, 25 Oct 2026
     summary: "Something flashy, something cool: an identity for a cryogenics startup.",
     // DRAFT — written from the images; check it
     description: "Brand identity for Flash Cryogenics, a startup founded by PhD students of IIT Bombay that builds ultra-low-temperature cooling technology — from the logomark and visual language to brand applications.",
@@ -334,6 +382,10 @@ export const projects: Project[] = [
     title: "Verve Magazine Design",
     category: "Graphic Design",
     year: "2024",
+    medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Editorial", "Typography"],
+    team: true,
+    stats: { views: 88, appreciations: 6 }, // Behance, 25 Oct 2026
     summary: "Editorial design for Verve magazine: cover, layouts and spreads.",
     // DRAFT — written from the images; check it
     description: "Editorial design for Verve magazine — cover, layouts and spreads. A team project with Aarya Tambe, Keerti Manojna, Gargi Gujar and Komal Vishwakarma. Images used for educational purposes only.",
@@ -355,6 +407,9 @@ export const projects: Project[] = [
     title: "Cassiopea: Devanagari Script Typeface",
     category: "Graphic Design",
     year: "2024",
+    medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Typography"],
+    stats: { views: 67, appreciations: 4 }, // Behance, 25 Oct 2026
     summary: "A Devanagari typeface inspired by the upside-down jellyfish.",
     description: "Cassiopea is a Devanagari typeface derived from the form of the upside-down jellyfish. Organic textures, flowing strokes, and subtle irregularities translate marine movement into letterforms. Cassiopea explores how type can feel alive, balancing readability with fluid, bio-inspired expression.",
     behance: "https://www.behance.net/gallery/248290199/Cassiopea-Typeface-design-Script-Devanagari",
@@ -379,6 +434,10 @@ export const projects: Project[] = [
     title: "NOVUS",
     category: "UX Design",
     year: "2025",
+    medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["UX", "Branding"],
+    team: true,
+    stats: { views: 80, appreciations: 5 }, // Behance, 25 Oct 2026
     summary: "Perfume reimagined as a journey of self-discovery.",
     description: "Novus reimagines perfume as a journey of self-discovery. Instead of choosing a fragrance, users create one that reflects who they are. The project tackles a key challenge: translating scent into a digital experience. Through an archetype-based quiz and cross-sensory design (visuals, motion, and sound), Novus allows users to 'feel' a fragrance before it exists. Extending beyond screens, the physical store becomes a customization lab where users interact, experiment, and co-create their signature scent. Minimal, calm, and intentional, Novus turns perfume from a product into a personal expression. Team: Aashana Ramavati, Keerti Manojna, Avishkar Kale, Jyotsana K, Sivnandan KS.",
     behance: "https://www.behance.net/gallery/248288401/NOVUS-User-Experience-Design",
@@ -414,6 +473,10 @@ export const projects: Project[] = [
     title: "ECO-Amphi: Emergency Medical Transport",
     category: "Product Design",
     year: "2024",
+    medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["3D"],
+    team: true,
+    stats: { views: 88, appreciations: 6 }, // Behance, 25 Oct 2026
     summary: "Emergency Care Orbit: an amphibious transport concept for emergency medical services.",
     // DRAFT — written from the images; check it
     description: "ECO (Emergency Care Orbit) is an amphibious transport concept for emergency medical services — from research into the problem and context to a 3D-modelled solution built in Blender.",

@@ -4,6 +4,8 @@
 @import "@fontsource-variable/figtree";
 @import "@fontsource/instrument-serif";
 @import "@fontsource/big-shoulders-display/900";
+@import "@fontsource/geist-mono/400.css";
+@import "@fontsource/geist-mono/500.css";
 
 @custom-variant dark (&:is(.dark *));
 

@@ -15,15 +15,16 @@ export const slug = (s: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "")
 
-export type Route = { category: Category | null; project: Project | null }
+export type Route = { about: boolean; category: Category | null; project: Project | null }
 
 function parse(hash: string): Route {
+  if (hash.startsWith("#/about")) return { about: true, category: null, project: null }
   const m = hash.match(/^#\/work\/([^/]+)(?:\/([^/]+))?/)
-  if (!m) return { category: null, project: null }
+  if (!m) return { about: false, category: null, project: null }
   const category = categories.find((c) => slug(c.name) === m[1]) ?? null
   const project =
     (category && m[2] && projects.find((p) => p.category === category.name && slug(p.title) === m[2])) || null
-  return { category, project }
+  return { about: false, category, project }
 }
 
 export const hrefOf = (c: Category, p?: Project) => `#/work/${slug(c.name)}${p ? `/${slug(p.title)}` : ""}`
@@ -43,7 +44,12 @@ export function useRoute() {
 
   const go = useCallback((c: Category, p?: Project) => {
     history.pushState({ app: true }, "", hrefOf(c, p))
-    setRoute({ category: c, project: p ?? null })
+    setRoute({ about: false, category: c, project: p ?? null })
+  }, [])
+
+  const goAbout = useCallback(() => {
+    history.pushState({ app: true }, "", "#/about")
+    setRoute({ about: true, category: null, project: null })
   }, [])
 
   /** One level up: project → folder → the page. Uses the back button's history when it's ours. */
@@ -59,5 +65,5 @@ export function useRoute() {
     setRoute(parse(location.hash))
   }, [])
 
-  return { route, go, up }
+  return { route, go, goAbout, up }
 }
