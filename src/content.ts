@@ -116,7 +116,11 @@ export const projects: Project[] = [
     hero: "work/visual-merchandising/chumbak/00-hero-cutout.webp",
     cover: "work/visual-merchandising/chumbak/01-in-store.jpg",
     coverCaption: "In store",
-    images: [{ src: "work/visual-merchandising/chumbak/02-model-and-process.jpg", caption: "The set, in studio and against the city" }],
+    images: [
+      { src: "work/visual-merchandising/chumbak/02-model-and-process.jpg", caption: "The set, in studio and against the city" },
+      // from Behance: the full process board
+      { src: "work/visual-merchandising/chumbak/behance-01.webp", w: 1600, h: 11453, caption: "Process — brief, ideation, mechanism and making" },
+    ],
     color: "#c9b8c8",
   },
   // ── Projects from Behance ───────────────────────────────────
