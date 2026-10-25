@@ -117,7 +117,7 @@ export type Project = {
    * menu to jump between them. Sections that share a `group` (e.g. the looks) are shown
    * together as vertical tabs; `columns: 2` shows a section's images two to a row.
    */
-  sections?: { nav: string; group?: string; title: string; intro?: string; columns?: 1 | 2; images: GalleryImage[] }[]
+  sections?: { nav: string; group?: string; title: string; intro?: string; columns?: 1 | 2; layout?: "carousel" | "scroll-grid"; images: GalleryImage[] }[]
   /** Optional cut-out (transparent PNG/WebP) shown full screen at the top of the project page. */
   hero?: string
   /** Optional label for the cover in the image grid. */
@@ -297,6 +297,33 @@ export const projects: Project[] = [
           { src: "work/photography-videography/durex-styling/53.webp", w: 1600, h: 900 },
           { src: "work/photography-videography/durex-styling/54.webp", w: 1600, h: 900 },
           { src: "work/photography-videography/durex-styling/55.webp", w: 1600, h: 900 },
+        ],
+      },
+      {
+        nav: "Shoot",
+        title: "The shoot",
+        intro: "Raw frames from the studio shoot, look by look.",
+        layout: "scroll-grid",
+        images: [
+          { src: "work/photography-videography/durex-styling/shoot/01.webp", w: 1190, h: 1684 },
+          { src: "work/photography-videography/durex-styling/shoot/02.webp", w: 1190, h: 1684 },
+          { src: "work/photography-videography/durex-styling/shoot/03.webp", w: 1190, h: 1684 },
+          { src: "work/photography-videography/durex-styling/shoot/04.webp", w: 1094, h: 728 },
+          { src: "work/photography-videography/durex-styling/shoot/05.webp", w: 1190, h: 1684 },
+          { src: "work/photography-videography/durex-styling/shoot/06.webp", w: 1190, h: 1684 },
+          { src: "work/photography-videography/durex-styling/shoot/07.webp", w: 1094, h: 686 },
+          { src: "work/photography-videography/durex-styling/shoot/08.webp", w: 1400, h: 933 },
+          { src: "work/photography-videography/durex-styling/shoot/09.webp", w: 1190, h: 1684 },
+          { src: "work/photography-videography/durex-styling/shoot/10.webp", w: 1190, h: 1684 },
+          { src: "work/photography-videography/durex-styling/shoot/11.webp", w: 1190, h: 1684 },
+          { src: "work/photography-videography/durex-styling/shoot/12.webp", w: 1190, h: 1684 },
+          { src: "work/photography-videography/durex-styling/shoot/13.webp", w: 1190, h: 1684 },
+          { src: "work/photography-videography/durex-styling/shoot/14.webp", w: 1190, h: 1684 },
+          { src: "work/photography-videography/durex-styling/shoot/15.webp", w: 1190, h: 1684 },
+          { src: "work/photography-videography/durex-styling/shoot/16.webp", w: 1190, h: 1684 },
+          { src: "work/photography-videography/durex-styling/shoot/17.webp", w: 1190, h: 1684 },
+          { src: "work/photography-videography/durex-styling/shoot/18.webp", w: 1190, h: 1684 },
+          { src: "work/photography-videography/durex-styling/shoot/19.webp", w: 1094, h: 728 },
         ],
       },
       {

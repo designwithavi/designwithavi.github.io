@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 import { Carousel } from "@/components/carousel"
+import { ScrollGrid } from "@/components/scroll-grid"
 import type { Project } from "@/content"
 
 type Section = NonNullable<Project["sections"]>[number]
@@ -91,6 +92,8 @@ export function ProjectSections({ sections, title }: { sections: Section[]; titl
                   </div>
                 ))}
               </div>
+            ) : c.sections[0].layout === "scroll-grid" ? (
+              <ScrollGrid images={c.sections[0].images} title={`${title} — ${c.title}`} />
             ) : (
               <Carousel images={c.sections[0].images} title={`${title} — ${c.title}`} />
             )}
