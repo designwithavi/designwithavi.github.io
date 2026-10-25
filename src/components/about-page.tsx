@@ -170,7 +170,7 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
           <AnalyticsBento
             currency=""
             credit={false}
-            fontFamily="'Figtree Variable', ui-sans-serif, system-ui, sans-serif"
+            fontFamily="var(--body-family)"
             monoFamily="'Geist Mono', ui-monospace, SFMono-Regular, Menlo, monospace"
             colors={{
               revenue: ["#f6c453", "#ef8b2b"],

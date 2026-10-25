@@ -13,6 +13,7 @@ import { CategoryView } from "@/components/category-view"
 import { useRoute } from "@/route"
 import { PageLoader, preload } from "@/components/page-loader"
 import { AboutPage } from "@/components/about-page"
+import { FontLab } from "@/components/font-lab"
 
 function Cover({ project, className = "" }: { project: Project; className?: string }) {
   if (project.cover) {
@@ -348,6 +349,7 @@ function App() {
     <div className="min-h-screen bg-paper text-ink">
       <Nav />
       <OwlSwitch />
+      {import.meta.env.DEV && <FontLab />}
       <main>
         <Hero />
         <Work onEnter={(c) => go(c)} onOpen={(c, p) => go(c, p)} />

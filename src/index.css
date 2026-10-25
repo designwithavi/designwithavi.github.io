@@ -10,10 +10,10 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-    --font-heading: "Instrument Serif", serif;
+    --font-heading: var(--heading-family);
     /* the big name on the landing page — a free stand-in for DJR's Fit */
     --font-display: "Big Shoulders Display", "Anton", sans-serif;
-    --font-sans: 'Figtree Variable', sans-serif;
+    --font-sans: var(--body-family);
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -136,6 +136,11 @@
 }
 /* ---- portfolio palette: day (light) and night (dark) -------------------- */
 :root {
+  /* typefaces: one place to change them */
+  --heading-family: "Instrument Serif", serif;
+  --body-family: 'Figtree Variable', ui-sans-serif, system-ui, sans-serif;
+  --heading-weight: 400;
+  --heading-tracking: -0.01em;
   --paper: #faf8f5;
   --ink: #1a1816;
   --ink-2: #44403c;
@@ -172,3 +177,5 @@ html.dark { color-scheme: dark; }
    browsers drop the folders' frosted-glass blur in them — which would show the
    projects tucked inside. Keep closed folders' contents hidden until it's done. */
 html.owl-frost .gf-root:not([data-open]) .gf-sheet { visibility: hidden; }
+
+.font-heading { font-weight: var(--heading-weight); letter-spacing: var(--heading-tracking); }
