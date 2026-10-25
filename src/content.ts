@@ -195,7 +195,7 @@ export const projects: Project[] = [
     summary: "Five looks styled for a Durex campaign on consent, respect and confidence — from brand research to billboards.",
     description: "An academic fashion styling exercise exploring the intersection of fashion, visual storytelling, and responsible brand communication. Inspired by Durex's bold communication identity, #WhatIsSexy? challenges conventional perceptions of attraction by highlighting consent, respect, confidence, personal boundaries, and emotional safety. An independent academic concept developed for educational purposes, not an official Durex campaign. Team: Aashana Ramavat, Avishkar Kale, Prajakta Mahindrakar, Paraj Parikh, Sanskruti Zankar.",
     behance: "https://www.behance.net/gallery/257582083/Fashion-Styling-ft-Durex",
-    cover: "work/photography-videography/durex-styling/58.webp",
+    cover: "work/photography-videography/durex-styling/cover.webp", // the Behance cover
     images: [],
     sections: [
       {
