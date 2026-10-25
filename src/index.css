@@ -1,8 +1,8 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
-@import "@fontsource-variable/figtree";
-@import "@fontsource/instrument-serif";
+@import "@fontsource-variable/dm-sans/opsz.css";
+@import "@fontsource-variable/bricolage-grotesque/opsz.css";
 @import "@fontsource/big-shoulders-display/900";
 @import "@fontsource/geist-mono/400.css";
 @import "@fontsource/geist-mono/500.css";
@@ -137,10 +137,10 @@
 /* ---- portfolio palette: day (light) and night (dark) -------------------- */
 :root {
   /* typefaces: one place to change them */
-  --heading-family: "Instrument Serif", serif;
-  --body-family: 'Figtree Variable', ui-sans-serif, system-ui, sans-serif;
-  --heading-weight: 400;
-  --heading-tracking: -0.01em;
+  --heading-family: "Bricolage Grotesque Variable", ui-sans-serif, system-ui, sans-serif;
+  --body-family: "DM Sans Variable", ui-sans-serif, system-ui, sans-serif;
+  --heading-weight: 600;
+  --heading-tracking: -0.03em;
   --paper: #faf8f5;
   --ink: #1a1816;
   --ink-2: #44403c;
