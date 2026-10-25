@@ -114,8 +114,8 @@ export type Project = {
   flipbook?: { label: string; pages: string[]; ratio: number }
   /**
    * Optional chapters: the project page is laid out section by section, with a
-   * menu to jump between them. `group` puts sections under one heading (e.g. the looks);
-   * `columns: 2` shows boards two to a row.
+   * menu to jump between them. Sections that share a `group` (e.g. the looks) are shown
+   * together as vertical tabs; `columns: 2` shows a section's images two to a row.
    */
   sections?: { nav: string; group?: string; title: string; intro?: string; columns?: 1 | 2; images: GalleryImage[] }[]
   /** Optional cut-out (transparent PNG/WebP) shown full screen at the top of the project page. */
@@ -223,7 +223,7 @@ export const projects: Project[] = [
         nav: "Look 1",
         group: "Look ideation",
         title: "A Date Gone Wrong",
-        columns: 2,
+        intro: "A girl on a first date who wants comfort, choice and clear communication instead of pressure. Her persona shows that consent is sexy and attraction should never feel forced.",
         images: [
           { src: "work/photography-videography/durex-styling/16.webp", w: 1600, h: 900 },
           { src: "work/photography-videography/durex-styling/17.webp", w: 1600, h: 900 },
@@ -239,7 +239,7 @@ export const projects: Project[] = [
         nav: "Look 2",
         group: "Look ideation",
         title: "Crashing the Party",
-        columns: 2,
+        intro: "A social, outgoing guy in a party setting who learns that confidence is not about pushing limits. His persona shows that knowing when to stop is sexy.",
         images: [
           { src: "work/photography-videography/durex-styling/24.webp", w: 1600, h: 900 },
           { src: "work/photography-videography/durex-styling/25.webp", w: 1600, h: 900 },
@@ -254,7 +254,7 @@ export const projects: Project[] = [
         nav: "Look 3",
         group: "Look ideation",
         title: "Unplugging at Midnight",
-        columns: 2,
+        intro: "A girl who unwinds after a long day by scrolling on her bed, and gets an unsolicited image from an unknown number without consent.",
         images: [
           { src: "work/photography-videography/durex-styling/31.webp", w: 1600, h: 900 },
           { src: "work/photography-videography/durex-styling/32.webp", w: 1600, h: 900 },
@@ -270,7 +270,7 @@ export const projects: Project[] = [
         nav: "Look 4",
         group: "Look ideation",
         title: "Campus Catwalk",
-        columns: 2,
+        intro: "A confident queer student expressing identity through fashion, body language and self-assurance. Their storyline shows that acceptance and boundaries are sexy, especially in spaces where people are often judged.",
         images: [
           { src: "work/photography-videography/durex-styling/39.webp", w: 1600, h: 900 },
           { src: "work/photography-videography/durex-styling/40.webp", w: 1600, h: 900 },
@@ -286,7 +286,7 @@ export const projects: Project[] = [
         nav: "Look 5",
         group: "Look ideation",
         title: "The Cubicle Chronicles",
-        columns: 2,
+        intro: "A young intern navigating workplace attention, power dynamics and uncomfortable comments. Their storyline shows that respect is sexy, especially in professional spaces.",
         images: [
           { src: "work/photography-videography/durex-styling/47.webp", w: 1600, h: 900 },
           { src: "work/photography-videography/durex-styling/48.webp", w: 1600, h: 900 },
