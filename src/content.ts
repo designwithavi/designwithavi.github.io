@@ -108,6 +108,8 @@ export type Project = {
   stats?: { views: number; appreciations: number }
   /** Optional link to the full project on Behance — adds a button at the end of the project page. */
   behance?: string
+  /** Optional embedded viewer (e.g. a Heyzine flipbook) shown after the description. */
+  embed?: { src: string; label: string }
   /** Optional cut-out (transparent PNG/WebP) shown full screen at the top of the project page. */
   hero?: string
   /** Optional label for the cover in the image grid. */
@@ -377,6 +379,57 @@ export const projects: Project[] = [
       { src: "work/branding/flash-cryogenics/18.webp", w: 1600, h: 900 },
     ],
     color: "#bfd0dd",
+  },
+  {
+    title: "#WhatIsSexy?",
+    category: "Graphic Design",
+    year: "2026",
+    medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Styling", "Photography", "Editorial"],
+    team: true,
+    stats: { views: 1, appreciations: 1 }, // Behance, 25 Oct 2026 (published that day)
+    summary: "A fashion styling feature on consent, respect and confidence, laid out as a Femina special.",
+    description: "Developed as an academic fashion styling exercise exploring the intersection of fashion, visual storytelling, and responsible brand communication. Inspired by Durex's bold communication identity, #WhatIsSexy? challenges conventional perceptions of attraction by highlighting consent, respect, confidence, personal boundaries, and emotional safety. An independent academic concept developed for educational purposes, not an official Durex campaign. Concept & creative direction: Aashana Ramavat, Avishkar Kale, Prajakta Mahindrakar, Paraj Parikh, Sanskruti Zankar.",
+    behance: "https://www.behance.net/gallery/257578227/Fashion-Styling-whatissexy",
+    embed: { src: "https://heyzine.com/flip-book/33c6580e46.html", label: "Flip through the issue" },
+    cover: "work/graphic-design/whatissexy/01.webp",
+    images: [
+      { src: "work/graphic-design/whatissexy/02.webp", w: 1536, h: 1024 },
+      { src: "work/graphic-design/whatissexy/03.webp", w: 1536, h: 1024 },
+      { src: "work/graphic-design/whatissexy/04.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/05.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/06.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/07.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/08.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/09.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/10.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/11.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/12.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/13.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/14.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/15.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/16.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/17.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/18.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/19.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/20.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/21.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/22.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/23.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/24.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/25.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/26.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/27.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/28.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/29.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/30.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/31.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/32.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/33.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/34.webp", w: 1190, h: 1684 },
+      { src: "work/graphic-design/whatissexy/35.webp", w: 1190, h: 1684 },
+    ],
+    color: "#c6d6e8",
   },
   {
     title: "Verve Magazine Design",

@@ -234,6 +234,25 @@ function ProjectView({ project, onClose }: { project: Project; onClose: () => vo
         <p className={`mx-auto max-w-2xl text-center text-lg leading-relaxed text-ink-2 ${project.hero ? "" : "mt-6"}`}>
           {project.description}
         </p>
+        {project.embed && (
+          <section className="mt-12">
+            <div className="mb-4 flex items-baseline justify-between gap-4">
+              <h3 className="font-heading text-3xl sm:text-4xl">{project.embed.label}</h3>
+              <a href={project.embed.src} target="_blank" rel="noopener noreferrer" className="shrink-0 text-sm text-ink-3 underline underline-offset-4 hover:text-ink">
+                Open full screen ↗
+              </a>
+            </div>
+            <div className="aspect-[4/5] overflow-hidden rounded-2xl border border-line bg-ink/5 sm:aspect-[16/10]">
+              <iframe
+                src={project.embed.src}
+                title={`${project.title} — ${project.embed.label}`}
+                loading="lazy"
+                allowFullScreen
+                className="h-full w-full"
+              />
+            </div>
+          </section>
+        )}
         <div className="mt-12">
           {project.cover ? (
             <ProjectGallery
