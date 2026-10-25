@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react"
-import { ProjectGallery } from "@/components/project-gallery"
-import { VerticalTabs } from "@/components/ui/vertical-tabs"
+import { Carousel } from "@/components/carousel"
 import type { Project } from "@/content"
 
 type Section = NonNullable<Project["sections"]>[number]
@@ -67,30 +66,37 @@ export function ProjectSections({ sections, title }: { sections: Section[]; titl
         </div>
       </div>
 
-      {chapters.map((c, i) => (
-        <section key={c.title} ref={(el) => void (refs.current[i] = el)} className="border-t border-line pt-14 mt-14 first:mt-0 first:border-0">
-          {c.sections.length > 1 ? (
-            <VerticalTabs
-              heading={c.title}
-              kicker={`${String(i + 1).padStart(2, "0")} · ${c.sections.length} looks`}
-              items={c.sections.map((s) => ({
-                title: s.title,
-                description: s.intro,
-                images: s.images.map((im) => (typeof im === "string" ? { src: im } : im)),
-              }))}
-            />
-          ) : (
-            <>
-              <header className="mb-8">
-                <span className="font-mono text-sm text-ink-4">{String(i + 1).padStart(2, "0")}</span>
-                <h3 className="mt-2 font-heading text-4xl sm:text-6xl">{c.title}</h3>
-                {c.sections[0].intro && <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink-2">{c.sections[0].intro}</p>}
-              </header>
-              <ProjectGallery images={c.sections[0].images} title={`${title} — ${c.title}`} columns={c.sections[0].columns} />
-            </>
-          )}
-        </section>
-      ))}
+      {chapters.map((c, i) => {
+        const num = String(i + 1).padStart(2, "0")
+        const grouped = c.sections.length > 1
+        return (
+          <section key={c.title} ref={(el) => void (refs.current[i] = el)} className="mt-16 border-t border-line pt-14 first:mt-0 first:border-0">
+            <header className="mb-8">
+              <span className="font-mono text-sm text-ink-4">{num}</span>
+              <h3 className="mt-2 font-heading text-4xl sm:text-6xl">{c.title}</h3>
+              {!grouped && c.sections[0].intro && <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink-2">{c.sections[0].intro}</p>}
+            </header>
+            {grouped ? (
+              <div className="space-y-16">
+                {c.sections.map((s, k) => (
+                  <div key={s.title}>
+                    <div className="mb-6 grid gap-3 md:grid-cols-[auto_1fr] md:items-baseline md:gap-8">
+                      <h4 className="flex items-baseline gap-3 font-heading text-3xl sm:text-4xl">
+                        <span className="font-mono text-xs text-ink-4">/{String(k + 1).padStart(2, "0")}</span>
+                        {s.title}
+                      </h4>
+                      {s.intro && <p className="max-w-xl text-ink-3 md:justify-self-end md:text-right">{s.intro}</p>}
+                    </div>
+                    <Carousel images={s.images} title={`${title} — ${s.title}`} />
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <Carousel images={c.sections[0].images} title={`${title} — ${c.title}`} />
+            )}
+          </section>
+        )
+      })}
     </div>
   )
 }

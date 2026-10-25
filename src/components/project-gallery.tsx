@@ -85,7 +85,7 @@ export function ProjectGallery({ images, title, columns = 1 }: { images: Gallery
   )
 }
 
-function Lightbox({
+export function Lightbox({
   images,
   index,
   onIndex,
