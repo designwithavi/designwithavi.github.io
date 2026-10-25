@@ -112,6 +112,12 @@ export type Project = {
   embed?: { src: string; label: string }
   /** Optional magazine to page through, shown after the description: pages in reading order, page width ÷ height. */
   flipbook?: { label: string; pages: string[]; ratio: number }
+  /**
+   * Optional chapters: the project page is laid out section by section, with a
+   * menu to jump between them. `group` puts sections under one heading (e.g. the looks);
+   * `columns: 2` shows boards two to a row.
+   */
+  sections?: { nav: string; group?: string; title: string; intro?: string; columns?: 1 | 2; images: GalleryImage[] }[]
   /** Optional cut-out (transparent PNG/WebP) shown full screen at the top of the project page. */
   hero?: string
   /** Optional label for the cover in the image grid. */
@@ -177,7 +183,139 @@ export const projects: Project[] = [
       { src: "work/photography-videography/fashion-editorial/15.webp", w: 1400, h: 2100 },
     ],
     color: "#cfc4d9",
-  },  {
+  },
+  {
+    title: "#WhatIsSexy? — Styling Campaign",
+    category: "Photography & Videography",
+    year: "2026",
+    medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Styling", "Photography", "Branding"],
+    team: true,
+    stats: { views: 1, appreciations: 1 }, // Behance, 25 Oct 2026 (published that day)
+    summary: "Five looks styled for a Durex campaign on consent, respect and confidence — from brand research to billboards.",
+    description: "An academic fashion styling exercise exploring the intersection of fashion, visual storytelling, and responsible brand communication. Inspired by Durex's bold communication identity, #WhatIsSexy? challenges conventional perceptions of attraction by highlighting consent, respect, confidence, personal boundaries, and emotional safety. An independent academic concept developed for educational purposes, not an official Durex campaign. Team: Aashana Ramavat, Avishkar Kale, Prajakta Mahindrakar, Paraj Parikh, Sanskruti Zankar.",
+    behance: "https://www.behance.net/gallery/257582083/Fashion-Styling-ft-Durex",
+    cover: "work/photography-videography/durex-styling/58.webp",
+    images: [],
+    sections: [
+      {
+        nav: "Research",
+        title: "Brand research & campaign",
+        intro: "Who Durex is and how it speaks — product range, audience, communication style, packaging and social media — leading to the #WhatIsSexy? campaign, its elements, lighting, moodboard and personas.",
+        images: [
+          { src: "work/photography-videography/durex-styling/02.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/03.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/04.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/05.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/06.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/07.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/08.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/09.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/10.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/11.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/12.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/13.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/14.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/15.webp", w: 1600, h: 900 },
+        ],
+      },
+      {
+        nav: "Look 1",
+        group: "Look ideation",
+        title: "A Date Gone Wrong",
+        columns: 2,
+        images: [
+          { src: "work/photography-videography/durex-styling/16.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/17.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/18.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/19.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/20.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/21.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/22.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/23.webp", w: 1600, h: 900 },
+        ],
+      },
+      {
+        nav: "Look 2",
+        group: "Look ideation",
+        title: "Crashing the Party",
+        columns: 2,
+        images: [
+          { src: "work/photography-videography/durex-styling/24.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/25.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/26.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/27.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/28.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/29.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/30.webp", w: 1600, h: 900 },
+        ],
+      },
+      {
+        nav: "Look 3",
+        group: "Look ideation",
+        title: "Unplugging at Midnight",
+        columns: 2,
+        images: [
+          { src: "work/photography-videography/durex-styling/31.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/32.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/33.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/34.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/35.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/36.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/37.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/38.webp", w: 1600, h: 900 },
+        ],
+      },
+      {
+        nav: "Look 4",
+        group: "Look ideation",
+        title: "Campus Catwalk",
+        columns: 2,
+        images: [
+          { src: "work/photography-videography/durex-styling/39.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/40.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/41.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/42.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/43.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/44.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/45.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/46.webp", w: 1600, h: 900 },
+        ],
+      },
+      {
+        nav: "Look 5",
+        group: "Look ideation",
+        title: "The Cubicle Chronicles",
+        columns: 2,
+        images: [
+          { src: "work/photography-videography/durex-styling/47.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/48.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/49.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/50.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/51.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/52.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/53.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/54.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/55.webp", w: 1600, h: 900 },
+        ],
+      },
+      {
+        nav: "Application",
+        title: "The campaign in application",
+        intro: "The looks carried into Instagram posts and billboards.",
+        images: [
+          { src: "work/photography-videography/durex-styling/56.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/57.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/58.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/59.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/60.webp", w: 1600, h: 900 },
+          { src: "work/photography-videography/durex-styling/61.webp", w: 1600, h: 900 },
+        ],
+      },
+    ],
+    color: "#c6d6e8",
+  },
+  {
     title: "Shorona: Costume Styling",
     category: "Photography & Videography",
     year: "2026",
@@ -215,7 +353,8 @@ export const projects: Project[] = [
       { src: "work/photography-videography/shorona/24.webp", w: 1600, h: 900 },
     ],
     color: "#d9b8b0",
-  },  {
+  },
+  {
     title: "Studio Photography: Keibu Keioiba",
     category: "Photography & Videography",
     year: "2025",
@@ -243,7 +382,8 @@ export const projects: Project[] = [
       { src: "work/photography-videography/keibu-keioiba/14.webp", w: 1354, h: 2030 },
     ],
     color: "#d9cbb6",
-  },  {
+  },
+  {
     title: "Studio Photography: Buldak Ramen",
     category: "Photography & Videography",
     year: "2025",
@@ -261,7 +401,8 @@ export const projects: Project[] = [
       { src: "work/photography-videography/buldak-ramen/05.webp", w: 1600, h: 3753 },
     ],
     color: "#e8c3a8",
-  },  {
+  },
+  {
     title: "Faredoon's Food Photography",
     category: "Photography & Videography",
     year: "2025",
@@ -289,7 +430,8 @@ export const projects: Project[] = [
       { src: "work/photography-videography/faredoons/13.webp", w: 1600, h: 2307 },
     ],
     color: "#e2d0b0",
-  },  {
+  },
+  {
     title: "Experience Nashik: Photobook",
     category: "Photography & Videography",
     year: "2024",
@@ -315,7 +457,8 @@ export const projects: Project[] = [
       { src: "work/photography-videography/experience-nashik/13.webp", w: 1600, h: 5768 },
     ],
     color: "#c4d3d9",
-  },  {
+  },
+  {
     title: "Product Advertisement: Sprite Can",
     category: "Photography & Videography",
     year: "2023",
@@ -328,7 +471,8 @@ export const projects: Project[] = [
     cover: "work/photography-videography/sprite-can/01.webp",
     images: [],
     color: "#cfe3c4",
-  },  {
+  },
+  {
     title: "Product Advertisement: Zudio Nail Paint",
     category: "Photography & Videography",
     year: "2023",
@@ -389,7 +533,7 @@ export const projects: Project[] = [
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Styling", "Photography", "Editorial"],
     team: true,
-    stats: { views: 1, appreciations: 1 }, // Behance, 25 Oct 2026 (published that day)
+    stats: { views: 9, appreciations: 2 }, // Behance, 25 Oct 2026
     summary: "A fashion styling feature on consent, respect and confidence, laid out as a Femina special.",
     description: "Developed as an academic fashion styling exercise exploring the intersection of fashion, visual storytelling, and responsible brand communication. Inspired by Durex's bold communication identity, #WhatIsSexy? challenges conventional perceptions of attraction by highlighting consent, respect, confidence, personal boundaries, and emotional safety. An independent academic concept developed for educational purposes, not an official Durex campaign. Concept & creative direction: Aashana Ramavat, Avishkar Kale, Prajakta Mahindrakar, Paraj Parikh, Sanskruti Zankar.",
     behance: "https://www.behance.net/gallery/257578227/Fashion-Styling-whatissexy",

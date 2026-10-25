@@ -30,9 +30,10 @@ function layout(images: GalleryImage[]) {
   return out
 }
 
-export function ProjectGallery({ images, title }: { images: GalleryImage[]; title: string }) {
+export function ProjectGallery({ images, title, columns = 1 }: { images: GalleryImage[]; title: string; columns?: 1 | 2 }) {
   const [zoom, setZoom] = useState<number | null>(null)
-  const spans = layout(images)
+  // two to a row: every image takes half the width
+  const spans = columns === 2 ? images.map(() => ({ span: "md:col-span-6", height: "" })) : layout(images)
 
   return (
     <>
@@ -58,6 +59,8 @@ export function ProjectGallery({ images, title }: { images: GalleryImage[]; titl
                 <img
                   src={srcOf(img)}
                   alt={caption ?? `${title}, image ${i + 1}`}
+                  width={typeof img === "string" ? undefined : img.w}
+                  height={typeof img === "string" ? undefined : img.h}
                   loading={i === 0 ? "eager" : "lazy"}
                   className="mx-auto h-auto max-h-full w-auto max-w-full rounded-xl object-contain transition-transform duration-700 ease-out group-hover:scale-[1.02]"
                 />

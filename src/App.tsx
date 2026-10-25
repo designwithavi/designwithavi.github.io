@@ -7,6 +7,7 @@ import { CelestialOrb } from "@/components/celestial-orb"
 import { MinimalistHero, useFitWidth } from "@/components/ui/minimalist-hero"
 import { ProjectGallery } from "@/components/project-gallery"
 import { Flipbook } from "@/components/flipbook"
+import { ProjectSections } from "@/components/project-sections"
 import { categories, projects, site, type Category, type Project } from "@/content"
 import { CategoryView } from "@/components/category-view"
 import { useRoute } from "@/route"
@@ -260,6 +261,9 @@ function ProjectView({ project, onClose }: { project: Project; onClose: () => vo
             </div>
           </section>
         )}
+        {project.sections ? (
+          <ProjectSections sections={project.sections} title={project.title} />
+        ) : (
         <div className="mt-12">
           {project.cover ? (
             <ProjectGallery
@@ -272,6 +276,7 @@ function ProjectView({ project, onClose }: { project: Project; onClose: () => vo
             </div>
           )}
         </div>
+        )}
         {project.behance && (
           <div className="mt-20 flex flex-col items-center gap-5 border-t border-line pt-14 text-center">
             <p className="font-heading text-3xl text-ink sm:text-4xl">Check out the entire project</p>
