@@ -190,7 +190,7 @@ function ProjectHero({ project, hero }: { project: Project; hero: string }) {
         transition={{ duration: 0.6, delay: 0.1 }}
         className="pt-20 text-center text-xs uppercase tracking-[0.2em] text-ink-4"
       >
-        {project.category} · {project.year}
+        {project.category}{project.year && ` · ${project.year}`}
       </motion.p>
       <motion.h2
         initial={{ opacity: 0, y: 30 }}
@@ -228,14 +228,28 @@ function ProjectView({ project, onClose }: { project: Project; onClose: () => vo
         {!project.hero && (
           <>
             <p className="text-xs uppercase tracking-[0.2em] text-ink-4">
-              {project.category} · {project.year}
+              {project.category}{project.year && ` · ${project.year}`}
             </p>
             <h2 className="mt-3 font-heading text-5xl sm:text-7xl">{project.title}</h2>
           </>
         )}
-        <p className={`mx-auto max-w-2xl text-center text-lg leading-relaxed text-ink-2 ${project.hero ? "" : "mt-6"}`}>
-          {project.description}
-        </p>
+        {project.description && (
+          <p className={`mx-auto max-w-2xl text-center text-lg leading-relaxed text-ink-2 ${project.hero ? "" : "mt-6"}`}>
+            {project.description}
+          </p>
+        )}
+        {project.video && (
+          <section className="mt-12">
+            <video
+              src={project.video.src}
+              poster={project.video.poster}
+              controls
+              playsInline
+              preload="metadata"
+              className="aspect-video w-full rounded-2xl bg-black"
+            />
+          </section>
+        )}
         {project.flipbook && (
           <section className="mt-12">
             <h3 className="mb-6 font-heading text-3xl sm:text-4xl">{project.flipbook.label}</h3>

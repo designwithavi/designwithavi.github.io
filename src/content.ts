@@ -108,6 +108,8 @@ export type Project = {
   stats?: { views: number; appreciations: number }
   /** Optional link to the full project on Behance — adds a button at the end of the project page. */
   behance?: string
+  /** Optional film, played at the top of the project page (poster = its still). */
+  video?: { src: string; poster: string }
   /** Optional embedded viewer (e.g. a Heyzine flipbook) shown after the description. */
   embed?: { src: string; label: string }
   /** Optional magazine to page through, shown after the description: pages in reading order, page width ÷ height. */
@@ -341,6 +343,32 @@ export const projects: Project[] = [
       },
     ],
     color: "#c6d6e8",
+  },
+  {
+    title: "Sanganeri Block Print",
+    category: "Photography & Videography",
+    year: "", // TODO: year
+    medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Film", "Photography"],
+    summary: "", // TODO: one line
+    description: "", // TODO: description
+    video: { src: "work/photography-videography/craft-documentation/film.mp4", poster: "work/photography-videography/craft-documentation/poster.webp" },
+    cover: "work/photography-videography/craft-documentation/poster.webp",
+    images: [],
+    color: "#c9a48c",
+  },
+  {
+    title: "WIPO Documentary",
+    category: "Photography & Videography",
+    year: "", // TODO: year
+    medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Film", "Photography"],
+    summary: "", // TODO: one line
+    description: "", // TODO: description
+    video: { src: "work/photography-videography/wipo-documentary/film.mp4", poster: "work/photography-videography/wipo-documentary/poster.webp" },
+    cover: "work/photography-videography/wipo-documentary/poster.webp",
+    images: [],
+    color: "#a9bfa4",
   },
   {
     title: "Shorona: Costume Styling",

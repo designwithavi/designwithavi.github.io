@@ -1,7 +1,10 @@
 import { motion } from "framer-motion"
 import { ArrowLeft } from "lucide-react"
 import { AnalyticsBento } from "@/components/ui/analytics-bento"
-import { categories, projects, site } from "@/content"
+import { categories, projects as allProjects, site } from "@/content"
+
+// a project without a year yet can't be placed on the timeline: leave it out until it has one
+const projects = allProjects.filter((p) => /^\d{4}$/.test(p.year))
 import { slug } from "@/route"
 
 /**
@@ -10,7 +13,7 @@ import { slug } from "@/route"
  * it stays true as projects are added.
  */
 
-const SKILLS = ["Photography", "Styling", "Props", "Branding", "Typography", "Editorial", "UX", "3D"]
+const SKILLS = ["Photography", "Film", "Styling", "Props", "Branding", "Typography", "Editorial", "UX", "3D"]
 
 // one colour per folder, picked from its glass-folder swirl
 const FOLDER_COLORS: Record<string, { color: string; ink: "dark" | "light" }> = {
