@@ -49,6 +49,7 @@ export function ProjectSections({ sections, title }: { sections: Section[]; titl
 
   return (
     <div className="mt-14">
+      {chapters.length > 1 && (
       <div className="sticky top-0 z-30 -mx-4 border-b border-line bg-paper/90 px-4 py-3 backdrop-blur sm:-mx-8 sm:px-8">
         <div ref={nav} className="flex gap-2 overflow-x-auto [scrollbar-width:none]">
           {chapters.map((c, i) => (
@@ -66,6 +67,7 @@ export function ProjectSections({ sections, title }: { sections: Section[]; titl
           ))}
         </div>
       </div>
+      )}
 
       {chapters.map((c, i) => {
         const num = String(i + 1).padStart(2, "0")
@@ -73,7 +75,7 @@ export function ProjectSections({ sections, title }: { sections: Section[]; titl
         return (
           <section key={c.title} ref={(el) => void (refs.current[i] = el)} className="mt-16 border-t border-line pt-14 first:mt-0 first:border-0">
             <header className="mb-8">
-              <span className="font-mono text-sm text-ink-4">{num}</span>
+              {chapters.length > 1 && <span className="font-mono text-sm text-ink-4">{num}</span>}
               <h3 className="mt-2 font-heading text-4xl sm:text-6xl">{c.title}</h3>
               {!grouped && c.sections[0].intro && <p className="mt-4 max-w-2xl text-lg leading-relaxed text-ink-2">{c.sections[0].intro}</p>}
             </header>
