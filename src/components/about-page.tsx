@@ -1,6 +1,8 @@
 import { motion } from "framer-motion"
 import { ArrowLeft } from "lucide-react"
+import { useRef } from "react"
 import { AnalyticsBento } from "@/components/ui/analytics-bento"
+import { DesignProcess, type ProcessStep } from "@/components/design-process"
 import { categories, projects as allProjects, site } from "@/content"
 
 // a project without a year yet can't be placed on the timeline: leave it out until it has one
@@ -24,6 +26,17 @@ const FOLDER_COLORS: Record<string, { color: string; ink: "dark" | "light" }> = 
   "UX Design": { color: "#2f3d6e", ink: "light" },
   "Product Design": { color: "#6b4e71", ink: "light" },
 }
+
+// each step shows a piece of real work from that stage
+const PROCESS: ProcessStep[] = [
+  { title: "Research", text: "Getting to know the brand, the audience and the story before anything else.", image: "work/photography-videography/durex-styling/02.webp", tone: "accent", whole: true },
+  { title: "Moodboard", text: "Colour, light, texture and references, pulled together into one mood.", image: "work/photography-videography/shorona/15.webp", tone: "paper" },
+  { title: "Concept", text: "Characters, storylines and storyboards that turn the mood into an idea.", image: "work/photography-videography/durex-styling/17.webp", tone: "stone" },
+  { title: "Styling & set", text: "Garments, props and makeup — and sets built by hand or planned in 3D.", image: "work/photography-videography/faredoons/04.webp", tone: "paper", whole: true },
+  { title: "The shoot", text: "Lighting, directing and capturing it on set, frame by frame.", image: "work/photography-videography/keibu-keioiba/shoot/01.webp", tone: "accent" },
+  { title: "Design", text: "Editing, layouts, identity and type that carry the work.", image: "work/branding/xyricon/03.webp", tone: "paper", whole: true },
+  { title: "Out in the world", text: "Billboards, shelves, stores and pages — the work in use.", image: "work/photography-videography/durex-styling/59.webp", tone: "stone" },
+]
 
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0)
 /** "Studio Photography: Buldak Ramen" → "Buldak Ramen", "Shorona: Costume Styling" → "Shorona" */
@@ -87,9 +100,11 @@ function useNumbers() {
 export function AboutPage({ onBack }: { onBack: () => void }) {
   const n = useNumbers()
   const ease = [0.22, 1, 0.36, 1] as const
+  const scroller = useRef<HTMLDivElement>(null)
   return (
     <motion.div
-      className="fixed inset-0 z-50 overflow-y-auto bg-paper"
+      ref={scroller}
+      className="fixed inset-0 z-50 overflow-y-auto overflow-x-hidden bg-paper"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease }}
@@ -103,7 +118,7 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
         Home
       </button>
 
-      <div className="mx-auto max-w-6xl px-4 pt-24 pb-24 sm:px-8">
+      <div className="mx-auto max-w-6xl px-4 pt-24 sm:px-8">
         {/* who */}
         <section className="grid items-end gap-10 border-b border-line pb-14 md:grid-cols-[1fr_auto]">
           <div>
@@ -137,7 +152,7 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
         </section>
 
         {/* background */}
-        <section className="grid gap-10 border-b border-line py-14 sm:grid-cols-2">
+        <section className="grid gap-10 py-14 sm:grid-cols-2">
           <div>
             <h3 className="mb-5 text-xs uppercase tracking-[0.2em] text-ink-4">Education & Experience</h3>
             <ul className="space-y-5">
@@ -164,6 +179,14 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
           </div>
         </section>
 
+      </div>
+
+      {/* how I work: full width, pinned while it slides */}
+      <div className="border-b border-line">
+        <DesignProcess steps={PROCESS} scroller={scroller} />
+      </div>
+
+      <div className="mx-auto max-w-6xl px-4 pb-24 sm:px-8">
         {/* by the numbers */}
         <section className="pt-14">
           <div className="mb-8 flex flex-wrap items-baseline justify-between gap-4">
