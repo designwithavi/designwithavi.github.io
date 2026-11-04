@@ -969,6 +969,31 @@ export const projects: Project[] = [
   },
 
   {
+    title: "Titan × Anita Dongre",
+    category: "Product Design",
+    year: "2026",
+    medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Branding", "Props"],
+    team: true,
+    stats: { views: 1, appreciations: 0 }, // Behance, 4 Nov 2026 (published that day)
+    summary: "Colour psychology for a smartwatch collab: Pichwai-inspired pastel faces, straps and packaging.",
+    description: "A conceptual watch collaboration blending traditional Pichwai art with contemporary design. Rooted in colour psychology, the collection uses soothing pastels, intricate floral motifs and cultural symbolism to evoke elegance, serenity and nostalgia. From watch faces to packaging, every detail celebrates Indian heritage through modern craftsmanship and timeless storytelling. A concept project. Team: Avishkar Kale & Shreya Arya.",
+    behance: "https://www.behance.net/gallery/258032813/Colour-Psychology-Titan-x-Anita-Dongre",
+    cover: "work/product-design/titan-anita-dongre/cover.webp",
+    images: [
+      { src: "work/product-design/titan-anita-dongre/01.webp", w: 1600, h: 1131 },
+      { src: "work/product-design/titan-anita-dongre/02.webp", w: 1536, h: 1024 },
+      { src: "work/product-design/titan-anita-dongre/03.webp", w: 1600, h: 1131 },
+      { src: "work/product-design/titan-anita-dongre/04.webp", w: 607, h: 695 },
+      { src: "work/product-design/titan-anita-dongre/05.webp", w: 1600, h: 1131 },
+      { src: "work/product-design/titan-anita-dongre/06.webp", w: 1600, h: 1131 },
+      { src: "work/product-design/titan-anita-dongre/07.webp", w: 1600, h: 1131 },
+      { src: "work/product-design/titan-anita-dongre/08.webp", w: 1400, h: 989 },
+      { src: "work/product-design/titan-anita-dongre/09.webp", w: 1400, h: 989 },
+      { src: "work/product-design/titan-anita-dongre/10.webp", w: 1536, h: 1024 },
+    ],
+    color: "#e7c9c4",
+  },  {
     title: "ECO-Amphi: Emergency Medical Transport",
     category: "Product Design",
     year: "2024",
@@ -995,24 +1020,6 @@ export const projects: Project[] = [
       { src: "work/product-design/eco-amphi/12.webp", w: 1600, h: 525 },
     ],
     color: "#c9d9cc",
-  },  {
-    title: "Titan × Anita Dongre",
-    category: "Product Design",
-    year: "",  // TODO: year
-    medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
-    skills: ["Branding", "Props"],
-    summary: "A smartwatch collab: Pichwai-inspired pastel watch faces, straps and packaging.",
-    // DRAFT — written from the slides; check it
-    description: "A watch collaboration concept between Titan and Anita Dongre — a fusion of technology, tradition and fashion for design-conscious, culturally rooted Indian consumers. Pichwai-inspired patterns and a pastel palette chosen for its colour psychology (dusty pink, ivory, mint, sky blue, coral, muted gold, lavender) carry across the watch faces, straps and gift packaging.",
-    cover: "work/product-design/titan-anita-dongre/01.webp",
-    images: [
-      { src: "work/product-design/titan-anita-dongre/02.webp", w: 1600, h: 1131 },
-      { src: "work/product-design/titan-anita-dongre/03.webp", w: 1600, h: 1131 },
-      { src: "work/product-design/titan-anita-dongre/04.webp", w: 1600, h: 1131 },
-      { src: "work/product-design/titan-anita-dongre/05.webp", w: 1600, h: 1131 },
-      { src: "work/product-design/titan-anita-dongre/06.webp", w: 1600, h: 1131 },
-      { src: "work/product-design/titan-anita-dongre/07.webp", w: 1600, h: 1131 },
-    ],
-    color: "#e7c9c4",
   },
+
 ]
