@@ -4,7 +4,7 @@ import { Lightbox, type GalleryImage } from "@/components/project-gallery"
 
 /**
  * Photos in two big staggered columns that drift against each other as the
- * page scrolls past. Pointing at a photo brings it forward and dims the rest.
+ * page scrolls past.
  * Any photo opens full screen.
  */
 
@@ -43,7 +43,7 @@ function Column({ items, progress, range, onOpen }: { items: { img: Img; i: numb
           key={img.src}
           type="button"
           onClick={() => onOpen(i)}
-          className="group overflow-hidden rounded-xl bg-ink/5 transition-[opacity,filter] duration-500 group-hover/grid:opacity-45 group-hover/grid:saturate-50 hover:!opacity-100 hover:!saturate-100 sm:rounded-2xl"
+          className="group overflow-hidden rounded-xl bg-ink/5 sm:rounded-2xl"
           aria-label={`Open photo ${i + 1}`}
         >
           <img
@@ -105,7 +105,7 @@ function Columns({
   // one column: nothing to drift against
   const amp = still || cols.length < 2 ? 0 : 110
   return (
-    <div className="group/grid flex items-start gap-4 sm:gap-6">
+    <div className="flex items-start gap-4 sm:gap-6">
       {cols.map((items, c) => (
         <Column key={c} items={items} progress={scrollYProgress} range={c % 2 ? [amp, -amp] : [-amp * 0.5, amp * 0.5]} onOpen={onOpen} />
       ))}
