@@ -3,6 +3,7 @@ import { ArrowLeft } from "lucide-react"
 import { useRef } from "react"
 import { AnalyticsBento } from "@/components/ui/analytics-bento"
 import { DesignProcess, type ProcessStep } from "@/components/design-process"
+import * as Art from "@/components/process-illustrations"
 import { categories, projects as allProjects, site } from "@/content"
 
 // a project without a year yet can't be placed on the timeline: leave it out until it has one
@@ -27,15 +28,15 @@ const FOLDER_COLORS: Record<string, { color: string; ink: "dark" | "light" }> = 
   "Product Design": { color: "#6b4e71", ink: "light" },
 }
 
-// each step shows a piece of real work from that stage
+// each step with its own illustration
 const PROCESS: ProcessStep[] = [
-  { title: "Research", text: "Getting to know the brand, the audience and the story before anything else.", image: "work/photography-videography/durex-styling/02.webp", tone: "accent", whole: true },
-  { title: "Moodboard", text: "Colour, light, texture and references, pulled together into one mood.", image: "work/photography-videography/shorona/15.webp", tone: "paper" },
-  { title: "Concept", text: "Characters, storylines and storyboards that turn the mood into an idea.", image: "work/photography-videography/durex-styling/17.webp", tone: "stone" },
-  { title: "Styling & set", text: "Garments, props and makeup — and sets built by hand or planned in 3D.", image: "work/photography-videography/faredoons/04.webp", tone: "paper", whole: true },
-  { title: "The shoot", text: "Lighting, directing and capturing it on set, frame by frame.", image: "work/photography-videography/keibu-keioiba/shoot/01.webp", tone: "accent" },
-  { title: "Design", text: "Editing, layouts, identity and type that carry the work.", image: "work/branding/xyricon/03.webp", tone: "paper", whole: true },
-  { title: "Out in the world", text: "Billboards, shelves, stores and pages — the work in use.", image: "work/photography-videography/durex-styling/59.webp", tone: "stone" },
+  { title: "Research", text: "Getting to know the brand, the audience and the story before anything else.", art: Art.Research, tone: "accent" },
+  { title: "Moodboard", text: "Colour, light, texture and references, pulled together into one mood.", art: Art.Moodboard, tone: "paper" },
+  { title: "Concept", text: "Characters, storylines and storyboards that turn the mood into an idea.", art: Art.Concept, tone: "stone" },
+  { title: "Styling & set", text: "Garments, props and makeup — and sets built by hand or planned in 3D.", art: Art.Styling, tone: "paper" },
+  { title: "The shoot", text: "Lighting, directing and capturing it on set, frame by frame.", art: Art.Shoot, tone: "accent" },
+  { title: "Design", text: "Editing, layouts, identity and type that carry the work.", art: Art.Design, tone: "paper" },
+  { title: "Out in the world", text: "Billboards, shelves, stores and pages — the work in use.", art: Art.OutInTheWorld, tone: "stone" },
 ]
 
 const sum = (xs: number[]) => xs.reduce((a, b) => a + b, 0)

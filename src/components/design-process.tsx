@@ -7,7 +7,7 @@ import { motion, useScroll, useSpring, useTransform, useVelocity } from "framer-
  * it; the tags sway with the speed of the scroll. On phones the row is swiped.
  */
 
-export type ProcessStep = { title: string; text: string; image: string; tone?: "accent" | "paper" | "stone"; /** a slide: show it whole rather than cropped */ whole?: boolean }
+export type ProcessStep = { title: string; text: string; art: React.ComponentType; tone?: "accent" | "paper" | "stone" }
 
 const TONES = {
   accent: "bg-[#ef8b2b] text-[#1a1816]",
@@ -32,8 +32,8 @@ function Tag({ step, i, sway }: { step: ProcessStep; i: number; sway: ReturnType
           style={{ clipPath: TAG }}
         >
           <span className="absolute left-1/2 top-3 size-3 -translate-x-1/2 rounded-full bg-paper ring-1 ring-black/15" />
-          <div className={`aspect-[4/3] overflow-hidden rounded-xl ${step.whole ? "bg-white" : "bg-black/10"}`}>
-            <img src={step.image} alt="" loading="lazy" draggable={false} className={`h-full w-full select-none ${step.whole ? "object-contain" : "object-cover"}`} />
+          <div className="aspect-[4/3] overflow-hidden rounded-xl bg-[#fffdf8] p-2">
+            <step.art />
           </div>
           <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.2em] opacity-70">Step {String(i + 1).padStart(2, "0")}</p>
           <h4 className="mt-1 font-heading text-3xl uppercase leading-none">{step.title}</h4>
