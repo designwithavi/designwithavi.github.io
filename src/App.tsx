@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
-import GlassFolder from "@/components/ui/glass-folder-cards"
 import { OwlSwitch, useIsDark } from "@/components/owl-switch"
 import { BehanceIcon, InstagramIcon, LinkedInIcon } from "@/components/brand-icons"
 import { CelestialOrb } from "@/components/celestial-orb"
@@ -8,7 +7,8 @@ import { MinimalistHero, useFitWidth } from "@/components/ui/minimalist-hero"
 import { ProjectGallery } from "@/components/project-gallery"
 import { Flipbook } from "@/components/flipbook"
 import { ProjectSections } from "@/components/project-sections"
-import { categories, projects, site, type Category, type Project } from "@/content"
+import { categories, featured, projects, recentlyAdded, site, type Category, type Project } from "@/content"
+import { TvBrowse } from "@/components/tv-browse"
 import { CategoryView } from "@/components/category-view"
 import { useRoute } from "@/route"
 import { PageLoader, preload } from "@/components/page-loader"
@@ -36,16 +36,29 @@ function Cover({ project, className = "" }: { project: Project; className?: stri
 }
 
 function Nav() {
+  // over the dark Work section the bar turns to dark glass, like Apple's
+  const [onDark, setOnDark] = useState(false)
+  useEffect(() => {
+    const work = document.getElementById("work")
+    if (!work) return
+    const io = new IntersectionObserver(([e]) => setOnDark(e.isIntersecting), { rootMargin: "0px 0px -94% 0px" })
+    io.observe(work)
+    return () => io.disconnect()
+  }, [])
   return (
-    <header className="fixed inset-x-0 top-0 z-40 border-b border-line bg-paper/80 backdrop-blur">
+    <header
+      className={`fixed inset-x-0 top-0 z-40 border-b backdrop-blur-xl transition-colors duration-500 ${
+        onDark ? "border-white/10 bg-[#0b0b0c]/70 text-white" : "border-line bg-paper/80"
+      }`}
+    >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 sm:px-8">
         <a href="#top" className="font-heading text-xl sm:text-2xl">
           {site.name}
         </a>
-        <div className="flex items-center gap-4 text-sm text-ink-3 sm:gap-6">
-          <a href="#work" className="hover:text-ink">Work</a>
-          <a href="#/about" className="hover:text-ink">About</a>
-          <a href="#contact" className="hover:text-ink">Contact</a>
+        <div className={`flex items-center gap-4 text-sm sm:gap-6 ${onDark ? "text-white/70" : "text-ink-3"}`}>
+          <a href="#work" className={onDark ? "hover:text-white" : "hover:text-ink"}>Work</a>
+          <a href="#/about" className={onDark ? "hover:text-white" : "hover:text-ink"}>About</a>
+          <a href="#contact" className={onDark ? "hover:text-white" : "hover:text-ink"}>Contact</a>
         </div>
       </nav>
     </header>
@@ -73,73 +86,6 @@ function Hero() {
         locationText={site.location}
         orb={<CelestialOrb night={dark} />}
       />
-    </section>
-  )
-}
-
-function useFolderWidth() {
-  const fit = () => Math.min(340, window.innerWidth - 32)
-  const [width, setWidth] = useState(fit)
-  useEffect(() => {
-    const onResize = () => setWidth(fit())
-    window.addEventListener("resize", onResize)
-    return () => window.removeEventListener("resize", onResize)
-  }, [])
-  return width
-}
-
-function Work({ onEnter, onOpen }: { onEnter: (c: Category) => void; onOpen: (c: Category, p: Project) => void }) {
-
-  const width = useFolderWidth()
-  const dark = useIsDark()
-  return (
-    <section id="work" className="relative scroll-mt-20 overflow-hidden py-20">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.13]"
-        style={{
-          backgroundImage: "radial-gradient(currentColor 1.1px, transparent 1.4px)",
-          backgroundSize: "22px 22px",
-        }}
-      />
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-8">
-        <div className="mb-14 flex items-baseline justify-between border-b border-line pb-4">
-          <h2 className="font-heading text-4xl">Selected Work</h2>
-          <span className="text-sm text-ink-4">{projects.length} projects</span>
-        </div>
-        <div className="mx-auto flex max-w-[1120px] flex-wrap items-end justify-center gap-x-8 gap-y-12">
-          {categories.map((c, i) => {
-            // the folder shows its last file at the front, so reverse: the first project listed sits on top
-            const items = projects.filter((p) => p.category === c.name).reverse()
-            return (
-              <GlassFolder
-                key={c.name}
-                label={c.name}
-                art={c.art}
-                tone={dark ? "dark" : c.tone}
-                image={c.image || undefined}
-                seed={i * 7 + 3}
-                action="none"
-                width={width}
-                appearDelay={i * 120}
-                // a tapped folder goes straight to its page; it never fans out here
-                open={false}
-                onOpenChange={(o) => o && onEnter(c)}
-                files={items.map((p) => ({
-                  name: p.title,
-                  meta: p.year,
-                  image: p.cover || undefined,
-                  art: p.cover ? undefined : c.art,
-                }))}
-                onFileSelect={(_, index) => onOpen(c, items[index])}
-              />
-            )
-          })}
-        </div>
-        <p className="mt-14 text-center font-mono text-[11px] uppercase tracking-[0.18em] text-ink-4">
-          Open a folder to see its projects
-        </p>
-      </div>
     </section>
   )
 }
@@ -364,7 +310,14 @@ function App() {
       <OwlSwitch />
       <main>
         <Hero />
-        <Work onEnter={(c) => go(c)} onOpen={(c, p) => go(c, p)} />
+        <TvBrowse
+          featured={featured.map((f) => ({ ...f, project: projects.find((p) => p.title === f.title)! })).filter((f) => f.project)}
+          recent={recentlyAdded.map((t) => projects.find((p) => p.title === t)!).filter(Boolean)}
+          categories={categories}
+          projects={projects}
+          onOpen={(p) => go(categories.find((c) => c.name === p.category)!, p)}
+          onCategory={(c) => go(c)}
+        />
       </main>
       <Contact />
       {route.category && (

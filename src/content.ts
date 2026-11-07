@@ -1023,3 +1023,28 @@ export const projects: Project[] = [
   },
 
 ]
+
+// ─────────────────────────────────────────────────────────────
+//  FEATURED — the projects that rotate in the big hero at the top of Work,
+//  each with a wide, cinematic backdrop image. Change the order or swap them freely.
+// ─────────────────────────────────────────────────────────────
+export const featured: { title: string; backdrop: string; line?: string }[] = [
+  { title: "Xyricon", backdrop: "work/branding/xyricon/20.webp" },
+  { title: "Shorona: Costume Styling", backdrop: "work/photography-videography/shorona/shoot/01.webp" },
+  { title: "Studio Photography: Keibu Keioiba", backdrop: "work/photography-videography/keibu-keioiba/shoot/02.webp" },
+  { title: "Fashion Editorial Shoot", backdrop: "work/photography-videography/fashion-editorial/01.webp" },
+  { title: "Aurevia", backdrop: "work/branding/aurevia/18.webp" },
+  { title: "#WhatIsSexy? — Styling Campaign", backdrop: "work/photography-videography/durex-styling/59.webp" },
+]
+
+// the newest additions, shown first as "Recently added"
+export const recentlyAdded = [
+  "Titan × Anita Dongre",
+  "Sthetix in Stone",
+  "Xyricon",
+  "Aurevia",
+  "#WhatIsSexy? — Styling Campaign",
+  "#WhatIsSexy?",
+  "Sanganeri Block Print",
+  "WIPO Documentary",
+]
