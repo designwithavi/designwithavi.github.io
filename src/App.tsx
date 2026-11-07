@@ -7,7 +7,7 @@ import { MinimalistHero, useFitWidth } from "@/components/ui/minimalist-hero"
 import { ProjectGallery } from "@/components/project-gallery"
 import { Flipbook } from "@/components/flipbook"
 import { ProjectSections } from "@/components/project-sections"
-import { categories, featured, projects, recentlyAdded, site, type Category, type Project } from "@/content"
+import { categories, featured, projects, site, type Category, type Project } from "@/content"
 import { Shelf, TvBrowse } from "@/components/tv-browse"
 import { CategoryView } from "@/components/category-view"
 import { useRoute } from "@/route"
@@ -380,7 +380,7 @@ function App() {
         <Hero />
         <TvBrowse
           featured={featured.map((f) => ({ ...f, project: projects.find((p) => p.title === f.title)! })).filter((f) => f.project)}
-          recent={recentlyAdded.map((t) => projects.find((p) => p.title === t)!).filter(Boolean)}
+          top={[...projects].sort((a, b) => (b.stats?.views ?? 0) - (a.stats?.views ?? 0)).slice(0, 10)}
           categories={categories}
           projects={projects}
           onOpen={(p) => go(categories.find((c) => c.name === p.category)!, p)}

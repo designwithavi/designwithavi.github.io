@@ -146,7 +146,7 @@ function Hero({ items, onOpen, onCategory }: { items: Featured[]; onOpen: (p: Pr
 
 /* ---------------- a card with the tvOS focus effect ---------------- */
 
-export function Card({ p, onOpen, fluid }: { p: Project; onOpen: (p: Project) => void; fluid?: boolean }) {
+export function Card({ p, onOpen, fluid, bare }: { p: Project; onOpen: (p: Project) => void; fluid?: boolean; bare?: boolean }) {
   const el = useRef<HTMLButtonElement>(null)
   const reduce = useReducedMotion()
   const [tilt, setTilt] = useState({ x: 0, y: 0, on: false })
@@ -188,12 +188,12 @@ export function Card({ p, onOpen, fluid }: { p: Project; onOpen: (p: Project) =>
           />
         </span>
       </button>
-      <div className="mt-3 px-0.5">
+      {!bare && <div className="mt-3 px-0.5">
         <p className="truncate text-[15px] font-semibold text-white">{p.title}</p>
         <p className="mt-0.5 truncate text-[13px] text-white/50">
           {[p.category, p.year].filter(Boolean).join(" · ")}
         </p>
-      </div>
+      </div>}
     </div>
   )
 }
@@ -248,18 +248,71 @@ export function Shelf({ title, projects, onOpen, onSeeAll }: { title: string; pr
   )
 }
 
+/* ---------------- top 10: big rank numbers beside the cards ---------------- */
+
+function TopTen({ projects, onOpen }: { projects: Project[]; onOpen: (p: Project) => void }) {
+  const row = useRef<HTMLDivElement>(null)
+  const page = (d: 1 | -1) => row.current?.scrollBy({ left: d * row.current.clientWidth * 0.85, behavior: "smooth" })
+  return (
+    <section className="group/shelf relative">
+      <div className="mx-auto max-w-7xl px-5 sm:px-10">
+        <h3 className="text-xl font-semibold text-white sm:text-2xl">Top 10 projects</h3>
+        <p className="mt-1 text-sm text-white/45">Most viewed on Behance</p>
+      </div>
+      <div className="relative mx-auto max-w-7xl">
+        <div
+          ref={row}
+          className="flex snap-x snap-mandatory gap-2 overflow-x-auto px-5 pb-4 pt-4 [scroll-padding-inline:1.25rem] [scrollbar-width:none] sm:gap-4 sm:px-10 sm:[scroll-padding-inline:2.5rem] [&::-webkit-scrollbar]:hidden"
+        >
+          {projects.map((p, i) => (
+            <div key={p.title} className="shrink-0 snap-start">
+              {/* the rank: a tall outlined numeral standing on the same line as the picture */}
+              <div className="flex items-end">
+                <span
+                  aria-hidden="true"
+                  className="relative z-0 -mr-1 select-none font-heading text-[120px] font-bold leading-[0.74] text-[#0b0b0c] sm:-mr-2 sm:text-[170px]"
+                  style={{ WebkitTextStroke: "3px rgba(255,255,255,.5)", letterSpacing: i === 9 ? "-0.1em" : undefined }}
+                >
+                  {i + 1}
+                </span>
+                <div className="relative z-10">
+                  <span className="sr-only">Number {i + 1}: </span>
+                  <Card p={p} onOpen={onOpen} bare />
+                </div>
+              </div>
+              <div className="mt-3 flex items-baseline gap-2 pl-1">
+                <span className="font-mono text-xs text-white/40">#{i + 1}</span>
+                <div className="min-w-0">
+                  <p className="truncate text-[15px] font-semibold text-white">{p.title}</p>
+                  <p className="truncate text-[13px] text-white/50">{(p.stats?.views ?? 0).toLocaleString("en-US")} views · {p.category}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+        <button type="button" onClick={() => page(-1)} aria-label="Scroll top 10 back" className="absolute left-0 top-4 z-10 hidden aspect-video w-12 place-items-center bg-gradient-to-r from-[#0b0b0c] to-transparent text-white opacity-0 transition-opacity group-hover/shelf:opacity-100 md:grid">
+          <ChevronLeft className="h-7 w-7" />
+        </button>
+        <button type="button" onClick={() => page(1)} aria-label="Scroll top 10 on" className="absolute right-0 top-4 z-10 hidden aspect-video w-12 place-items-center bg-gradient-to-l from-[#0b0b0c] to-transparent text-white opacity-0 transition-opacity group-hover/shelf:opacity-100 md:grid">
+          <ChevronRight className="h-7 w-7" />
+        </button>
+      </div>
+    </section>
+  )
+}
+
 /* ---------------- the browse page ---------------- */
 
 export function TvBrowse({
   featured,
-  recent,
+  top,
   categories,
   projects,
   onOpen,
   onCategory,
 }: {
   featured: Featured[]
-  recent: Project[]
+  top: Project[]
   categories: Category[]
   projects: Project[]
   onOpen: (p: Project) => void
@@ -270,7 +323,8 @@ export function TvBrowse({
     <div id="work" className="scroll-mt-0 bg-[#0b0b0c] pb-24 text-white">
       <Hero items={featured} onOpen={onOpen} onCategory={(n) => onCategory(byName(n))} />
       <div className="relative z-10 -mt-6 sm:-mt-10">
-        <Shelf title="Recently added" projects={recent} onOpen={onOpen} />
+        <TopTen projects={top} onOpen={onOpen} />
+        <div className="h-12" />
         {categories.map((c) => {
           const items = projects.filter((p) => p.category === c.name)
           return items.length ? <Shelf key={c.name} title={c.name} projects={items} onOpen={onOpen} onSeeAll={() => onCategory(c)} /> : null

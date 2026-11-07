@@ -1037,14 +1037,3 @@ export const featured: { title: string; backdrop: string; line?: string }[] = [
   { title: "#WhatIsSexy? — Styling Campaign", backdrop: "work/photography-videography/durex-styling/59.webp" },
 ]
 
-// the newest additions, shown first as "Recently added"
-export const recentlyAdded = [
-  "Titan × Anita Dongre",
-  "Sthetix in Stone",
-  "Xyricon",
-  "Aurevia",
-  "#WhatIsSexy? — Styling Campaign",
-  "#WhatIsSexy?",
-  "Sanganeri Block Print",
-  "WIPO Documentary",
-]
