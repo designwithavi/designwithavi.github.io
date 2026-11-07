@@ -179,3 +179,20 @@ html.dark { color-scheme: dark; }
 html.owl-frost .gf-root:not([data-open]) .gf-sheet { visibility: hidden; }
 
 .font-heading { font-weight: var(--heading-weight); letter-spacing: var(--heading-tracking); }
+
+/* Apple TV-style pages (project, folder, About): always dark, neutral near-black.
+   Applied together with .dark, so every dark: style and token follows. */
+.tv {
+  --paper: #0b0b0c;
+  --ink: #f5f5f7;
+  --ink-2: rgb(245 245 247 / 0.86);
+  --ink-3: rgb(245 245 247 / 0.62);
+  --ink-4: rgb(245 245 247 / 0.42);
+  --line: rgb(255 255 255 / 0.1);
+  --card: #161618;
+  --popover: #1c1c1e;
+  --muted: #232326;
+  --border: rgb(255 255 255 / 0.1);
+  --background: #0b0b0c;
+  color-scheme: dark;
+}

@@ -146,7 +146,7 @@ function Hero({ items, onOpen, onCategory }: { items: Featured[]; onOpen: (p: Pr
 
 /* ---------------- a card with the tvOS focus effect ---------------- */
 
-function Card({ p, onOpen }: { p: Project; onOpen: (p: Project) => void }) {
+export function Card({ p, onOpen, fluid }: { p: Project; onOpen: (p: Project) => void; fluid?: boolean }) {
   const el = useRef<HTMLButtonElement>(null)
   const reduce = useReducedMotion()
   const [tilt, setTilt] = useState({ x: 0, y: 0, on: false })
@@ -158,7 +158,7 @@ function Card({ p, onOpen }: { p: Project; onOpen: (p: Project) => void }) {
   }
 
   return (
-    <div className="w-[72vw] shrink-0 snap-start sm:w-[340px] lg:w-[380px]">
+    <div className={fluid ? "w-full" : "w-[72vw] shrink-0 snap-start sm:w-[340px] lg:w-[380px]"}>
       <button
         ref={el}
         type="button"
@@ -200,7 +200,7 @@ function Card({ p, onOpen }: { p: Project; onOpen: (p: Project) => void }) {
 
 /* ---------------- a shelf ---------------- */
 
-function Shelf({ title, projects, onOpen, onSeeAll }: { title: string; projects: Project[]; onOpen: (p: Project) => void; onSeeAll?: () => void }) {
+export function Shelf({ title, projects, onOpen, onSeeAll }: { title: string; projects: Project[]; onOpen: (p: Project) => void; onSeeAll?: () => void }) {
   const row = useRef<HTMLDivElement>(null)
   const [ends, setEnds] = useState({ start: true, end: false })
   const check = () => {

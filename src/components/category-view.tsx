@@ -1,6 +1,7 @@
 import { motion } from "framer-motion"
 import { ArrowLeft } from "lucide-react"
 import type { Category, Project } from "@/content"
+import { Card } from "@/components/tv-browse"
 
 /** A folder, opened: every project in it as a large card. */
 export function CategoryView({
@@ -16,7 +17,7 @@ export function CategoryView({
 }) {
   return (
     <motion.div
-      className="fixed inset-0 z-50 overflow-y-auto bg-paper"
+      className="dark tv fixed inset-0 z-50 overflow-y-auto bg-paper text-ink"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
@@ -24,7 +25,7 @@ export function CategoryView({
       <button
         type="button"
         onClick={onBack}
-        className="fixed top-4 left-4 z-10 inline-flex items-center gap-2 rounded-full bg-ink px-4 py-2 text-sm text-paper hover:opacity-80"
+        className="fixed top-4 left-4 z-10 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-medium text-white backdrop-blur-xl ring-1 ring-white/10 hover:bg-white/25"
       >
         <ArrowLeft className="h-4 w-4" />
         All work
@@ -38,36 +39,16 @@ export function CategoryView({
           </span>
         </header>
 
-        <div className="grid grid-cols-1 gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
           {projects.map((p, i) => (
-            <motion.button
+            <motion.div
               key={p.title}
-              type="button"
-              onClick={() => onOpen(p)}
               initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1], delay: 0.08 + i * 0.05 }}
-              className="group text-left"
             >
-              <div
-                className="aspect-[4/3] overflow-hidden rounded-2xl"
-                style={{ backgroundColor: p.color }}
-              >
-                {p.cover && (
-                  <img
-                    src={p.cover}
-                    alt=""
-                    loading={i < 6 ? "eager" : "lazy"}
-                    className="h-full w-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
-                  />
-                )}
-              </div>
-              <div className="mt-4 flex items-baseline justify-between gap-4">
-                <h3 className="text-lg font-medium leading-snug text-ink">{p.title}</h3>
-                <span className="shrink-0 text-xs text-ink-4">{p.year}</span>
-              </div>
-              {p.summary && <p className="mt-1 line-clamp-2 text-sm text-ink-3">{p.summary}</p>}
-            </motion.button>
+              <Card p={p} onOpen={onOpen} fluid />
+            </motion.div>
           ))}
         </div>
       </div>
