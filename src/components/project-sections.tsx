@@ -50,7 +50,7 @@ export function ProjectSections({ sections, title }: { sections: Section[]; titl
   return (
     <div className="mt-14">
       {chapters.length > 1 && (
-      <div className="sticky top-0 z-30 -mx-4 border-b border-line bg-paper/90 px-4 py-3 backdrop-blur sm:-mx-8 sm:px-8">
+      <div className="sticky top-0 z-[35] -mx-4 border-b border-line bg-paper/90 py-3 pl-4 pr-28 backdrop-blur sm:-mx-8 sm:pl-8">
         <div ref={nav} className="flex gap-2 overflow-x-auto [scrollbar-width:none]">
           {chapters.map((c, i) => (
             <button

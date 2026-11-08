@@ -7,7 +7,7 @@ import { MinimalistHero, useFitWidth } from "@/components/ui/minimalist-hero"
 import { ProjectGallery } from "@/components/project-gallery"
 import { Flipbook } from "@/components/flipbook"
 import { ProjectSections } from "@/components/project-sections"
-import { categories, featured, projects, site, type Category, type Project } from "@/content"
+import { categories, featured, featuredProjects, gallery, projects, site, type Category, type Project } from "@/content"
 import { Shelf, TvBrowse } from "@/components/tv-browse"
 import { CategoryView } from "@/components/category-view"
 import { useRoute } from "@/route"
@@ -169,29 +169,37 @@ function backdropOf(project: Project) {
   return (wide && typeof wide !== "string" ? wide.src : undefined) ?? project.video?.poster ?? project.cover
 }
 
+/** A soft band at the top of a dark page, so floating buttons never sit on text. */
+export function TopFade() {
+  return <div aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 z-30 h-20 bg-gradient-to-b from-paper via-paper/85 to-transparent" />
+}
+
 /** An Apple TV title page: the project's picture full-bleed, its name and details over it. */
 function TitleHero({ project, onPlay }: { project: Project; onPlay?: () => void }) {
   const ease = [0.22, 1, 0.36, 1] as const
   const meta = [project.category, project.year, project.team && "Team project"].filter(Boolean)
   return (
-    <section className="relative h-[72svh] min-h-[480px] w-full overflow-hidden bg-black sm:h-[82svh]">
-      <motion.img
-        src={backdropOf(project)}
-        alt=""
-        className="absolute inset-0 h-full w-full object-cover"
-        initial={{ scale: 1.08, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 1.6, ease }}
-      />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-paper via-paper/40 to-transparent" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/70 via-black/20 to-transparent" />
+    <section className="relative w-full overflow-hidden bg-paper md:h-[82svh] md:min-h-[520px] md:bg-black">
+      {/* the picture: its own block on phones, the whole backdrop from md up */}
+      <div className="relative aspect-[4/3] w-full overflow-hidden md:absolute md:inset-0 md:aspect-auto">
+        <motion.img
+          src={backdropOf(project)}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+          initial={{ scale: 1.08, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 1.6, ease }}
+        />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-paper to-transparent md:inset-0 md:h-auto md:via-paper/40" />
+        <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-black/70 via-black/20 to-transparent md:block" />
+      </div>
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.7, ease, delay: 0.2 }}
-        className="absolute inset-x-0 bottom-0 mx-auto max-w-6xl px-4 pb-10 sm:px-8 sm:pb-14"
+        className="relative mx-auto max-w-6xl px-4 pb-6 pt-1 sm:px-8 md:absolute md:inset-x-0 md:bottom-0 md:pb-14 md:pt-0"
       >
-        <h2 className="max-w-4xl font-heading text-5xl leading-[0.95] text-white sm:text-7xl">{project.title}</h2>
+        <h2 className="max-w-4xl font-heading text-4xl leading-[0.95] text-white sm:text-6xl md:text-7xl">{project.title}</h2>
         <p className="mt-4 flex flex-wrap items-center gap-x-2 text-sm font-medium text-white/70">
           {meta.map((m, i) => (
             <span key={String(m)} className="flex items-center gap-2">
@@ -233,9 +241,10 @@ function ProjectView({ project, onClose, onOpen }: { project: Project; onClose: 
   }
   return (
     <div className="dark tv fixed inset-0 z-[55] overflow-y-auto bg-paper text-ink animate-in fade-in duration-300">
+      <TopFade />
       <button
         onClick={onClose}
-        className="fixed top-4 right-4 z-20 rounded-full bg-white/15 px-4 py-2 text-sm font-medium text-white ring-1 ring-white/10 backdrop-blur-xl hover:bg-white/25"
+        className="fixed top-4 right-4 z-40 rounded-full bg-white/15 px-4 py-2 text-sm font-medium text-white ring-1 ring-white/10 backdrop-blur-xl hover:bg-white/25"
       >
         Close ✕
       </button>
@@ -380,7 +389,8 @@ function App() {
         <Hero />
         <TvBrowse
           featured={featured.map((f) => ({ ...f, project: projects.find((p) => p.title === f.title)! })).filter((f) => f.project)}
-          top={[...projects].sort((a, b) => (b.stats?.views ?? 0) - (a.stats?.views ?? 0)).slice(0, 10)}
+          picks={featuredProjects.map((t) => projects.find((p) => p.title === t)!).filter(Boolean)}
+          photos={gallery.map((g) => ({ ...g, project: projects.find((p) => p.title === g.project)! })).filter((g) => g.project)}
           categories={categories}
           projects={projects}
           onOpen={(p) => go(categories.find((c) => c.name === p.category)!, p)}

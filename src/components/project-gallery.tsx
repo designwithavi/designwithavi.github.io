@@ -91,12 +91,15 @@ export function Lightbox({
   onIndex,
   onClose,
   title,
+  action,
 }: {
   images: GalleryImage[]
   index: number
   onIndex: (i: number) => void
   onClose: () => void
   title: string
+  /** an optional button under the photo, e.g. to go to its project */
+  action?: { label: string; onClick: () => void }
 }) {
   const step = useCallback((d: number) => onIndex((index + d + images.length) % images.length), [index, images.length, onIndex])
 
@@ -152,10 +155,17 @@ export function Lightbox({
           </button>
         </>
       )}
-      <p className="absolute bottom-4 left-1/2 -translate-x-1/2 text-xs uppercase tracking-[0.18em] text-white/60">
-        {caption ? `${caption} · ` : ""}
-        {index + 1} / {images.length}
-      </p>
+      <div className="absolute bottom-4 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3">
+        {action && (
+          <button type="button" onClick={(e) => (e.stopPropagation(), action.onClick())} className="rounded-full bg-white px-5 py-2 text-sm font-semibold text-black hover:bg-white/90">
+            {action.label} →
+          </button>
+        )}
+        <p className="whitespace-nowrap text-xs uppercase tracking-[0.18em] text-white/60">
+          {caption ? `${caption} · ` : ""}
+          {index + 1} / {images.length}
+        </p>
+      </div>
     </motion.div>
   )
 }

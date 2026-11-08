@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import type { Category, Project } from "@/content"
+import { Lightbox } from "@/components/project-gallery"
 
 /**
  * The work, browsed like the Apple TV app: a cinematic featured hero that
@@ -32,12 +33,14 @@ function Hero({ items, onOpen, onCategory }: { items: Featured[]; onOpen: (p: Pr
   const f = items[at]
   return (
     <section
-      className="relative h-[78svh] min-h-[520px] w-full overflow-hidden bg-black sm:h-[86svh]"
+      className="relative w-full overflow-hidden bg-[#0b0b0c] md:h-[86svh] md:min-h-[560px] md:bg-black"
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       aria-roledescription="carousel"
       aria-label="Featured projects"
     >
+      {/* the picture: its own block on phones, the whole backdrop from md up */}
+      <div className="relative aspect-[4/3] w-full overflow-hidden md:absolute md:inset-0 md:aspect-auto">
       <AnimatePresence initial={false}>
         <motion.div
           key={f.backdrop}
@@ -58,12 +61,12 @@ function Hero({ items, onOpen, onCategory }: { items: Featured[]; onOpen: (p: Pr
           />
         </motion.div>
       </AnimatePresence>
+      {/* legibility: a dark wash from the bottom (and the left, where the text sits on wide screens) */}
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-[#0b0b0c] to-transparent md:inset-0 md:h-auto md:via-[#0b0b0c]/40" />
+      <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-black/70 via-black/20 to-transparent md:block" />
+      </div>
 
-      {/* legibility: a dark wash from the bottom and the left */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0b0b0c] via-[#0b0b0c]/40 to-transparent" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/70 via-black/20 to-transparent" />
-
-      <div className="absolute inset-x-0 bottom-0 mx-auto max-w-7xl px-5 pb-14 sm:px-10 sm:pb-20">
+      <div className="relative mx-auto max-w-7xl px-5 pb-10 pt-2 sm:px-10 md:absolute md:inset-x-0 md:bottom-0 md:pb-20 md:pt-0">
         <AnimatePresence mode="wait">
           <motion.div
             key={f.project.title}
@@ -71,14 +74,14 @@ function Hero({ items, onOpen, onCategory }: { items: Featured[]; onOpen: (p: Pr
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -12 }}
             transition={{ duration: 0.6, ease }}
-            className="max-w-2xl"
+            className="min-h-[248px] max-w-2xl sm:min-h-0"
           >
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
               {f.project.category}
               {f.project.year && ` · ${f.project.year}`}
             </p>
-            <h2 className="mt-3 font-heading text-5xl leading-[0.95] text-white sm:text-7xl">{f.project.title}</h2>
-            <p className="mt-4 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">{f.line ?? f.project.summary}</p>
+            <h2 className="mt-3 font-heading text-4xl leading-[0.95] text-white sm:text-6xl md:text-7xl">{f.project.title}</h2>
+            <p className="mt-4 line-clamp-3 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">{f.line ?? f.project.summary}</p>
             <div className="mt-7 flex flex-wrap gap-3">
               <button
                 type="button"
@@ -99,7 +102,7 @@ function Hero({ items, onOpen, onCategory }: { items: Featured[]; onOpen: (p: Pr
         </AnimatePresence>
 
         {/* position: a pill per slide, the current one filling as it plays */}
-        <div className="mt-10 flex items-center gap-2">
+        <div className="mt-8 flex items-center gap-2 md:mt-10">
           {items.map((it, i) => (
             <button
               key={it.project.title}
@@ -146,7 +149,7 @@ function Hero({ items, onOpen, onCategory }: { items: Featured[]; onOpen: (p: Pr
 
 /* ---------------- a card with the tvOS focus effect ---------------- */
 
-export function Card({ p, onOpen, fluid, bare }: { p: Project; onOpen: (p: Project) => void; fluid?: boolean; bare?: boolean }) {
+export function Card({ p, onOpen, fluid, bare, big }: { p: Project; onOpen: (p: Project) => void; fluid?: boolean; bare?: boolean; big?: boolean }) {
   const el = useRef<HTMLButtonElement>(null)
   const reduce = useReducedMotion()
   const [tilt, setTilt] = useState({ x: 0, y: 0, on: false })
@@ -158,7 +161,7 @@ export function Card({ p, onOpen, fluid, bare }: { p: Project; onOpen: (p: Proje
   }
 
   return (
-    <div className={fluid ? "w-full" : "w-[72vw] shrink-0 snap-start sm:w-[340px] lg:w-[380px]"}>
+    <div className={fluid ? "w-full" : big ? "w-[84vw] shrink-0 snap-start sm:w-[520px] lg:w-[600px]" : "w-[72vw] shrink-0 snap-start sm:w-[340px] lg:w-[380px]"}>
       <button
         ref={el}
         type="button"
@@ -193,6 +196,7 @@ export function Card({ p, onOpen, fluid, bare }: { p: Project; onOpen: (p: Proje
         <p className="mt-0.5 truncate text-[13px] text-white/50">
           {[p.category, p.year].filter(Boolean).join(" · ")}
         </p>
+        {big && p.summary && <p className="mt-2 line-clamp-2 max-w-md text-sm leading-snug text-white/70">{p.summary}</p>}
       </div>}
     </div>
   )
@@ -200,7 +204,7 @@ export function Card({ p, onOpen, fluid, bare }: { p: Project; onOpen: (p: Proje
 
 /* ---------------- a shelf ---------------- */
 
-export function Shelf({ title, projects, onOpen, onSeeAll }: { title: string; projects: Project[]; onOpen: (p: Project) => void; onSeeAll?: () => void }) {
+export function Shelf({ title, subtitle, projects, onOpen, onSeeAll, big }: { title: string; subtitle?: string; projects: Project[]; onOpen: (p: Project) => void; onSeeAll?: () => void; big?: boolean }) {
   const row = useRef<HTMLDivElement>(null)
   const [ends, setEnds] = useState({ start: true, end: false })
   const check = () => {
@@ -220,8 +224,9 @@ export function Shelf({ title, projects, onOpen, onSeeAll }: { title: string; pr
             <ChevronRight className="h-5 w-5 text-white/50 transition-transform group-hover/t:translate-x-1" />
           </button>
         ) : (
-          <h3 className="text-xl font-semibold text-white sm:text-2xl">{title}</h3>
+          <h3 className={`font-semibold text-white ${big ? "text-2xl sm:text-3xl" : "text-xl sm:text-2xl"}`}>{title}</h3>
         )}
+        {subtitle && <p className="mt-1 text-sm text-white/45">{subtitle}</p>}
       </div>
       <div className="relative mx-auto max-w-7xl">
         <div
@@ -230,7 +235,7 @@ export function Shelf({ title, projects, onOpen, onSeeAll }: { title: string; pr
           className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 pt-4 [scroll-padding-inline:1.25rem] [scrollbar-width:none] sm:gap-6 sm:px-10 sm:[scroll-padding-inline:2.5rem] [&::-webkit-scrollbar]:hidden"
         >
           {projects.map((p) => (
-            <Card key={p.title} p={p} onOpen={onOpen} />
+            <Card key={p.title} p={p} onOpen={onOpen} big={big} />
           ))}
         </div>
         {!ends.start && (
@@ -248,55 +253,48 @@ export function Shelf({ title, projects, onOpen, onSeeAll }: { title: string; pr
   )
 }
 
-/* ---------------- top 10: big rank numbers beside the cards ---------------- */
+/* ---------------- photo gallery ---------------- */
 
-function TopTen({ projects, onOpen }: { projects: Project[]; onOpen: (p: Project) => void }) {
-  const row = useRef<HTMLDivElement>(null)
-  const page = (d: 1 | -1) => row.current?.scrollBy({ left: d * row.current.clientWidth * 0.85, behavior: "smooth" })
+export type GalleryPhoto = { src: string; w: number; h: number; project: Project }
+
+function PhotoGallery({ photos, onOpen }: { photos: GalleryPhoto[]; onOpen: (p: Project) => void }) {
+  const [zoom, setZoom] = useState<number | null>(null)
+  const images = photos.map((ph) => ({ src: ph.src, w: ph.w, h: ph.h, caption: ph.project.title }))
   return (
-    <section className="group/shelf relative">
-      <div className="mx-auto max-w-7xl px-5 sm:px-10">
-        <h3 className="text-xl font-semibold text-white sm:text-2xl">Top 10 projects</h3>
-        <p className="mt-1 text-sm text-white/45">Most viewed on Behance</p>
-      </div>
-      <div className="relative mx-auto max-w-7xl">
-        <div
-          ref={row}
-          className="flex snap-x snap-mandatory gap-2 overflow-x-auto px-5 pb-4 pt-4 [scroll-padding-inline:1.25rem] [scrollbar-width:none] sm:gap-4 sm:px-10 sm:[scroll-padding-inline:2.5rem] [&::-webkit-scrollbar]:hidden"
-        >
-          {projects.map((p, i) => (
-            <div key={p.title} className="shrink-0 snap-start">
-              {/* the rank: a tall outlined numeral standing on the same line as the picture */}
-              <div className="flex items-end">
-                <span
-                  aria-hidden="true"
-                  className="relative z-0 -mr-1 select-none font-heading text-[120px] font-bold leading-[0.74] text-[#0b0b0c] sm:-mr-2 sm:text-[170px]"
-                  style={{ WebkitTextStroke: "3px rgba(255,255,255,.5)", letterSpacing: i === 9 ? "-0.1em" : undefined }}
-                >
-                  {i + 1}
-                </span>
-                <div className="relative z-10">
-                  <span className="sr-only">Number {i + 1}: </span>
-                  <Card p={p} onOpen={onOpen} bare />
-                </div>
-              </div>
-              <div className="mt-3 flex items-baseline gap-2 pl-1">
-                <span className="font-mono text-xs text-white/40">#{i + 1}</span>
-                <div className="min-w-0">
-                  <p className="truncate text-[15px] font-semibold text-white">{p.title}</p>
-                  <p className="truncate text-[13px] text-white/50">{(p.stats?.views ?? 0).toLocaleString("en-US")} views · {p.category}</p>
-                </div>
-              </div>
-            </div>
-          ))}
+    <section className="mx-auto mt-20 max-w-7xl px-5 sm:px-10">
+      <div className="mb-8 flex flex-wrap items-end justify-between gap-3 border-t border-white/10 pt-12">
+        <div>
+          <h3 className="text-2xl font-semibold text-white sm:text-3xl">Photo gallery</h3>
+          <p className="mt-1 text-sm text-white/45">Frames from the shoots</p>
         </div>
-        <button type="button" onClick={() => page(-1)} aria-label="Scroll top 10 back" className="absolute left-0 top-4 z-10 hidden aspect-video w-12 place-items-center bg-gradient-to-r from-[#0b0b0c] to-transparent text-white opacity-0 transition-opacity group-hover/shelf:opacity-100 md:grid">
-          <ChevronLeft className="h-7 w-7" />
-        </button>
-        <button type="button" onClick={() => page(1)} aria-label="Scroll top 10 on" className="absolute right-0 top-4 z-10 hidden aspect-video w-12 place-items-center bg-gradient-to-l from-[#0b0b0c] to-transparent text-white opacity-0 transition-opacity group-hover/shelf:opacity-100 md:grid">
-          <ChevronRight className="h-7 w-7" />
-        </button>
+        <p className="text-xs uppercase tracking-[0.2em] text-white/35">{photos.length} photographs</p>
       </div>
+      {/* columns of photos at their own shapes; tap to see one large */}
+      <div className="columns-2 gap-3 sm:gap-4 lg:columns-3">
+        {photos.map((ph, i) => (
+          <motion.button
+            key={ph.src}
+            type="button"
+            onClick={() => setZoom(i)}
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-40px" }}
+            transition={{ duration: 0.6, ease, delay: (i % 3) * 0.06 }}
+            className="group relative mb-3 block w-full overflow-hidden rounded-xl bg-white/5 break-inside-avoid sm:mb-4"
+            aria-label={`Photo from ${ph.project.title}`}
+          >
+            <img src={ph.src} width={ph.w} height={ph.h} alt="" loading="lazy" className="block h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
+            <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-2.5 pt-8 text-left text-xs font-medium text-white/90 opacity-100 transition-opacity duration-300 md:opacity-0 md:group-hover:opacity-100">
+              {ph.project.title}
+            </span>
+          </motion.button>
+        ))}
+      </div>
+      <AnimatePresence>
+        {zoom !== null && (
+          <Lightbox images={images} index={zoom} onIndex={setZoom} onClose={() => setZoom(null)} title="Photo gallery" action={{ label: "View project", onClick: () => (setZoom(null), onOpen(photos[zoom].project)) }} />
+        )}
+      </AnimatePresence>
     </section>
   )
 }
@@ -305,14 +303,16 @@ function TopTen({ projects, onOpen }: { projects: Project[]; onOpen: (p: Project
 
 export function TvBrowse({
   featured,
-  top,
+  picks,
+  photos,
   categories,
   projects,
   onOpen,
   onCategory,
 }: {
   featured: Featured[]
-  top: Project[]
+  picks: Project[]
+  photos: GalleryPhoto[]
   categories: Category[]
   projects: Project[]
   onOpen: (p: Project) => void
@@ -323,8 +323,13 @@ export function TvBrowse({
     <div id="work" className="scroll-mt-0 bg-[#0b0b0c] pb-24 text-white">
       <Hero items={featured} onOpen={onOpen} onCategory={(n) => onCategory(byName(n))} />
       <div className="relative z-10 -mt-6 sm:-mt-10">
-        <TopTen projects={top} onOpen={onOpen} />
-        <div className="h-12" />
+        <Shelf title="Featured projects" subtitle="A few to start with" projects={picks} onOpen={onOpen} big />
+        <PhotoGallery photos={photos} onOpen={onOpen} />
+        <div className="mx-auto mt-20 max-w-7xl border-t border-white/10 px-5 pt-12 sm:px-10">
+          <h3 className="text-2xl font-semibold text-white sm:text-3xl">All projects</h3>
+          <p className="mt-1 text-sm text-white/45">By discipline</p>
+        </div>
+        <div className="h-8" />
         {categories.map((c) => {
           const items = projects.filter((p) => p.category === c.name)
           return items.length ? <Shelf key={c.name} title={c.name} projects={items} onOpen={onOpen} onSeeAll={() => onCategory(c)} /> : null

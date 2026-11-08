@@ -465,6 +465,15 @@ export function OwlSwitch() {
   const [awake, setAwake] = useState(isDark)
   const [flying, setFlying] = useState(false)
   const [crouch, setCrouch] = useState(false)
+  // the owl lives on the landing: it steps aside once the dark Work section reaches the top
+  const [away, setAway] = useState(false)
+  useEffect(() => {
+    const work = document.getElementById("work")
+    if (!work) return
+    const io = new IntersectionObserver(([e]) => setAway(e.isIntersecting || e.boundingClientRect.top < 0), { rootMargin: "0px 0px -88% 0px" })
+    io.observe(work)
+    return () => io.disconnect()
+  }, [])
   const [landed, setLanded] = useState(false)
   const busy = useRef(false)
   const perchRef = useRef<HTMLButtonElement>(null)
@@ -662,7 +671,7 @@ export function OwlSwitch() {
   return (
     <>
       <style>{OWL_CSS}</style>
-      <div className="owl-roost">
+      <div className="owl-roost" style={{ opacity: away && !flying ? 0 : 1, pointerEvents: away ? "none" : undefined, transition: "opacity .4s ease" }} aria-hidden={away || undefined}>
         <Branch />
         <button
           ref={perchRef}

@@ -1037,3 +1037,37 @@ export const featured: { title: string; backdrop: string; line?: string }[] = [
   { title: "#WhatIsSexy? — Styling Campaign", backdrop: "work/photography-videography/durex-styling/59.webp" },
 ]
 
+
+// ─────────────────────────────────────────────────────────────
+//  PHOTO GALLERY — photographs shown on the home page between the featured
+//  projects and the rest. Each photo names the project it belongs to.
+// ─────────────────────────────────────────────────────────────
+export const gallery: { src: string; w: number; h: number; project: string }[] = [
+  { src: "work/photography-videography/shorona/shoot/02.webp", w: 1400, h: 2099, project: "Shorona: Costume Styling" },
+  { src: "work/photography-videography/fashion-editorial/05.webp", w: 1400, h: 2100, project: "Fashion Editorial Shoot" },
+  { src: "work/photography-videography/keibu-keioiba/shoot/04.webp", w: 1400, h: 2100, project: "Studio Photography: Keibu Keioiba" },
+  { src: "work/photography-videography/durex-styling/shoot/01.webp", w: 1190, h: 1684, project: "#WhatIsSexy? — Styling Campaign" },
+  { src: "work/photography-videography/shorona/shoot/06.webp", w: 1400, h: 2099, project: "Shorona: Costume Styling" },
+  { src: "work/photography-videography/fashion-editorial/13.webp", w: 1600, h: 1067, project: "Fashion Editorial Shoot" },
+  { src: "work/photography-videography/keibu-keioiba/shoot/01.webp", w: 1400, h: 932, project: "Studio Photography: Keibu Keioiba" },
+  { src: "work/photography-videography/sthetix-in-stone/02.webp", w: 1400, h: 934, project: "Sthetix in Stone" },
+  { src: "work/photography-videography/shorona/shoot/12.webp", w: 1400, h: 1867, project: "Shorona: Costume Styling" },
+  { src: "work/photography-videography/fashion-editorial/07.webp", w: 1400, h: 2100, project: "Fashion Editorial Shoot" },
+  { src: "work/photography-videography/durex-styling/shoot/05.webp", w: 1190, h: 1684, project: "#WhatIsSexy? — Styling Campaign" },
+  { src: "work/photography-videography/faredoons/shoot/03.webp", w: 1594, h: 1061, project: "Faredoon's Food Photography" },
+  { src: "work/photography-videography/keibu-keioiba/shoot/05.webp", w: 1400, h: 934, project: "Studio Photography: Keibu Keioiba" },
+  { src: "work/photography-videography/fashion-editorial/02.webp", w: 1400, h: 2100, project: "Fashion Editorial Shoot" },
+  { src: "work/photography-videography/shorona/shoot/16.webp", w: 1400, h: 2488, project: "Shorona: Costume Styling" },
+  { src: "work/photography-videography/sthetix-in-stone/07.webp", w: 1600, h: 1068, project: "Sthetix in Stone" },
+]
+
+// ─────────────────────────────────────────────────────────────
+//  FEATURED PROJECTS — the row of big cards right below the banner.
+// ─────────────────────────────────────────────────────────────
+export const featuredProjects = [
+  "Fashion Editorial Shoot",
+  "Xyricon",
+  "#WhatIsSexy? — Styling Campaign",
+  "Shorona: Costume Styling",
+  "Faredoon's Food Photography",
+]

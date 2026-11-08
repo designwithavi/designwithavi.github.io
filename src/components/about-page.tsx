@@ -110,10 +110,11 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease }}
     >
+      <div aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 z-30 h-20 bg-gradient-to-b from-paper via-paper/85 to-transparent" />
       <button
         type="button"
         onClick={onBack}
-        className="fixed top-4 left-4 z-10 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-medium text-white backdrop-blur-xl ring-1 ring-white/10 hover:bg-white/25"
+        className="fixed top-4 left-4 z-40 inline-flex items-center gap-2 rounded-full bg-white/15 px-4 py-2 text-sm font-medium text-white backdrop-blur-xl ring-1 ring-white/10 hover:bg-white/25"
       >
         <ArrowLeft className="h-4 w-4" />
         Home
