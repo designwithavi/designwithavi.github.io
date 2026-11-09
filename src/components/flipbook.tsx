@@ -50,8 +50,9 @@ function Page({ src, side, eager }: { src: string | null; side: "l" | "r"; eager
   )
 }
 
-export function Flipbook({ pages, ratio, title }: { pages: string[]; ratio: number; title: string }) {
-  const single = useNarrow()
+export function Flipbook({ pages, ratio, title, single: onePage }: { pages: string[]; ratio: number; title: string; single?: boolean }) {
+  const narrow = useNarrow()
+  const single = narrow || !!onePage
   const spreads = spreadsOf(pages, single)
   const [at, setAt] = useState(0)
   const [flip, setFlip] = useState<Flip | null>(null)

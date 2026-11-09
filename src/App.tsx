@@ -169,6 +169,16 @@ function backdropOf(project: Project) {
   return (wide && typeof wide !== "string" ? wide.src : undefined) ?? project.video?.poster ?? project.cover
 }
 
+/** A highlight pill, e.g. "Internship". */
+export function Badge({ children }: { children: React.ReactNode }) {
+  return (
+    <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-[#3b5bff] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white shadow-[0_6px_20px_-6px_rgba(59,91,255,.8)]">
+      <span className="size-1.5 rounded-full bg-white" />
+      {children}
+    </span>
+  )
+}
+
 /** A soft band at the top of a dark page, so floating buttons never sit on text. */
 export function TopFade() {
   return <div aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 z-30 h-20 bg-gradient-to-b from-paper via-paper/85 to-transparent" />
@@ -177,7 +187,7 @@ export function TopFade() {
 /** An Apple TV title page: the project's picture full-bleed, its name and details over it. */
 function TitleHero({ project, onPlay }: { project: Project; onPlay?: () => void }) {
   const ease = [0.22, 1, 0.36, 1] as const
-  const meta = [project.category, project.year, project.team && "Team project"].filter(Boolean)
+  const meta = [project.badge ? undefined : project.category, project.year, project.team && "Team project"].filter(Boolean)
   return (
     <section className="relative w-full overflow-hidden bg-paper md:h-[82svh] md:min-h-[520px] md:bg-black">
       {/* the picture: its own block on phones, the whole backdrop from md up */}
@@ -199,6 +209,7 @@ function TitleHero({ project, onPlay }: { project: Project; onPlay?: () => void 
         transition={{ duration: 0.7, ease, delay: 0.2 }}
         className="relative mx-auto max-w-6xl px-4 pb-6 pt-1 sm:px-8 md:absolute md:inset-x-0 md:bottom-0 md:pb-14 md:pt-0"
       >
+        {project.badge && <Badge>{project.badge}</Badge>}
         <h2 className="max-w-4xl font-heading text-4xl leading-[0.95] text-white sm:text-6xl md:text-7xl">{project.title}</h2>
         <p className="mt-4 flex flex-wrap items-center gap-x-2 text-sm font-medium text-white/70">
           {meta.map((m, i) => (
@@ -268,10 +279,10 @@ function ProjectView({ project, onClose, onOpen }: { project: Project; onClose: 
             />
           </section>
         )}
-        {project.flipbook && (
+        {project.flipbook && !project.sections && (
           <section className="mt-12">
             <h3 className="mb-6 font-heading text-3xl sm:text-4xl">{project.flipbook.label}</h3>
-            <Flipbook pages={project.flipbook.pages} ratio={project.flipbook.ratio} title={project.title} />
+            <Flipbook pages={project.flipbook.pages} ratio={project.flipbook.ratio} title={project.title} single={project.flipbook.single} />
           </section>
         )}
         {project.embed && (
@@ -294,7 +305,15 @@ function ProjectView({ project, onClose, onOpen }: { project: Project; onClose: 
           </section>
         )}
         {project.sections ? (
-          <ProjectSections sections={project.sections} title={project.title} />
+          <>
+            <ProjectSections sections={project.sections} title={project.title} />
+        {project.flipbook && (
+          <section className="mt-20 border-t border-line pt-14">
+            <h3 className="mb-6 font-heading text-3xl sm:text-4xl">{project.flipbook.label}</h3>
+            <Flipbook pages={project.flipbook.pages} ratio={project.flipbook.ratio} title={project.title} single={project.flipbook.single} />
+          </section>
+        )}
+          </>
         ) : (
         <div className="mt-12">
           {project.cover ? (

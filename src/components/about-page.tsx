@@ -22,6 +22,7 @@ const SKILLS = ["Photography", "Film", "Styling", "Props", "Branding", "Typograp
 
 // one colour per folder, picked from its glass-folder swirl
 const FOLDER_COLORS: Record<string, { color: string; ink: "dark" | "light" }> = {
+  Internship: { color: "#3b5bff", ink: "light" },
   "Visual Merchandising": { color: "#c9a3d6", ink: "dark" },
   "Photography & Videography": { color: "#f2b8a8", ink: "dark" },
   Branding: { color: "#a9cfa4", ink: "dark" },
@@ -219,6 +220,15 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
           <p className="mt-3 text-ink-3">{internship.role}</p>
         </div>
         <ScrollTimeline items={internship.milestones} scroller={scroller} />
+        <div className="mt-16 flex justify-center">
+          <a
+            href="#/work/internship/sipwise-visual-design-internship"
+            className="group inline-flex items-center gap-2 rounded-full bg-[#3b5bff] px-7 py-3.5 text-sm font-semibold text-white shadow-[0_10px_30px_-10px_rgba(59,91,255,.9)] transition hover:scale-[1.03]"
+          >
+            See the full internship project
+            <span className="transition-transform group-hover:translate-x-1">→</span>
+          </a>
+        </div>
       </section>
 
       {/* how I work: full width, pinned while it slides */}

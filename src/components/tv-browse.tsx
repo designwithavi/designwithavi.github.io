@@ -78,9 +78,15 @@ function Hero({ items, onOpen, onCategory }: { items: Featured[]; onOpen: (p: Pr
             transition={{ duration: 0.6, ease }}
             className="min-h-[248px] max-w-2xl sm:min-h-0"
           >
+            {f.project.badge && (
+              <span className="mb-3 inline-flex items-center gap-1.5 rounded-full bg-[#3b5bff] px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.16em] text-white">
+                <span className="size-1.5 rounded-full bg-white" />
+                {f.project.badge}
+              </span>
+            )}
             <p className="text-xs font-semibold uppercase tracking-[0.22em] text-white/70">
-              {f.project.category}
-              {f.project.year && ` · ${f.project.year}`}
+              {f.project.badge ? f.project.year : f.project.category}
+              {!f.project.badge && f.project.year && ` · ${f.project.year}`}
             </p>
             <h2 className="mt-3 font-heading text-4xl leading-[0.95] text-white sm:text-6xl md:text-7xl">{f.project.title}</h2>
             <p className="mt-4 line-clamp-3 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">{f.line ?? f.project.summary}</p>
@@ -183,6 +189,9 @@ export function Card({ p, onOpen, fluid, bare, big }: { p: Project; onOpen: (p: 
           }}
         >
           {p.cover && <img src={p.cover} alt="" loading="lazy" className="h-full w-full object-cover object-top" draggable={false} />}
+          {p.badge && (
+            <span className="absolute left-2.5 top-2.5 rounded-full bg-[#3b5bff] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white shadow-lg">{p.badge}</span>
+          )}
           {/* the sheen that follows the pointer */}
           <span
             className="pointer-events-none absolute inset-0 transition-opacity duration-300"
@@ -419,9 +428,12 @@ function FeaturedRing({ picks, onOpen }: { picks: FeaturedPick[]; onOpen: (p: Pr
               >
                 <img src={f.image} alt="" draggable={false} className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: f.pos ?? "center" }} />
                 <span className="absolute inset-x-0 bottom-0 block bg-gradient-to-t from-black/90 via-black/50 to-transparent p-5 pt-20">
+                  {f.project.badge && (
+                    <span className="mb-2 inline-block rounded-full bg-[#3b5bff] px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.14em] text-white">{f.project.badge}</span>
+                  )}
                   <span className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60">
-                    {f.project.category}
-                    {f.project.year && ` · ${f.project.year}`}
+                    {f.project.badge ? f.project.year : f.project.category}
+                    {!f.project.badge && f.project.year && ` · ${f.project.year}`}
                   </span>
                   <span className="mt-1 block font-heading text-2xl leading-tight text-white sm:text-3xl">{f.project.title}</span>
                   {front && <span className="mt-3 inline-block rounded-full bg-white px-4 py-1.5 text-xs font-semibold text-black">View project →</span>}
