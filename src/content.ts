@@ -42,7 +42,7 @@ export const site = {
 
   education: [
     { title: "B.Des, Fashion Communication", detail: "NIFT Mumbai", years: "2023 – 2027" },
-    { title: "Internship, 8 weeks", detail: "Sipwise Technologies Pvt. Ltd", years: "" }, // TODO: role and dates from the internship PDF
+    { title: "Visual Design Intern", detail: "Sipwise Technologies Pvt. Ltd · 8 weeks", years: "Jun – Jul 2026" },
   ],
 
   // Put your CV PDF inside the "public" folder and name it cv.pdf
@@ -1072,3 +1072,37 @@ export const featuredProjects: { title: string; image: string; pos?: string; ima
   { title: "Shorona: Costume Styling", image: "work/photography-videography/shorona/shoot/02.webp", image2: "work/photography-videography/shorona/shoot/13.webp" },
   { title: "Faredoon's Food Photography", image: "work/photography-videography/faredoons/shoot/03.webp", image2: "work/photography-videography/faredoons/shoot/06.webp" },
 ]
+
+// ─────────────────────────────────────────────────────────────
+//  INTERNSHIP JOURNEY — the timeline on the About page (from the internship report).
+// ─────────────────────────────────────────────────────────────
+const SW = "about/sipwise/"
+export const internship = {
+  company: "Sipwise Technologies",
+  role: "Visual / Communication Design Intern",
+  period: "1 June – 24 July 2026",
+  milestones: [
+    { kicker: "1 June 2026 · Day one", cap: true, title: "Joining Sipwise", image: SW + "start.webp",
+      text: "Sipwise, born in IIT Bombay's innovation ecosystem, makes smart bottles to change the way people (don't) drink water. I joined the design team as a Visual / Communication Design Intern, mentored by Suraj Kinare, Head of Product." },
+    { kicker: "Set design", title: "Exhibition booth — GIFT India 2026", image: SW + "booth-3d.webp",
+      text: "A compact 8 sq. m booth for a high-traffic trade show: site research, circulation and spatial planning, fascia explorations, a 3D model in Blender, costing, and the creatives announcing the stall." },
+    { kicker: "Set design · on site", title: "From 3D to reality", image: SW + "booth-real.webp",
+      text: "The booth was built. Comparing the render with the finished stall showed what carried through — the fascia, illuminated branding, product display and colour." },
+    { kicker: "Website UI", title: "World Hydration Day — official website", image: SW + "website.webp",
+      text: "A responsive hub for the campaign: site map and user journey from awareness to action, five competition pages, and the desktop and mobile designs." },
+    { kicker: "Social media", title: "\"Hydration Hero\" launch carousel", image: SW + "carousel.webp",
+      text: "The Instagram page's opening post — a story-led carousel that hooks with a character's origin story rather than an announcement." },
+    { kicker: "Social media", title: "Age-wise competition series", image: SW + "competition.webp",
+      text: "Announcement posts for five age-specific competitions: one graphic system, a distinct look for each." },
+    { kicker: "Packaging", title: "Sipwise NEO × Axis Max Life — Diwali gifting", image: SW + "diwali.webp",
+      text: "Premium festive packaging for corporate gifting: a deep maroon and gold palette, restrained patterns and a clear information hierarchy." },
+    { kicker: "Branding", title: "Founder & CEO visiting card", image: SW + "card.webp",
+      text: "A clean, tech-forward card that balances the founder's identity with the Sipwise brand." },
+    { kicker: "Print", title: "Sipwise Lite+ launch brochure", image: SW + "brochure.webp",
+      text: "A print-ready brochure introducing the bottle's features and app-connected hydration, product-led and easy to scan." },
+    { kicker: "Print", title: "The full product catalogue", image: SW + "catalogue.webp",
+      text: "The whole range in one modular system — product, features, specifications and variants, page after page." },
+    { kicker: "24 July 2026 · Wrap-up", cap: true, title: "Designing for different formats", image: SW + "learnings.webp",
+      text: "Eight weeks across digital, print, packaging and spatial work taught me to treat design as problem-solving — and to adapt one message to every format, audience and constraint." },
+  ],
+}

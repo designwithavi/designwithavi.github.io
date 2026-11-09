@@ -5,7 +5,8 @@ import { CharacterWalker } from "@/components/character-scene"
 import { AnalyticsBento } from "@/components/ui/analytics-bento"
 import { DesignProcess, type ProcessStep } from "@/components/design-process"
 import * as Art from "@/components/process-illustrations"
-import { categories, projects as allProjects, site } from "@/content"
+import { categories, internship, projects as allProjects, site } from "@/content"
+import { ScrollTimeline } from "@/components/scroll-timeline"
 
 // a project without a year yet can't be placed on the timeline: leave it out until it has one
 const projects = allProjects.filter((p) => /^\d{4}$/.test(p.year))
@@ -207,6 +208,18 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
         </section>
 
       </div>
+
+      {/* the internship, as a journey */}
+      <section className="mx-auto max-w-6xl border-b border-line px-4 py-16 sm:px-8">
+        <div className="mb-12 md:text-center">
+          <p className="mb-4 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-ink-3 md:justify-center">
+            <span className="size-2 rounded-full bg-[#3b5bff]" /> Internship · {internship.period}
+          </p>
+          <h3 className="font-heading text-4xl leading-none sm:text-6xl">Eight weeks at {internship.company}</h3>
+          <p className="mt-3 text-ink-3">{internship.role}</p>
+        </div>
+        <ScrollTimeline items={internship.milestones} scroller={scroller} />
+      </section>
 
       {/* how I work: full width, pinned while it slides */}
       <div className="border-b border-line">
