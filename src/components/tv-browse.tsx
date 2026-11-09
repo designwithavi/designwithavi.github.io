@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion"
+import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useSpring } from "framer-motion"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import type { Category, Project } from "@/content"
 import { Lightbox } from "@/components/project-gallery"
@@ -39,7 +39,7 @@ function Hero({ items, onOpen, onCategory }: { items: Featured[]; onOpen: (p: Pr
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       aria-roledescription="carousel"
-      aria-label="Featured projects"
+      aria-label="Highlights"
     >
       {/* the picture: its own block on phones, the whole backdrop from md up */}
       <div className="relative aspect-[4/3] w-full overflow-hidden md:absolute md:inset-0 md:aspect-auto">
@@ -272,9 +272,9 @@ function hueOf(hex: string) {
 function useRingSize() {
   const get = () => {
     const w = window.innerWidth
-    if (w < 640) return { cardW: Math.min(260, w * 0.68), cardH: Math.min(360, w * 0.94), radius: 470 }
-    if (w < 1024) return { cardW: 320, cardH: 440, radius: 580 }
-    return { cardW: 360, cardH: 490, radius: 650 }
+    if (w < 640) return { cardW: Math.min(260, w * 0.68), cardH: Math.min(360, w * 0.94), radius: 470, height: Math.min(420, w * 1.08) }
+    if (w < 1024) return { cardW: 320, cardH: 440, radius: 580, height: 520 }
+    return { cardW: 360, cardH: 490, radius: 650, height: 570 }
   }
   const [s, setS] = useState(get)
   useEffect(() => {
@@ -286,68 +286,156 @@ function useRingSize() {
 }
 
 /**
- * Pinned while you look: the section holds the screen once it's centred, and
- * scrolling turns the ring card by card — forward going down, back going up —
- * before the page moves on.
+ * The ring turns only sideways — swipe or drag left/right, a sideways trackpad
+ * swipe, the arrow buttons or ← → keys — and settles on the nearest card. Up
+ * and down always scroll the page, untouched.
  */
 function FeaturedRing({ picks, onOpen }: { picks: FeaturedPick[]; onOpen: (p: Project) => void }) {
-  const section = useRef<HTMLElement>(null)
   const size = useRingSize()
-  const per = 360 / picks.length
-  const [at, setAt] = useState(0)
-  const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] })
-  useMotionValueEvent(scrollYProgress, "change", (v) => setAt(Math.min(picks.length - 1, Math.round(v * (picks.length - 1)))))
+  const n = picks.length
+  const per = 360 / n
+  const [step, setStep] = useState(0) // which card is in front (unbounded; wraps round the ring)
+  const [dragDeg, setDragDeg] = useState(0) // live offset while a finger or mouse is down
+  const target = -(step * per) + dragDeg
+  const spring = useSpring(0, { stiffness: 140, damping: 22 })
+  const [rotation, setRotation] = useState(0)
+  useMotionValueEvent(spring, "change", setRotation)
+  useEffect(() => {
+    if (dragDeg) spring.jump(target)
+    else spring.set(target)
+  }, [target, dragDeg, spring])
+
+  const go = (d: number) => setStep((s) => s + d)
+  const at = ((step % n) + n) % n
+
+  // finger / mouse: only a mostly-sideways gesture turns the ring
+  const drag = useRef<{ x: number; y: number; id: number; dir: "x" | "y" | null; moved: boolean } | null>(null)
+  const degPerPx = per / (size.cardW * 0.9)
+  const onDown = (e: React.PointerEvent) => {
+    drag.current = { x: e.clientX, y: e.clientY, id: e.pointerId, dir: null, moved: false }
+  }
+  const onMove = (e: React.PointerEvent) => {
+    const d = drag.current
+    if (!d || d.id !== e.pointerId) return
+    const dx = e.clientX - d.x, dy = e.clientY - d.y
+    if (!d.dir && Math.hypot(dx, dy) > 8) {
+      d.dir = Math.abs(dx) > Math.abs(dy) ? "x" : "y"
+      if (d.dir === "x") (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
+    }
+    if (d.dir === "x") {
+      d.moved = true
+      setDragDeg(dx * degPerPx)
+    }
+  }
+  const onUp = (e: React.PointerEvent) => {
+    const d = drag.current
+    drag.current = null
+    if (!d || d.dir !== "x") return
+    const moved = (e.clientX - d.x) * degPerPx
+    // a flick of a third of a card is enough to move on
+    const cards = Math.abs(moved) < per * 0.33 ? 0 : -Math.sign(moved) * Math.max(1, Math.round(Math.abs(moved) / per))
+    setDragDeg(0)
+    go(cards)
+    if (d.moved) window.addEventListener("click", (ev) => ev.stopPropagation(), { capture: true, once: true })
+  }
+
+  // trackpad: a sideways two-finger swipe steps once per gesture; vertical wheel is left to the page
+  const box = useRef<HTMLDivElement>(null)
+  useEffect(() => {
+    const el = box.current
+    if (!el) return
+    let acc = 0, lock = 0
+    const wheel = (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return
+      e.preventDefault()
+      const now = performance.now()
+      if (now < lock) return
+      acc += e.deltaX
+      if (Math.abs(acc) > 40) {
+        go(Math.sign(acc))
+        acc = 0
+        lock = now + 450
+      }
+    }
+    el.addEventListener("wheel", wheel, { passive: false })
+    return () => el.removeEventListener("wheel", wheel)
+  }, [])
+
+  const arrow = "grid size-11 place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/15 backdrop-blur-md transition hover:bg-white/20 active:scale-95"
   return (
-    // ~70vh of scrolling per card, so each one gets a moment
-    <section ref={section} className="relative" style={{ height: `${100 + (picks.length - 1) * 55}svh` }}>
-      <div className="sticky top-0 flex h-[100svh] flex-col overflow-hidden pt-20 pb-6 sm:pt-24">
-        <div className="mx-auto flex w-full max-w-7xl items-end justify-between gap-4 px-5 sm:px-10">
-          <div>
-            <h3 className="text-3xl font-semibold text-white sm:text-5xl">Featured projects</h3>
-            <p className="mt-2 text-sm text-white/50">Scroll to turn through them · tap the front card to open</p>
-          </div>
-          <p className="shrink-0 font-mono text-sm tabular-nums text-white/50">
-            {String(at + 1).padStart(2, "0")} / {String(picks.length).padStart(2, "0")}
-          </p>
+    <section className="relative pt-4">
+      <div className="mx-auto flex max-w-7xl items-end justify-between gap-4 px-5 sm:px-10">
+        <div>
+          <h3 className="text-3xl font-semibold text-white sm:text-5xl">Featured projects</h3>
+          <p className="mt-2 text-sm text-white/50">Swipe sideways to browse · tap the front card to open</p>
         </div>
-        <div className="relative min-h-0 flex-1">
-          <CircularGallery
-            items={picks}
-            keyOf={(f) => f.image}
-            radius={size.radius}
-            cardW={size.cardW}
-            cardH={size.cardH}
-            scrollTarget={section}
-            scrollOffset={["start start", "end end"]}
-            scrollTurn={per * (picks.length - 1)}
-            snap
-            render={(f, front) => (
-              <GlowCard hue={hueOf(f.project.color)} spread={30} className="h-full w-full shadow-[0_40px_80px_-24px_rgba(0,0,0,.9)]">
-                <button
-                  type="button"
-                  onClick={() => onOpen(f.project)}
-                  className="!absolute inset-0 overflow-hidden rounded-[13px] text-left"
-                  aria-label={`Open ${f.project.title}`}
-                  tabIndex={front ? 0 : -1}
-                >
-                  <img src={f.image} alt="" draggable={false} className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: f.pos ?? "center" }} />
-                  <span className="absolute inset-x-0 bottom-0 block bg-gradient-to-t from-black/90 via-black/50 to-transparent p-5 pt-20">
-                    <span className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60">
-                      {f.project.category}
-                      {f.project.year && ` · ${f.project.year}`}
-                    </span>
-                    <span className="mt-1 block font-heading text-2xl leading-tight text-white sm:text-3xl">{f.project.title}</span>
-                    {front && <span className="mt-3 inline-block rounded-full bg-white px-4 py-1.5 text-xs font-semibold text-black">View project →</span>}
+        <div className="hidden shrink-0 items-center gap-3 sm:flex">
+          <button type="button" className={arrow} onClick={() => go(-1)} aria-label="Previous featured project">
+            <ChevronLeft className="h-5 w-5" />
+          </button>
+          <button type="button" className={arrow} onClick={() => go(1)} aria-label="Next featured project">
+            <ChevronRight className="h-5 w-5" />
+          </button>
+        </div>
+      </div>
+      <div
+        ref={box}
+        style={{ height: size.height, touchAction: "pan-y" }}
+        className="relative mt-4 cursor-grab select-none overflow-hidden outline-none active:cursor-grabbing"
+        onPointerDown={onDown}
+        onPointerMove={onMove}
+        onPointerUp={onUp}
+        onPointerCancel={() => ((drag.current = null), setDragDeg(0))}
+        tabIndex={0}
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="Featured projects"
+        onKeyDown={(e) => {
+          if (e.key === "ArrowRight") (e.preventDefault(), go(1))
+          if (e.key === "ArrowLeft") (e.preventDefault(), go(-1))
+        }}
+      >
+        <CircularGallery
+          items={picks}
+          keyOf={(f) => f.image}
+          rotation={rotation}
+          radius={size.radius}
+          cardW={size.cardW}
+          cardH={size.cardH}
+          render={(f, front) => (
+            <GlowCard hue={hueOf(f.project.color)} spread={30} className="h-full w-full shadow-[0_40px_80px_-24px_rgba(0,0,0,.9)]">
+              <button
+                type="button"
+                onClick={() => onOpen(f.project)}
+                className="!absolute inset-0 overflow-hidden rounded-[13px] text-left"
+                aria-label={`Open ${f.project.title}`}
+                tabIndex={front ? 0 : -1}
+              >
+                <img src={f.image} alt="" draggable={false} className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: f.pos ?? "center" }} />
+                <span className="absolute inset-x-0 bottom-0 block bg-gradient-to-t from-black/90 via-black/50 to-transparent p-5 pt-20">
+                  <span className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60">
+                    {f.project.category}
+                    {f.project.year && ` · ${f.project.year}`}
                   </span>
-                </button>
-              </GlowCard>
-            )}
+                  <span className="mt-1 block font-heading text-2xl leading-tight text-white sm:text-3xl">{f.project.title}</span>
+                  {front && <span className="mt-3 inline-block rounded-full bg-white px-4 py-1.5 text-xs font-semibold text-black">View project →</span>}
+                </span>
+              </button>
+            </GlowCard>
+          )}
+        />
+      </div>
+      {/* where you are round the ring */}
+      <div className="mt-3 flex justify-center gap-1.5">
+        {picks.map((f, i) => (
+          <button
+            key={f.image}
+            type="button"
+            onClick={() => setStep((s) => s + (((i - at + n + n / 2) % n) - n / 2))}
+            aria-label={`Show ${f.project.title}`}
+            className={`h-1.5 rounded-full transition-all duration-300 ${i === at ? "w-6 bg-white" : "w-1.5 bg-white/30 hover:bg-white/60"}`}
           />
-        </div>
-        {/* how far round the ring you are */}
-        <div className="mx-auto mt-2 h-px w-full max-w-7xl bg-white/10 px-5 sm:px-10">
-          <motion.div className="h-full bg-white/70" style={{ scaleX: scrollYProgress, transformOrigin: "0 50%" }} />
-        </div>
+        ))}
       </div>
     </section>
   )
