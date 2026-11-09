@@ -1,6 +1,7 @@
 import { motion } from "framer-motion"
 import { ArrowLeft } from "lucide-react"
 import { useRef } from "react"
+import { CharacterScene } from "@/components/character-scene"
 import { AnalyticsBento } from "@/components/ui/analytics-bento"
 import { DesignProcess, type ProcessStep } from "@/components/design-process"
 import * as Art from "@/components/process-illustrations"
@@ -122,7 +123,7 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
 
       <div className="mx-auto max-w-6xl px-4 pt-24 sm:px-8">
         {/* who */}
-        <section className="grid items-end gap-10 border-b border-line pb-14 md:grid-cols-[1fr_auto]">
+        <section className="grid items-center gap-10 pb-14 lg:grid-cols-[1fr_1fr]">
           <div>
             <p className="text-xs uppercase tracking-[0.2em] text-ink-4">About</p>
             <h2 className="mt-3 font-heading text-6xl leading-none sm:text-8xl">{site.name}</h2>
@@ -146,12 +147,18 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
             </div>
           </div>
           <img
-            src={site.portrait}
-            alt={`Portrait of ${site.name}`}
-            className="mx-auto w-64 md:w-80"
-            style={{ maskImage: "linear-gradient(to bottom, #000 75%, transparent)", WebkitMaskImage: "linear-gradient(to bottom, #000 75%, transparent)" }}
+            src="about/portrait.webp"
+            width={1800}
+            height={1200}
+            alt={`${site.name} with his camera`}
+            className="order-first w-full rounded-3xl object-cover lg:order-none"
           />
         </section>
+
+        {/* the character acts out the day */}
+        <div className="border-b border-line pb-14">
+          <CharacterScene />
+        </div>
 
         {/* background */}
         <section className="grid gap-10 py-14 sm:grid-cols-2">
