@@ -165,20 +165,9 @@ export const projects: Project[] = [
           { src: "work/internship/sipwise/report/021.webp", w: 1400, h: 990 },
         ],
       },
-      {
-        nav: "Learnings",
-        title: "What I learned",
-        intro: "Design as problem-solving — and adapting one message to every format, audience and constraint.",
-        images: [
-          { src: "work/internship/sipwise/report/126.webp", w: 1400, h: 990 },
-          { src: "work/internship/sipwise/report/127.webp", w: 1400, h: 990 },
-          { src: "work/internship/sipwise/report/128.webp", w: 1400, h: 990 },
-        ],
-      },
     ],
     flipbook: {
       label: "Read the full internship report",
-      single: true,
       ratio: 1400 / 990,
       pages: [
         "work/internship/sipwise/report/001.webp",
@@ -302,9 +291,6 @@ export const projects: Project[] = [
         "work/internship/sipwise/report/123.webp",
         "work/internship/sipwise/report/124.webp",
         "work/internship/sipwise/report/125.webp",
-        "work/internship/sipwise/report/126.webp",
-        "work/internship/sipwise/report/127.webp",
-        "work/internship/sipwise/report/128.webp",
         "work/internship/sipwise/report/129.webp",
       ],
     },
