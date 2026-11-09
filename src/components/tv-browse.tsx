@@ -3,6 +3,8 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import type { Category, Project } from "@/content"
 import { Lightbox } from "@/components/project-gallery"
+import { CircularGallery } from "@/components/ui/circular-gallery"
+import { GlowCard } from "@/components/ui/spotlight-card"
 
 /**
  * The work, browsed like the Apple TV app: a cinematic featured hero that
@@ -253,6 +255,77 @@ export function Shelf({ title, subtitle, projects, onOpen, onSeeAll, big }: { ti
   )
 }
 
+/* ---------------- featured: a turning ring of glowing cards ---------------- */
+
+export type FeaturedPick = { project: Project; image: string; pos?: string }
+
+/** "#ef8b2b" → its hue, so each card glows in its project's colour */
+function hueOf(hex: string) {
+  const n = parseInt(hex.replace("#", ""), 16)
+  const r = ((n >> 16) & 255) / 255, g = ((n >> 8) & 255) / 255, b = (n & 255) / 255
+  const max = Math.max(r, g, b), min = Math.min(r, g, b), d = max - min
+  if (!d) return 30
+  const h = max === r ? ((g - b) / d) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4
+  return Math.round(((h * 60) + 360) % 360)
+}
+
+function useRingSize() {
+  const get = () => {
+    const w = window.innerWidth
+    if (w < 640) return { cardW: 200, cardH: 280, radius: 360, height: 360 }
+    if (w < 1024) return { cardW: 240, cardH: 330, radius: 430, height: 450 }
+    return { cardW: 270, cardH: 370, radius: 500, height: 500 }
+  }
+  const [s, setS] = useState(get)
+  useEffect(() => {
+    const on = () => setS(get())
+    window.addEventListener("resize", on)
+    return () => window.removeEventListener("resize", on)
+  }, [])
+  return s
+}
+
+function FeaturedRing({ picks, onOpen }: { picks: FeaturedPick[]; onOpen: (p: Project) => void }) {
+  const section = useRef<HTMLElement>(null)
+  const size = useRingSize()
+  return (
+    <section ref={section} className="relative overflow-hidden">
+      <div className="mx-auto max-w-7xl px-5 sm:px-10">
+        <h3 className="text-2xl font-semibold text-white sm:text-3xl">Featured projects</h3>
+        <p className="mt-1 text-sm text-white/45">Scroll or drag to turn · tap a card to open</p>
+      </div>
+      <div style={{ height: size.height }} className="relative">
+        <CircularGallery
+          items={picks}
+          keyOf={(f) => f.image}
+          radius={size.radius}
+          cardW={size.cardW}
+          cardH={size.cardH}
+          scrollTarget={section}
+          render={(f, front) => (
+            <GlowCard hue={hueOf(f.project.color)} spread={30} className="h-full w-full shadow-[0_30px_60px_-20px_rgba(0,0,0,.9)]">
+              <button
+                type="button"
+                onClick={() => onOpen(f.project)}
+                className="!absolute inset-0 overflow-hidden rounded-[13px] text-left"
+                aria-label={`Open ${f.project.title}`}
+                tabIndex={front ? 0 : -1}
+              >
+                <img src={f.image} alt="" draggable={false} className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: f.pos ?? "center" }} />
+                <span className="absolute inset-x-0 bottom-0 block bg-gradient-to-t from-black/90 via-black/50 to-transparent p-4 pt-16">
+                  <span className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60">{f.project.category}</span>
+                  <span className="mt-1 block font-heading text-xl leading-tight text-white sm:text-2xl">{f.project.title}</span>
+                  {front && <span className="mt-2 inline-block rounded-full bg-white px-3 py-1 text-xs font-semibold text-black">View project →</span>}
+                </span>
+              </button>
+            </GlowCard>
+          )}
+        />
+      </div>
+    </section>
+  )
+}
+
 /* ---------------- photo gallery ---------------- */
 
 export type GalleryPhoto = { src: string; w: number; h: number; project: Project }
@@ -311,7 +384,7 @@ export function TvBrowse({
   onCategory,
 }: {
   featured: Featured[]
-  picks: Project[]
+  picks: FeaturedPick[]
   photos: GalleryPhoto[]
   categories: Category[]
   projects: Project[]
@@ -323,7 +396,7 @@ export function TvBrowse({
     <div id="work" className="scroll-mt-0 bg-[#0b0b0c] pb-24 text-white">
       <Hero items={featured} onOpen={onOpen} onCategory={(n) => onCategory(byName(n))} />
       <div className="relative z-10 -mt-6 sm:-mt-10">
-        <Shelf title="Featured projects" subtitle="A few to start with" projects={picks} onOpen={onOpen} big />
+        <FeaturedRing picks={picks} onOpen={onOpen} />
         <PhotoGallery photos={photos} onOpen={onOpen} />
         <div className="mx-auto mt-20 max-w-7xl border-t border-white/10 px-5 pt-12 sm:px-10">
           <h3 className="text-2xl font-semibold text-white sm:text-3xl">All projects</h3>

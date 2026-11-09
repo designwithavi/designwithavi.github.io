@@ -1062,12 +1062,14 @@ export const gallery: { src: string; w: number; h: number; project: string }[] =
 ]
 
 // ─────────────────────────────────────────────────────────────
-//  FEATURED PROJECTS — the row of big cards right below the banner.
+//  FEATURED PROJECTS — the ring of cards right below the banner.
+//  Each project gets two cards (one picture each), so the ring stays full.
+//  image / image2: tall pictures for its cards;  pos: which part to show (x% y%).
 // ─────────────────────────────────────────────────────────────
-export const featuredProjects = [
-  "Fashion Editorial Shoot",
-  "Xyricon",
-  "#WhatIsSexy? — Styling Campaign",
-  "Shorona: Costume Styling",
-  "Faredoon's Food Photography",
+export const featuredProjects: { title: string; image: string; pos?: string; image2: string; pos2?: string }[] = [
+  { title: "Fashion Editorial Shoot", image: "work/photography-videography/fashion-editorial/02.webp", image2: "work/photography-videography/fashion-editorial/08.webp" },
+  { title: "Xyricon", image: "work/branding/xyricon/12.webp", pos: "80% 50%", image2: "work/branding/xyricon/17.webp", pos2: "30% 50%" },
+  { title: "#WhatIsSexy? — Styling Campaign", image: "work/photography-videography/durex-styling/shoot/01.webp", image2: "work/photography-videography/durex-styling/shoot/09.webp" },
+  { title: "Shorona: Costume Styling", image: "work/photography-videography/shorona/shoot/02.webp", image2: "work/photography-videography/shorona/shoot/13.webp" },
+  { title: "Faredoon's Food Photography", image: "work/photography-videography/faredoons/shoot/03.webp", image2: "work/photography-videography/faredoons/shoot/06.webp" },
 ]
