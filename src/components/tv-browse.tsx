@@ -300,9 +300,12 @@ function useRingSize() {
  * and down always scroll the page, untouched.
  */
 function FeaturedRing({ picks, onOpen }: { picks: FeaturedPick[]; onOpen: (p: Project) => void }) {
-  const size = useRingSize()
+  const base = useRingSize()
   const n = picks.length
   const per = 360 / n
+  // space the cards evenly round the ring: each gets its width plus a gap along the circle
+  const gap = base.cardW * 0.14
+  const size = { ...base, radius: Math.round((base.cardW + gap) / (2 * Math.sin(Math.PI / n))) }
   const reduce = useReducedMotion()
   // the ring's angle: follows a finger or trackpad 1:1, then glides to rest on a card
   const rotation = useMotionValue(0)
@@ -461,6 +464,53 @@ function FeaturedRing({ picks, onOpen }: { picks: FeaturedPick[]; onOpen: (p: Pr
 
 /* ---------------- photo gallery ---------------- */
 
+function GalleryRow({ photos, onZoom }: { photos: GalleryPhoto[]; onZoom: (i: number) => void }) {
+  const row = useRef<HTMLDivElement>(null)
+  const [ends, setEnds] = useState({ start: true, end: false })
+  const check = () => {
+    const r = row.current
+    if (r) setEnds({ start: r.scrollLeft < 8, end: r.scrollLeft + r.clientWidth > r.scrollWidth - 8 })
+  }
+  useEffect(check, [photos])
+  const page = (d: 1 | -1) => row.current?.scrollBy({ left: d * row.current.clientWidth * 0.8, behavior: "smooth" })
+  const arrow = "absolute top-1/2 z-10 hidden size-11 -translate-y-1/2 place-items-center rounded-full bg-black/50 text-white ring-1 ring-white/15 backdrop-blur-md transition hover:bg-black/70 md:grid"
+  return (
+    <div className="group/row relative -mx-5 sm:-mx-10">
+      <div
+        ref={row}
+        onScroll={check}
+        className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 [scroll-padding-inline:1.25rem] [scrollbar-width:none] sm:gap-4 sm:px-10 sm:[scroll-padding-inline:2.5rem] [&::-webkit-scrollbar]:hidden"
+      >
+        {photos.map((ph, i) => (
+          <button
+            key={ph.src}
+            type="button"
+            onClick={() => onZoom(i)}
+            className="group relative h-[300px] shrink-0 snap-start overflow-hidden rounded-xl bg-white/5 sm:h-[380px] lg:h-[440px]"
+            style={{ aspectRatio: String(ph.w / ph.h) }}
+            aria-label={`Photo from ${ph.project.title}`}
+          >
+            <img src={ph.src} width={ph.w} height={ph.h} alt="" loading="lazy" draggable={false} className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
+            <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-2.5 pt-8 text-left text-xs font-medium text-white/90 md:opacity-0 md:transition-opacity md:duration-300 md:group-hover:opacity-100">
+              {ph.project.title}
+            </span>
+          </button>
+        ))}
+      </div>
+      {!ends.start && (
+        <button type="button" onClick={() => page(-1)} aria-label="Earlier photos" className={`${arrow} left-3 opacity-0 group-hover/row:opacity-100`}>
+          <ChevronLeft className="h-5 w-5" />
+        </button>
+      )}
+      {!ends.end && (
+        <button type="button" onClick={() => page(1)} aria-label="More photos" className={`${arrow} right-3 opacity-0 group-hover/row:opacity-100`}>
+          <ChevronRight className="h-5 w-5" />
+        </button>
+      )}
+    </div>
+  )
+}
+
 export type GalleryPhoto = { src: string; w: number; h: number; project: Project }
 
 function PhotoGallery({ photos, onOpen }: { photos: GalleryPhoto[]; onOpen: (p: Project) => void }) {
@@ -471,31 +521,12 @@ function PhotoGallery({ photos, onOpen }: { photos: GalleryPhoto[]; onOpen: (p: 
       <div className="mb-8 flex flex-wrap items-end justify-between gap-3 border-t border-white/10 pt-12">
         <div>
           <h3 className="text-2xl font-semibold text-white sm:text-3xl">Photo gallery</h3>
-          <p className="mt-1 text-sm text-white/45">Frames from the shoots</p>
+          <p className="mt-1 text-sm text-white/45">Frames from the shoots · swipe through</p>
         </div>
         <p className="text-xs uppercase tracking-[0.2em] text-white/35">{photos.length} photographs</p>
       </div>
-      {/* columns of photos at their own shapes; tap to see one large */}
-      <div className="columns-2 gap-3 sm:gap-4 lg:columns-3">
-        {photos.map((ph, i) => (
-          <motion.button
-            key={ph.src}
-            type="button"
-            onClick={() => setZoom(i)}
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-40px" }}
-            transition={{ duration: 0.6, ease, delay: (i % 3) * 0.06 }}
-            className="group relative mb-3 block w-full overflow-hidden rounded-xl bg-white/5 break-inside-avoid sm:mb-4"
-            aria-label={`Photo from ${ph.project.title}`}
-          >
-            <img src={ph.src} width={ph.w} height={ph.h} alt="" loading="lazy" className="block h-auto w-full transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
-            <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-2.5 pt-8 text-left text-xs font-medium text-white/90 opacity-100 transition-opacity duration-300 md:opacity-0 md:group-hover:opacity-100">
-              {ph.project.title}
-            </span>
-          </motion.button>
-        ))}
-      </div>
+      {/* one row of photos at their own shapes: swipe or scroll sideways, tap to see one large */}
+      <GalleryRow photos={photos} onZoom={setZoom} />
       <AnimatePresence>
         {zoom !== null && (
           <Lightbox images={images} index={zoom} onIndex={setZoom} onClose={() => setZoom(null)} title="Photo gallery" action={{ label: "View project", onClick: () => (setZoom(null), onOpen(photos[zoom].project)) }} />

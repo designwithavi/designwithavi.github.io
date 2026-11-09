@@ -18,6 +18,8 @@ export type Milestone = {
   image?: string
   /** marks the start and end of the journey */
   cap?: boolean
+  /** link to the milestone's own project page */
+  href?: string
 }
 
 export function ScrollTimeline({ items, scroller }: { items: Milestone[]; scroller: React.RefObject<HTMLElement | null> }) {
@@ -74,6 +76,11 @@ export function ScrollTimeline({ items, scroller }: { items: Milestone[]; scroll
                 <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#8fa4ff]">{m.kicker}</p>
                 <h4 className="mt-2 font-heading text-2xl leading-tight sm:text-3xl">{m.title}</h4>
                 <p className={`mt-3 max-w-md text-[15px] leading-relaxed text-ink-3 ${right ? "" : "md:ml-auto"}`}>{m.text}</p>
+                {m.href && (
+                  <a href={m.href} className={`mt-3 inline-flex items-center gap-1.5 text-sm font-semibold text-[#8fa4ff] hover:text-white ${right ? "" : "md:flex-row-reverse"}`}>
+                    Open project <span aria-hidden="true">→</span>
+                  </a>
+                )}
                 {m.image && (
                   <button
                     type="button"

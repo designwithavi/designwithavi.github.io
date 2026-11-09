@@ -164,6 +164,7 @@ function ProjectHero({ project, hero }: { project: Project; hero: string }) {
 function backdropOf(project: Project) {
   const f = featured.find((x) => x.title === project.title)
   if (f) return f.backdrop
+  if (project.backdrop) return project.backdrop
   const all = [...project.images, ...(project.sections ?? []).flatMap((s) => s.images)]
   const wide = all.find((i) => typeof i !== "string" && i.w && i.h && i.w / i.h > 1.3 && i.w / i.h < 2)
   return (wide && typeof wide !== "string" ? wide.src : undefined) ?? project.video?.poster ?? project.cover

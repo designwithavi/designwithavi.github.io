@@ -9,7 +9,7 @@ import { categories, internship, projects as allProjects, site } from "@/content
 import { ScrollTimeline } from "@/components/scroll-timeline"
 
 // a project without a year yet can't be placed on the timeline: leave it out until it has one
-const projects = allProjects.filter((p) => /^\d{4}$/.test(p.year))
+const projects = allProjects.filter((p) => /^\d{4}$/.test(p.year) && !p.partOf)
 import { slug } from "@/route"
 
 /**
@@ -219,7 +219,13 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
           <h3 className="font-heading text-4xl leading-none sm:text-6xl">Eight weeks at {internship.company}</h3>
           <p className="mt-3 text-ink-3">{internship.role}</p>
         </div>
-        <ScrollTimeline items={internship.milestones} scroller={scroller} />
+        <ScrollTimeline
+          items={internship.milestones.map((m) => {
+            const p = "project" in m && allProjects.find((x) => x.title === m.project)
+            return { ...m, href: p ? `#/work/${slug(p.category)}/${slug(p.title)}` : undefined }
+          })}
+          scroller={scroller}
+        />
         <div className="mt-16 flex justify-center">
           <a
             href="#/work/internship/sipwise-visual-design-internship"
