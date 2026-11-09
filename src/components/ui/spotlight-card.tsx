@@ -25,56 +25,37 @@ const CSS = `
 @property --gx { syntax: "<number>"; inherits: true; initial-value: 0; }
 @property --gy { syntax: "<number>"; inherits: true; initial-value: 0; }
 [data-glow-card] {
-  --border: 3px;
-  --spot: 220px;
+  --border: 2px;
+  --spot: 240px;
   --radius: 16px;
   --h: calc(var(--hue) + (var(--gx) / 400 * var(--spread)));
   position: relative;
   border-radius: var(--radius);
-  border: var(--border) solid hsl(0 0% 100% / 0.1);
-  background-image: radial-gradient(var(--spot) var(--spot) at calc(var(--gx) * 1px) calc(var(--gy) * 1px), hsl(var(--h) 100% 70% / 0.12), transparent);
   animation: glow-orbit 9s linear infinite;
 }
 [data-glow-card][data-follow] { animation: none; }
-[data-glow-card]::before, [data-glow-card]::after {
+/* the edge: a ring the exact shape of the card (rounded corners and all) —
+   a faint even line in the project's colour, brighter where the light is */
+[data-glow-card]::before {
   pointer-events: none;
   content: "";
   position: absolute;
-  inset: calc(var(--border) * -1);
-  border: var(--border) solid transparent;
-  border-radius: var(--radius);
-  background-repeat: no-repeat;
-  mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
-  mask-clip: padding-box, border-box;
-  mask-composite: intersect;
-  -webkit-mask: linear-gradient(transparent, transparent) padding-box, linear-gradient(white, white) border-box;
-  -webkit-mask-composite: source-in;
-  z-index: 2;
+  border-radius: inherit;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
 }
 [data-glow-card]::before {
-  background-image: radial-gradient(calc(var(--spot) * .75) calc(var(--spot) * .75) at calc(var(--gx) * 1px + var(--border)) calc(var(--gy) * 1px + var(--border)), hsl(var(--h) 100% 55% / 1), transparent 100%);
-  filter: brightness(2);
+  inset: 0;
+  padding: var(--border);
+  z-index: 2;
+  background:
+    radial-gradient(calc(var(--spot) * .55) calc(var(--spot) * .55) at calc(var(--gx) * 1px) calc(var(--gy) * 1px), hsl(0 0% 100% / .95), transparent 100%),
+    radial-gradient(var(--spot) var(--spot) at calc(var(--gx) * 1px) calc(var(--gy) * 1px), hsl(var(--h) 100% 62%), transparent 100%),
+    hsl(var(--hue) 70% 70% / .22);
 }
-[data-glow-card]::after {
-  background-image: radial-gradient(calc(var(--spot) * .45) calc(var(--spot) * .45) at calc(var(--gx) * 1px + var(--border)) calc(var(--gy) * 1px + var(--border)), hsl(0 100% 100% / .9), transparent 100%);
-}
-/* a blurred copy of the edge light, for the outer glow */
-[data-glow-card] > [data-glow-halo] {
-  pointer-events: none;
-  position: absolute;
-  inset: -16px;
-  border-radius: calc(var(--radius) + 16px);
-  filter: blur(14px);
-  opacity: .9;
-  z-index: 0;
-  background: radial-gradient(calc(var(--spot) * .6) calc(var(--spot) * .6) at calc(var(--gx) * 1px + 16px) calc(var(--gy) * 1px + 16px), hsl(var(--h) 100% 60% / .6), transparent 100%);
-  mask: linear-gradient(transparent, transparent), linear-gradient(white, white);
-  mask-clip: padding-box, border-box;
-  mask-composite: exclude;
-  border: 18px solid transparent;
-}
-/* the card's content sits above the halo, below the lit edge */
-[data-glow-card] > :not([data-glow-halo]) { position: relative; z-index: 1; }
+/* the card's content sits below the lit edge */
+[data-glow-card] > * { position: relative; z-index: 1; }
 /* with no pointer: the light walks the edge — top, right, bottom, left */
 @keyframes glow-orbit {
   0%   { --gx: 0;   --gy: 0; }
@@ -122,7 +103,6 @@ export function GlowCard({ children, className = "", hue = 30, spread = 120, sty
     <>
       <style>{CSS}</style>
       <div ref={card} data-glow-card className={className} style={{ ["--hue" as string]: hue, ["--spread" as string]: spread, ...style }}>
-        <div data-glow-halo />
         {children}
       </div>
     </>

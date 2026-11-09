@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useSpring } from "framer-motion"
+import { AnimatePresence, animate, motion, useMotionValue, useMotionValueEvent, useReducedMotion } from "framer-motion"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import type { Category, Project } from "@/content"
 import { Lightbox } from "@/components/project-gallery"
@@ -294,72 +294,75 @@ function FeaturedRing({ picks, onOpen }: { picks: FeaturedPick[]; onOpen: (p: Pr
   const size = useRingSize()
   const n = picks.length
   const per = 360 / n
-  const [step, setStep] = useState(0) // which card is in front (unbounded; wraps round the ring)
-  const [dragDeg, setDragDeg] = useState(0) // live offset while a finger or mouse is down
-  const target = -(step * per) + dragDeg
-  const spring = useSpring(0, { stiffness: 140, damping: 22 })
-  const [rotation, setRotation] = useState(0)
-  useMotionValueEvent(spring, "change", setRotation)
-  useEffect(() => {
-    if (dragDeg) spring.jump(target)
-    else spring.set(target)
-  }, [target, dragDeg, spring])
+  const reduce = useReducedMotion()
+  // the ring's angle: follows a finger or trackpad 1:1, then glides to rest on a card
+  const rotation = useMotionValue(0)
+  const [at, setAt] = useState(0)
+  useMotionValueEvent(rotation, "change", (r) => {
+    const i = ((Math.round(-r / per) % n) + n) % n
+    if (i !== at) setAt(i)
+  })
+  const settle = (to: number, velocity = 0) =>
+    animate(rotation, to, reduce ? { duration: 0 } : { type: "spring", stiffness: 170, damping: 26, velocity })
+  // the nearest card to an angle, optionally carried on by a flick
+  const nearest = (r: number) => Math.round(r / per) * per
+  const go = (d: number) => settle(nearest(rotation.get()) - d * per)
 
-  const go = (d: number) => setStep((s) => s + d)
-  const at = ((step % n) + n) % n
-
-  // finger / mouse: only a mostly-sideways gesture turns the ring
-  const drag = useRef<{ x: number; y: number; id: number; dir: "x" | "y" | null; moved: boolean } | null>(null)
+  // finger / mouse: only a mostly-sideways gesture turns the ring; up/down is the page's
+  const drag = useRef<{ x: number; y: number; id: number; dir: "x" | "y" | null; start: number; last: number; t: number; v: number } | null>(null)
   const degPerPx = per / (size.cardW * 0.9)
   const onDown = (e: React.PointerEvent) => {
-    drag.current = { x: e.clientX, y: e.clientY, id: e.pointerId, dir: null, moved: false }
+    rotation.stop()
+    drag.current = { x: e.clientX, y: e.clientY, id: e.pointerId, dir: null, start: rotation.get(), last: e.clientX, t: performance.now(), v: 0 }
   }
   const onMove = (e: React.PointerEvent) => {
     const d = drag.current
     if (!d || d.id !== e.pointerId) return
     const dx = e.clientX - d.x, dy = e.clientY - d.y
-    if (!d.dir && Math.hypot(dx, dy) > 8) {
+    if (!d.dir && Math.hypot(dx, dy) > 6) {
       d.dir = Math.abs(dx) > Math.abs(dy) ? "x" : "y"
       if (d.dir === "x") (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId)
     }
-    if (d.dir === "x") {
-      d.moved = true
-      setDragDeg(dx * degPerPx)
-    }
+    if (d.dir !== "x") return
+    rotation.set(d.start + dx * degPerPx)
+    // track the swipe's speed for the throw
+    const now = performance.now(), dt = Math.max(1, now - d.t)
+    d.v = 0.8 * (((e.clientX - d.last) * degPerPx) / dt) * 1000 + 0.2 * d.v
+    d.last = e.clientX
+    d.t = now
   }
-  const onUp = (e: React.PointerEvent) => {
+  const onUp = () => {
     const d = drag.current
     drag.current = null
-    if (!d || d.dir !== "x") return
-    const moved = (e.clientX - d.x) * degPerPx
-    // a flick of a third of a card is enough to move on
-    const cards = Math.abs(moved) < per * 0.33 ? 0 : -Math.sign(moved) * Math.max(1, Math.round(Math.abs(moved) / per))
-    setDragDeg(0)
-    go(cards)
-    if (d.moved) window.addEventListener("click", (ev) => ev.stopPropagation(), { capture: true, once: true })
+    if (!d) return
+    if (d.dir !== "x") return
+    // carry the throw on a little, then come to rest on a card
+    const projected = rotation.get() + d.v * 0.18
+    settle(nearest(projected), d.v)
+    if (Math.abs(rotation.get() - d.start) > 2) window.addEventListener("click", (ev) => ev.stopPropagation(), { capture: true, once: true })
   }
 
-  // trackpad: a sideways two-finger swipe steps once per gesture; vertical wheel is left to the page
+  // trackpad: a sideways two-finger swipe turns the ring with the fingers, then it settles; vertical is the page's
   const box = useRef<HTMLDivElement>(null)
   useEffect(() => {
     const el = box.current
     if (!el) return
-    let acc = 0, lock = 0
+    let idle = 0
     const wheel = (e: WheelEvent) => {
       if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return
       e.preventDefault()
-      const now = performance.now()
-      if (now < lock) return
-      acc += e.deltaX
-      if (Math.abs(acc) > 40) {
-        go(Math.sign(acc))
-        acc = 0
-        lock = now + 450
-      }
+      rotation.stop()
+      rotation.set(rotation.get() - e.deltaX * degPerPx * 0.9)
+      clearTimeout(idle)
+      idle = window.setTimeout(() => settle(nearest(rotation.get())), 120)
     }
     el.addEventListener("wheel", wheel, { passive: false })
-    return () => el.removeEventListener("wheel", wheel)
-  }, [])
+    return () => {
+      el.removeEventListener("wheel", wheel)
+      clearTimeout(idle)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [degPerPx])
 
   const arrow = "grid size-11 place-items-center rounded-full bg-white/10 text-white ring-1 ring-white/15 backdrop-blur-md transition hover:bg-white/20 active:scale-95"
   return (
@@ -385,7 +388,10 @@ function FeaturedRing({ picks, onOpen }: { picks: FeaturedPick[]; onOpen: (p: Pr
         onPointerDown={onDown}
         onPointerMove={onMove}
         onPointerUp={onUp}
-        onPointerCancel={() => ((drag.current = null), setDragDeg(0))}
+        onPointerCancel={() => {
+          drag.current = null
+          settle(nearest(rotation.get()))
+        }}
         tabIndex={0}
         role="region"
         aria-roledescription="carousel"
@@ -431,7 +437,7 @@ function FeaturedRing({ picks, onOpen }: { picks: FeaturedPick[]; onOpen: (p: Pr
           <button
             key={f.image}
             type="button"
-            onClick={() => setStep((s) => s + (((i - at + n + n / 2) % n) - n / 2))}
+            onClick={() => go(((i - at + n + n / 2) % n) - n / 2)}
             aria-label={`Show ${f.project.title}`}
             className={`h-1.5 rounded-full transition-all duration-300 ${i === at ? "w-6 bg-white" : "w-1.5 bg-white/30 hover:bg-white/60"}`}
           />
