@@ -159,6 +159,7 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
         <section className="pb-4">
           <p className="max-w-3xl text-xl leading-relaxed text-ink-2 sm:text-2xl">{site.about}</p>
           <div className="mt-8 flex flex-wrap gap-3">
+            {site.cvFile && (
             <a
               href={site.cvFile}
               target="_blank"
@@ -167,6 +168,7 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
             >
               Download CV ↓
             </a>
+            )}
             <a
               href={`mailto:${site.contact.email}`}
               className="rounded-full border border-line px-6 py-3 text-sm text-ink transition hover:bg-ink hover:text-paper"
@@ -187,7 +189,7 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
                     <p className="font-medium text-ink">{e.title}</p>
                     <p className="text-sm text-ink-3">{e.detail}</p>
                   </div>
-                  <span className="shrink-0 font-mono text-sm text-ink-4">{e.years}</span>
+                  {e.years && <span className="shrink-0 font-mono text-sm text-ink-4">{e.years}</span>}
                 </li>
               ))}
             </ul>

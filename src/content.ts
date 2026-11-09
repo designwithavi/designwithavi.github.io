@@ -15,12 +15,11 @@ export const site = {
   portrait: "me-web.png",
   role: "Design student · NIFT Mumbai",
   tagline: "I design thoughtful things where craft meets culture.",
-  availability: "Open to internships & full-time roles — 2027",
+  availability: "Open to freelance & internship opportunities",
 
   about:
-    "I'm a design student at the National Institute of Fashion Technology, Mumbai. " +
-    "I love research-led projects, material exploration and telling stories through design. " +
-    "Replace this paragraph with two or three lines about yourself.",
+    "I think in frames, colours, shapes, and occasionally complete sentences. " +
+    "Always looking at things differently, sometimes through a lens, sometimes through 37 open tabs.",
 
   // from your projects and the tools tagged on Behance
   skills: [
@@ -42,12 +41,12 @@ export const site = {
   ],
 
   education: [
-    { title: "B.Des, NIFT Mumbai", detail: "Your specialisation", years: "2023 – 2027" },
-    { title: "Internship / Workshop", detail: "Company or studio name", years: "2025" },
+    { title: "B.Des, Fashion Communication", detail: "NIFT Mumbai", years: "2023 – 2027" },
+    { title: "Internship, 8 weeks", detail: "Sipwise Technologies Pvt. Ltd", years: "" }, // TODO: role and dates from the internship PDF
   ],
 
   // Put your CV PDF inside the "public" folder and name it cv.pdf
-  cvFile: "cv.pdf",
+  cvFile: "", // put cv.pdf in the "public" folder, then write "cv.pdf" here to show the button
 
   contact: {
     email: "kaleavishkar11@gmail.com",
@@ -382,26 +381,14 @@ export const projects: Project[] = [
     ],
     color: "#3a3a3a",
   },
-  {
-    title: "Sanganeri Block Print",
-    category: "Photography & Videography",
-    year: "", // TODO: year
-    medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
-    skills: ["Film", "Photography"],
-    summary: "", // TODO: one line
-    description: "", // TODO: description
-    video: { src: "work/photography-videography/craft-documentation/film.mp4", poster: "work/photography-videography/craft-documentation/poster.webp" },
-    cover: "work/photography-videography/craft-documentation/poster.webp",
-    images: [],
-    color: "#c9a48c",
-  },
+
   {
     title: "WIPO Documentary",
     category: "Photography & Videography",
-    year: "", // TODO: year
+    year: "2026",
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Film", "Photography"],
-    summary: "", // TODO: one line
+    summary: "A documentary filmed from December 2025 to January 2026.",
     description: "", // TODO: description
     video: { src: "work/photography-videography/wipo-documentary/film.mp4", poster: "work/photography-videography/wipo-documentary/poster.webp" },
     cover: "work/photography-videography/wipo-documentary/poster.webp",
@@ -499,6 +486,18 @@ export const projects: Project[] = [
       },
     ],
     color: "#d9b8b0",
+  },  {
+    title: "Sanganeri Block Print",
+    category: "Photography & Videography",
+    year: "2025",
+    medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Film", "Photography"],
+    summary: "A craft documentary on Sanganeri block printing, filmed over two months (9 June – 14 August 2025).",
+    description: "", // TODO: description
+    video: { src: "work/photography-videography/craft-documentation/film.mp4", poster: "work/photography-videography/craft-documentation/poster.webp" },
+    cover: "work/photography-videography/craft-documentation/poster.webp",
+    images: [],
+    color: "#c9a48c",
   },
   {
     title: "Studio Photography: Keibu Keioiba",
