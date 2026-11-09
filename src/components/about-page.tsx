@@ -1,7 +1,7 @@
 import { motion } from "framer-motion"
 import { ArrowLeft } from "lucide-react"
-import { useRef } from "react"
-import { CharacterScene } from "@/components/character-scene"
+import { useRef, useState } from "react"
+import { CharacterWalker } from "@/components/character-scene"
 import { AnalyticsBento } from "@/components/ui/analytics-bento"
 import { DesignProcess, type ProcessStep } from "@/components/design-process"
 import * as Art from "@/components/process-illustrations"
@@ -99,6 +99,36 @@ function useNumbers() {
   }
 }
 
+function AboutHero() {
+  const [flash, setFlash] = useState(false)
+  return (
+    <section className="relative h-[100svh] min-h-[560px] w-full overflow-hidden bg-black">
+      <img
+        src="about/portrait.webp"
+        alt={`${site.name} with his camera`}
+        className="absolute inset-0 h-full w-full object-cover object-[68%_30%]"
+      />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-paper via-black/20 to-black/30" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-black/60 via-transparent to-transparent" />
+      <div className="absolute inset-x-0 bottom-[210px] mx-auto max-w-6xl px-4 sm:bottom-[250px] sm:px-8">
+        <p className="text-xs uppercase tracking-[0.2em] text-white/60">About</p>
+        <h2 className="mt-3 font-heading text-6xl leading-none text-white sm:text-8xl">{site.name}</h2>
+        <p className="mt-3 text-sm uppercase tracking-[0.2em] text-white/60">{site.role}</p>
+      </div>
+      <div className="absolute inset-x-0 bottom-10 h-[200px] sm:h-[240px]">
+        <CharacterWalker
+          onFlash={() => {
+            setFlash(true)
+            window.setTimeout(() => setFlash(false), 160)
+          }}
+        />
+      </div>
+      {/* his camera's flash lights up the whole picture */}
+      <div className="pointer-events-none absolute inset-0 bg-white transition-opacity duration-150" style={{ opacity: flash ? 0.8 : 0 }} />
+    </section>
+  )
+}
+
 export function AboutPage({ onBack }: { onBack: () => void }) {
   const n = useNumbers()
   const ease = [0.22, 1, 0.36, 1] as const
@@ -121,44 +151,30 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
         Home
       </button>
 
-      <div className="mx-auto max-w-6xl px-4 pt-24 sm:px-8">
-        {/* who */}
-        <section className="grid items-center gap-10 pb-14 lg:grid-cols-[1fr_1fr]">
-          <div>
-            <p className="text-xs uppercase tracking-[0.2em] text-ink-4">About</p>
-            <h2 className="mt-3 font-heading text-6xl leading-none sm:text-8xl">{site.name}</h2>
-            <p className="mt-3 text-sm uppercase tracking-[0.2em] text-ink-4">{site.role}</p>
-            <p className="mt-8 max-w-2xl text-xl leading-relaxed text-ink-2 sm:text-2xl">{site.about}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <a
-                href={site.cvFile}
-                target="_blank"
-                rel="noreferrer"
-                className="rounded-full bg-ink px-6 py-3 text-sm text-paper transition hover:opacity-80"
-              >
-                Download CV ↓
-              </a>
-              <a
-                href={`mailto:${site.contact.email}`}
-                className="rounded-full border border-line px-6 py-3 text-sm text-ink transition hover:bg-ink hover:text-paper"
-              >
-                Get in touch
-              </a>
-            </div>
-          </div>
-          <img
-            src="about/portrait.webp"
-            width={1800}
-            height={1200}
-            alt={`${site.name} with his camera`}
-            className="order-first w-full rounded-3xl object-cover lg:order-none"
-          />
-        </section>
+      {/* full-screen photo, name over it, and the little him walking along its bottom edge */}
+      <AboutHero />
 
-        {/* the character acts out the day */}
-        <div className="border-b border-line pb-14">
-          <CharacterScene />
-        </div>
+      <div className="mx-auto max-w-6xl px-4 pt-14 sm:px-8">
+        {/* who */}
+        <section className="pb-4">
+          <p className="max-w-3xl text-xl leading-relaxed text-ink-2 sm:text-2xl">{site.about}</p>
+          <div className="mt-8 flex flex-wrap gap-3">
+            <a
+              href={site.cvFile}
+              target="_blank"
+              rel="noreferrer"
+              className="rounded-full bg-ink px-6 py-3 text-sm text-paper transition hover:opacity-80"
+            >
+              Download CV ↓
+            </a>
+            <a
+              href={`mailto:${site.contact.email}`}
+              className="rounded-full border border-line px-6 py-3 text-sm text-ink transition hover:bg-ink hover:text-paper"
+            >
+              Get in touch
+            </a>
+          </div>
+        </section>
 
         {/* background */}
         <section className="grid gap-10 py-14 sm:grid-cols-2">
