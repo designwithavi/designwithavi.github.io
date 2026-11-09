@@ -35,30 +35,40 @@ function Cover({ project, className = "" }: { project: Project; className?: stri
   )
 }
 
-function Nav() {
-  // over the dark Work section the bar turns to dark glass, like Apple's
-  const [onDark, setOnDark] = useState(false)
+function Nav({ overlay }: { overlay: boolean }) {
+  // over the dark Work section the bar turns to dark glass, like Apple's — and it stays
+  // on top of every page (folders, projects, About), so the menu is always there
+  const [onWork, setOnWork] = useState(false)
   useEffect(() => {
     const work = document.getElementById("work")
     if (!work) return
-    const io = new IntersectionObserver(([e]) => setOnDark(e.isIntersecting), { rootMargin: "0px 0px -94% 0px" })
+    const io = new IntersectionObserver(([e]) => setOnWork(e.isIntersecting), { rootMargin: "0px 0px -94% 0px" })
     io.observe(work)
     return () => io.disconnect()
   }, [])
+  const onDark = onWork || overlay
+  // from a folder, project or About: close it, then glide to that part of the page
+  const jump = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    if (!overlay) return
+    e.preventDefault()
+    const to = e.currentTarget.getAttribute("href")!
+    location.hash = to
+    setTimeout(() => document.querySelector(to)?.scrollIntoView({ behavior: "smooth" }), 60)
+  }
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-40 border-b backdrop-blur-xl transition-colors duration-500 ${
+      className={`fixed inset-x-0 top-0 z-[58] border-b backdrop-blur-xl transition-colors duration-500 ${
         onDark ? "border-white/10 bg-[#0b0b0c]/70 text-white" : "border-line bg-paper/80"
       }`}
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3 sm:px-8">
-        <a href="#top" className="font-heading text-xl sm:text-2xl">
+        <a href="#top" onClick={jump} className="font-heading text-xl sm:text-2xl">
           {site.name}
         </a>
         <div className={`flex items-center gap-4 text-sm sm:gap-6 ${onDark ? "text-white/70" : "text-ink-3"}`}>
-          <a href="#work" className={onDark ? "hover:text-white" : "hover:text-ink"}>Work</a>
+          <a href="#work" onClick={jump} className={onDark ? "hover:text-white" : "hover:text-ink"}>Work</a>
           <a href="#/about" className={onDark ? "hover:text-white" : "hover:text-ink"}>About</a>
-          <a href="#contact" className={onDark ? "hover:text-white" : "hover:text-ink"}>Contact</a>
+          <a href="#contact" onClick={jump} className={onDark ? "hover:text-white" : "hover:text-ink"}>Contact</a>
         </div>
       </nav>
     </header>
@@ -134,7 +144,7 @@ function ProjectHero({ project, hero }: { project: Project; hero: string }) {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, delay: 0.1 }}
-        className="pt-20 text-center text-xs uppercase tracking-[0.2em] text-ink-4"
+        className="pt-28 text-center text-xs uppercase tracking-[0.2em] text-ink-4"
       >
         {project.category}{project.year && ` · ${project.year}`}
       </motion.p>
@@ -182,7 +192,7 @@ export function Badge({ children }: { children: React.ReactNode }) {
 
 /** A soft band at the top of a dark page, so floating buttons never sit on text. */
 export function TopFade() {
-  return <div aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 z-30 h-20 bg-gradient-to-b from-paper via-paper/85 to-transparent" />
+  return <div aria-hidden="true" className="pointer-events-none fixed inset-x-0 top-0 z-30 h-28 bg-gradient-to-b from-paper via-paper/85 to-transparent" />
 }
 
 /** An Apple TV title page: the project's picture full-bleed, its name and details over it. */
@@ -256,7 +266,7 @@ function ProjectView({ project, onClose, onOpen }: { project: Project; onClose: 
       <TopFade />
       <button
         onClick={onClose}
-        className="fixed top-4 right-4 z-40 rounded-full bg-white/15 px-4 py-2 text-sm font-medium text-white ring-1 ring-white/10 backdrop-blur-xl hover:bg-white/25"
+        className="fixed top-[68px] right-4 z-40 rounded-full bg-white/15 px-4 py-2 text-sm font-medium text-white ring-1 ring-white/10 backdrop-blur-xl hover:bg-white/25"
       >
         Close ✕
       </button>
@@ -403,14 +413,13 @@ function App() {
 
   return (
     <div className="min-h-screen bg-paper text-ink">
-      <Nav />
+      <Nav overlay={inWork} />
       <OwlSwitch />
       <main>
         <Hero />
         <TvBrowse
           featured={featured.map((f) => ({ ...f, project: projects.find((p) => p.title === f.title)! })).filter((f) => f.project)}
           picks={[...featuredProjects.map((f) => ({ ...f })), ...featuredProjects.map((f) => ({ ...f, image: f.image2, pos: f.pos2 }))].map((f) => ({ image: f.image, pos: f.pos, project: projects.find((p) => p.title === f.title)! })).filter((f) => f.project)}
-          photos={gallery.map((g) => ({ ...g, project: projects.find((p) => p.title === g.project)! })).filter((g) => g.project)}
           categories={categories}
           projects={projects}
           onOpen={(p) => go(categories.find((c) => c.name === p.category)!, p)}
@@ -425,6 +434,7 @@ function App() {
           projects={projects.filter((p) => p.category === route.category!.name)}
           onOpen={(p) => go(route.category!, p)}
           onBack={up}
+          photos={route.category.name === "Photography & Videography" ? gallery.map((g) => ({ ...g, project: projects.find((p) => p.title === g.project)! })).filter((g) => g.project) : undefined}
         />
       )}
       {route.project && <ProjectView key={route.project.title} project={route.project} onClose={up} onOpen={(p) => go(route.category!, p)} />}

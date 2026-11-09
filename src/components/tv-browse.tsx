@@ -215,7 +215,8 @@ export function Card({ p, onOpen, fluid, bare, big }: { p: Project; onOpen: (p: 
 
 /* ---------------- a shelf ---------------- */
 
-export function Shelf({ title, subtitle, projects, onOpen, onSeeAll, big }: { title: string; subtitle?: string; projects: Project[]; onOpen: (p: Project) => void; onSeeAll?: () => void; big?: boolean }) {
+export function Shelf({ title, subtitle, projects, onOpen, onSeeAll, big, limit }: { title: string; subtitle?: string; projects: Project[]; onOpen: (p: Project) => void; onSeeAll?: () => void; big?: boolean; limit?: number }) {
+  const shown = limit ? projects.slice(0, limit) : projects
   const row = useRef<HTMLDivElement>(null)
   const [ends, setEnds] = useState({ start: true, end: false })
   const check = () => {
@@ -245,9 +246,10 @@ export function Shelf({ title, subtitle, projects, onOpen, onSeeAll, big }: { ti
           onScroll={check}
           className="flex snap-x snap-mandatory gap-4 overflow-x-auto px-5 pb-4 pt-4 [scroll-padding-inline:1.25rem] [scrollbar-width:none] sm:gap-6 sm:px-10 sm:[scroll-padding-inline:2.5rem] [&::-webkit-scrollbar]:hidden"
         >
-          {projects.map((p) => (
+          {shown.map((p) => (
             <Card key={p.title} p={p} onOpen={onOpen} big={big} />
           ))}
+          {limit && onSeeAll && projects.length > limit && <SeeMore more={projects.length - limit} onClick={onSeeAll} label={title} />}
         </div>
         {!ends.start && (
           <button type="button" onClick={() => page(-1)} aria-label={`Scroll ${title} back`} className={`${arrow} left-0 mt-4 bg-gradient-to-r from-[#0b0b0c] to-transparent`}>
@@ -261,6 +263,28 @@ export function Shelf({ title, subtitle, projects, onOpen, onSeeAll, big }: { ti
         )}
       </div>
     </section>
+  )
+}
+
+/** The last tile on a shelf: opens the whole folder, same as tapping the shelf's name. */
+function SeeMore({ more, onClick, label }: { more: number; onClick: () => void; label: string }) {
+  return (
+    <div className="w-[44vw] shrink-0 snap-start sm:w-[220px] lg:w-[240px]">
+      <button
+        type="button"
+        onClick={onClick}
+        aria-label={`See all ${label} projects`}
+        className="group grid h-[40.5vw] w-full place-items-center rounded-xl bg-white/[.06] ring-1 ring-white/10 transition hover:bg-white/[.12] hover:ring-white/25 sm:h-[191px] lg:h-[214px]"
+      >
+        <span className="flex flex-col items-center gap-3">
+          <span className="grid size-12 place-items-center rounded-full bg-white text-black transition-transform duration-300 group-hover:translate-x-1">
+            <ChevronRight className="h-6 w-6" />
+          </span>
+          <span className="text-sm font-semibold text-white">See more</span>
+          <span className="-mt-2 text-xs text-white/45">+{more} more</span>
+        </span>
+      </button>
+    </div>
   )
 }
 
@@ -464,69 +488,45 @@ function FeaturedRing({ picks, onOpen }: { picks: FeaturedPick[]; onOpen: (p: Pr
 
 /* ---------------- photo gallery ---------------- */
 
-function GalleryRow({ photos, onZoom }: { photos: GalleryPhoto[]; onZoom: (i: number) => void }) {
-  const row = useRef<HTMLDivElement>(null)
-  const [ends, setEnds] = useState({ start: true, end: false })
-  const check = () => {
-    const r = row.current
-    if (r) setEnds({ start: r.scrollLeft < 8, end: r.scrollLeft + r.clientWidth > r.scrollWidth - 8 })
-  }
-  useEffect(check, [photos])
-  const page = (d: 1 | -1) => row.current?.scrollBy({ left: d * row.current.clientWidth * 0.8, behavior: "smooth" })
-  const arrow = "absolute top-1/2 z-10 hidden size-11 -translate-y-1/2 place-items-center rounded-full bg-black/50 text-white ring-1 ring-white/15 backdrop-blur-md transition hover:bg-black/70 md:grid"
-  return (
-    <div className="group/row relative -mx-5 sm:-mx-10">
-      <div
-        ref={row}
-        onScroll={check}
-        className="flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 pb-2 [scroll-padding-inline:1.25rem] [scrollbar-width:none] sm:gap-4 sm:px-10 sm:[scroll-padding-inline:2.5rem] [&::-webkit-scrollbar]:hidden"
-      >
-        {photos.map((ph, i) => (
-          <button
-            key={ph.src}
-            type="button"
-            onClick={() => onZoom(i)}
-            className="group relative h-[300px] shrink-0 snap-start overflow-hidden rounded-xl bg-white/5 sm:h-[380px] lg:h-[440px]"
-            style={{ aspectRatio: String(ph.w / ph.h) }}
-            aria-label={`Photo from ${ph.project.title}`}
-          >
-            <img src={ph.src} width={ph.w} height={ph.h} alt="" loading="lazy" draggable={false} className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
-            <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-2.5 pt-8 text-left text-xs font-medium text-white/90 md:opacity-0 md:transition-opacity md:duration-300 md:group-hover:opacity-100">
-              {ph.project.title}
-            </span>
-          </button>
-        ))}
-      </div>
-      {!ends.start && (
-        <button type="button" onClick={() => page(-1)} aria-label="Earlier photos" className={`${arrow} left-3 opacity-0 group-hover/row:opacity-100`}>
-          <ChevronLeft className="h-5 w-5" />
-        </button>
-      )}
-      {!ends.end && (
-        <button type="button" onClick={() => page(1)} aria-label="More photos" className={`${arrow} right-3 opacity-0 group-hover/row:opacity-100`}>
-          <ChevronRight className="h-5 w-5" />
-        </button>
-      )}
-    </div>
-  )
-}
-
 export type GalleryPhoto = { src: string; w: number; h: number; project: Project }
 
-function PhotoGallery({ photos, onOpen }: { photos: GalleryPhoto[]; onOpen: (p: Project) => void }) {
+/**
+ * Photos drifting slowly sideways in an endless strip, like film through a
+ * gate. Hovering (or a finger on it) holds it still; tap a photo to see it
+ * large, with a link to its shoot. With reduced motion it's a plain swipe row.
+ */
+export function PhotoMarquee({ photos, onOpen }: { photos: GalleryPhoto[]; onOpen: (p: Project) => void }) {
   const [zoom, setZoom] = useState<number | null>(null)
+  const reduce = useReducedMotion()
   const images = photos.map((ph) => ({ src: ph.src, w: ph.w, h: ph.h, caption: ph.project.title }))
+  // two copies back to back: when the first has slid fully out, the loop restarts seamlessly
+  const strip = reduce ? photos : [...photos, ...photos]
   return (
-    <section className="mx-auto mt-20 max-w-7xl px-5 sm:px-10">
-      <div className="mb-8 flex flex-wrap items-end justify-between gap-3 border-t border-white/10 pt-12">
-        <div>
-          <h3 className="text-2xl font-semibold text-white sm:text-3xl">Photo gallery</h3>
-          <p className="mt-1 text-sm text-white/45">Frames from the shoots · swipe through</p>
+    <section>
+      <style>{`@keyframes photo-drift { to { transform: translateX(-50%); } }
+.photo-drift { animation: photo-drift ${photos.length * 5}s linear infinite; }
+.photo-drift:hover, .photo-drift:active { animation-play-state: paused; }`}</style>
+      <div className={`overflow-hidden [mask-image:linear-gradient(90deg,transparent,#000_6%,#000_94%,transparent)] ${reduce ? "overflow-x-auto" : ""}`}>
+        <div className={`flex w-max ${reduce ? "" : "photo-drift"}`}>
+          {strip.map((ph, i) => (
+            <button
+              key={`${ph.src}-${i}`}
+              type="button"
+              onClick={() => setZoom(i % photos.length)}
+              className="group relative mr-3 h-[260px] shrink-0 overflow-hidden rounded-xl bg-white/5 sm:mr-4 sm:h-[340px] lg:h-[400px]"
+              style={{ aspectRatio: String(ph.w / ph.h) }}
+              aria-label={`Photo from ${ph.project.title}`}
+              tabIndex={i >= photos.length ? -1 : 0}
+              aria-hidden={i >= photos.length || undefined}
+            >
+              <img src={ph.src} width={ph.w} height={ph.h} alt="" loading="lazy" draggable={false} className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]" />
+              <span className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 pb-2.5 pt-8 text-left text-xs font-medium text-white/90 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                {ph.project.title}
+              </span>
+            </button>
+          ))}
         </div>
-        <p className="text-xs uppercase tracking-[0.2em] text-white/35">{photos.length} photographs</p>
       </div>
-      {/* one row of photos at their own shapes: swipe or scroll sideways, tap to see one large */}
-      <GalleryRow photos={photos} onZoom={setZoom} />
       <AnimatePresence>
         {zoom !== null && (
           <Lightbox images={images} index={zoom} onIndex={setZoom} onClose={() => setZoom(null)} title="Photo gallery" action={{ label: "View project", onClick: () => (setZoom(null), onOpen(photos[zoom].project)) }} />
@@ -536,12 +536,26 @@ function PhotoGallery({ photos, onOpen }: { photos: GalleryPhoto[]; onOpen: (p: 
   )
 }
 
+/** A quiet break between the banner and the ring: a hairline that glows in the middle. */
+function Divider() {
+  return (
+    <div aria-hidden="true" className="relative mx-auto flex max-w-7xl items-center gap-4 px-5 py-10 sm:px-10 sm:py-14">
+      <span className="h-px flex-1 bg-gradient-to-r from-transparent via-white/15 to-white/30" />
+      <span className="flex items-center gap-1.5">
+        <span className="size-1 rounded-full bg-white/30" />
+        <span className="size-1.5 rounded-full bg-white/70 shadow-[0_0_12px_rgba(255,255,255,.6)]" />
+        <span className="size-1 rounded-full bg-white/30" />
+      </span>
+      <span className="h-px flex-1 bg-gradient-to-l from-transparent via-white/15 to-white/30" />
+    </div>
+  )
+}
+
 /* ---------------- the browse page ---------------- */
 
 export function TvBrowse({
   featured,
   picks,
-  photos,
   categories,
   projects,
   onOpen,
@@ -549,7 +563,6 @@ export function TvBrowse({
 }: {
   featured: Featured[]
   picks: FeaturedPick[]
-  photos: GalleryPhoto[]
   categories: Category[]
   projects: Project[]
   onOpen: (p: Project) => void
@@ -559,9 +572,9 @@ export function TvBrowse({
   return (
     <div id="work" className="scroll-mt-0 bg-[#0b0b0c] pb-24 text-white">
       <Hero items={featured} onOpen={onOpen} onCategory={(n) => onCategory(byName(n))} />
-      <div className="relative z-10 -mt-6 sm:-mt-10">
+      <Divider />
+      <div className="relative z-10">
         <FeaturedRing picks={picks} onOpen={onOpen} />
-        <PhotoGallery photos={photos} onOpen={onOpen} />
         <div className="mx-auto mt-20 max-w-7xl border-t border-white/10 px-5 pt-12 sm:px-10">
           <h3 className="text-2xl font-semibold text-white sm:text-3xl">All projects</h3>
           <p className="mt-1 text-sm text-white/45">By discipline</p>
@@ -569,7 +582,7 @@ export function TvBrowse({
         <div className="h-8" />
         {categories.map((c) => {
           const items = projects.filter((p) => p.category === c.name)
-          return items.length ? <Shelf key={c.name} title={c.name} projects={items} onOpen={onOpen} onSeeAll={() => onCategory(c)} /> : null
+          return items.length ? <Shelf key={c.name} title={c.name} projects={items} limit={4} onOpen={onOpen} onSeeAll={() => onCategory(c)} /> : null
         })}
       </div>
     </div>
