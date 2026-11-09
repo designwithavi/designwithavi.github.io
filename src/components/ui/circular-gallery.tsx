@@ -4,10 +4,10 @@ import { useScroll, useMotionValueEvent, useReducedMotion } from "framer-motion"
 /**
  * Circular Gallery — adapted from 21st.dev.
  *
- * Cards stand in a ring and the ring turns: with the scroll through its own
- * section (not the whole page), slowly on its own when nothing else moves it,
- * and by dragging on any screen. The card facing you is fully lit and
- * clickable; the ones around the back fade. A mouse over the ring holds it still.
+ * Cards stand in a ring and the ring turns with the scroll through its own
+ * (pinned) section — forward going down, back going up — and by dragging. It
+ * can also drift on its own (autoRotateSpeed > 0). The card facing you is fully
+ * lit and clickable; the ones around the back fade.
  */
 
 interface CircularGalleryProps<T> {
@@ -19,12 +19,18 @@ interface CircularGalleryProps<T> {
   cardH: number
   /** degrees per frame when idle */
   autoRotateSpeed?: number
-  /** the section whose scroll turns the ring once round */
+  /** the section whose scroll turns the ring */
   scrollTarget: React.RefObject<HTMLElement | null>
+  /** scroll offsets for that section (framer-motion useScroll); default: while it passes through the screen */
+  scrollOffset?: [string, string]
+  /** how far one full scroll through the section turns the ring, in degrees */
+  scrollTurn?: number
+  /** settle on each card: hold it facing you for part of the scroll, then turn to the next */
+  snap?: boolean
   keyOf: (item: T) => string
 }
 
-export function CircularGallery<T>({ items, render, radius, cardW, cardH, autoRotateSpeed = 0.04, scrollTarget, keyOf }: CircularGalleryProps<T>) {
+export function CircularGallery<T>({ items, render, radius, cardW, cardH, autoRotateSpeed = 0, scrollTarget, scrollOffset = ["start end", "end start"], scrollTurn = 360, snap = false, keyOf }: CircularGalleryProps<T>) {
   const reduce = useReducedMotion()
   const [rotation, setRotation] = useState(0)
   const base = useRef(0) // from scrolling
@@ -33,15 +39,24 @@ export function CircularGallery<T>({ items, render, radius, cardW, cardH, autoRo
   const drag = useRef<{ x: number; start: number } | null>(null)
   const hovering = useRef(false) // a mouse over the ring holds it still, so a card can be clicked
 
-  const { scrollYProgress } = useScroll({ target: scrollTarget, offset: ["start end", "end start"] })
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { scrollYProgress } = useScroll({ target: scrollTarget, offset: scrollOffset as any })
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    base.current = -v * 360
+    const steps = items.length - 1
+    let t = v
+    if (snap && steps > 0) {
+      // within each step: hold for the first and last quarter, turn smoothly in between
+      const x = v * steps, i = Math.min(steps - 1, Math.floor(x)), f = x - i
+      const u = Math.min(1, Math.max(0, (f - 0.25) / 0.5))
+      t = (i + u * u * (3 - 2 * u)) / steps
+    }
+    base.current = -t * scrollTurn
     busyUntil.current = performance.now() + 200
     setRotation(base.current + extra.current)
   })
 
   useEffect(() => {
-    if (reduce) return
+    if (reduce || !autoRotateSpeed) return
     let raf = 0
     const tick = (now: number) => {
       if (now > busyUntil.current && !drag.current && !hovering.current) {

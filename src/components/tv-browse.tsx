@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react"
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
+import { AnimatePresence, motion, useMotionValueEvent, useReducedMotion, useScroll } from "framer-motion"
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import type { Category, Project } from "@/content"
 import { Lightbox } from "@/components/project-gallery"
@@ -272,9 +272,9 @@ function hueOf(hex: string) {
 function useRingSize() {
   const get = () => {
     const w = window.innerWidth
-    if (w < 640) return { cardW: 200, cardH: 280, radius: 360, height: 360 }
-    if (w < 1024) return { cardW: 240, cardH: 330, radius: 430, height: 450 }
-    return { cardW: 270, cardH: 370, radius: 500, height: 500 }
+    if (w < 640) return { cardW: Math.min(260, w * 0.68), cardH: Math.min(360, w * 0.94), radius: 470 }
+    if (w < 1024) return { cardW: 320, cardH: 440, radius: 580 }
+    return { cardW: 360, cardH: 490, radius: 650 }
   }
   const [s, setS] = useState(get)
   useEffect(() => {
@@ -285,42 +285,69 @@ function useRingSize() {
   return s
 }
 
+/**
+ * Pinned while you look: the section holds the screen once it's centred, and
+ * scrolling turns the ring card by card — forward going down, back going up —
+ * before the page moves on.
+ */
 function FeaturedRing({ picks, onOpen }: { picks: FeaturedPick[]; onOpen: (p: Project) => void }) {
   const section = useRef<HTMLElement>(null)
   const size = useRingSize()
+  const per = 360 / picks.length
+  const [at, setAt] = useState(0)
+  const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] })
+  useMotionValueEvent(scrollYProgress, "change", (v) => setAt(Math.min(picks.length - 1, Math.round(v * (picks.length - 1)))))
   return (
-    <section ref={section} className="relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-5 sm:px-10">
-        <h3 className="text-2xl font-semibold text-white sm:text-3xl">Featured projects</h3>
-        <p className="mt-1 text-sm text-white/45">Scroll or drag to turn · tap a card to open</p>
-      </div>
-      <div style={{ height: size.height }} className="relative">
-        <CircularGallery
-          items={picks}
-          keyOf={(f) => f.image}
-          radius={size.radius}
-          cardW={size.cardW}
-          cardH={size.cardH}
-          scrollTarget={section}
-          render={(f, front) => (
-            <GlowCard hue={hueOf(f.project.color)} spread={30} className="h-full w-full shadow-[0_30px_60px_-20px_rgba(0,0,0,.9)]">
-              <button
-                type="button"
-                onClick={() => onOpen(f.project)}
-                className="!absolute inset-0 overflow-hidden rounded-[13px] text-left"
-                aria-label={`Open ${f.project.title}`}
-                tabIndex={front ? 0 : -1}
-              >
-                <img src={f.image} alt="" draggable={false} className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: f.pos ?? "center" }} />
-                <span className="absolute inset-x-0 bottom-0 block bg-gradient-to-t from-black/90 via-black/50 to-transparent p-4 pt-16">
-                  <span className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60">{f.project.category}</span>
-                  <span className="mt-1 block font-heading text-xl leading-tight text-white sm:text-2xl">{f.project.title}</span>
-                  {front && <span className="mt-2 inline-block rounded-full bg-white px-3 py-1 text-xs font-semibold text-black">View project →</span>}
-                </span>
-              </button>
-            </GlowCard>
-          )}
-        />
+    // ~70vh of scrolling per card, so each one gets a moment
+    <section ref={section} className="relative" style={{ height: `${100 + (picks.length - 1) * 55}svh` }}>
+      <div className="sticky top-0 flex h-[100svh] flex-col overflow-hidden pt-20 pb-6 sm:pt-24">
+        <div className="mx-auto flex w-full max-w-7xl items-end justify-between gap-4 px-5 sm:px-10">
+          <div>
+            <h3 className="text-3xl font-semibold text-white sm:text-5xl">Featured projects</h3>
+            <p className="mt-2 text-sm text-white/50">Scroll to turn through them · tap the front card to open</p>
+          </div>
+          <p className="shrink-0 font-mono text-sm tabular-nums text-white/50">
+            {String(at + 1).padStart(2, "0")} / {String(picks.length).padStart(2, "0")}
+          </p>
+        </div>
+        <div className="relative min-h-0 flex-1">
+          <CircularGallery
+            items={picks}
+            keyOf={(f) => f.image}
+            radius={size.radius}
+            cardW={size.cardW}
+            cardH={size.cardH}
+            scrollTarget={section}
+            scrollOffset={["start start", "end end"]}
+            scrollTurn={per * (picks.length - 1)}
+            snap
+            render={(f, front) => (
+              <GlowCard hue={hueOf(f.project.color)} spread={30} className="h-full w-full shadow-[0_40px_80px_-24px_rgba(0,0,0,.9)]">
+                <button
+                  type="button"
+                  onClick={() => onOpen(f.project)}
+                  className="!absolute inset-0 overflow-hidden rounded-[13px] text-left"
+                  aria-label={`Open ${f.project.title}`}
+                  tabIndex={front ? 0 : -1}
+                >
+                  <img src={f.image} alt="" draggable={false} className="absolute inset-0 h-full w-full object-cover" style={{ objectPosition: f.pos ?? "center" }} />
+                  <span className="absolute inset-x-0 bottom-0 block bg-gradient-to-t from-black/90 via-black/50 to-transparent p-5 pt-20">
+                    <span className="block text-[11px] font-semibold uppercase tracking-[0.18em] text-white/60">
+                      {f.project.category}
+                      {f.project.year && ` · ${f.project.year}`}
+                    </span>
+                    <span className="mt-1 block font-heading text-2xl leading-tight text-white sm:text-3xl">{f.project.title}</span>
+                    {front && <span className="mt-3 inline-block rounded-full bg-white px-4 py-1.5 text-xs font-semibold text-black">View project →</span>}
+                  </span>
+                </button>
+              </GlowCard>
+            )}
+          />
+        </div>
+        {/* how far round the ring you are */}
+        <div className="mx-auto mt-2 h-px w-full max-w-7xl bg-white/10 px-5 sm:px-10">
+          <motion.div className="h-full bg-white/70" style={{ scaleX: scrollYProgress, transformOrigin: "0 50%" }} />
+        </div>
       </div>
     </section>
   )
