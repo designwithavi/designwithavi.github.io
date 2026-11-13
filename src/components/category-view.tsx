@@ -20,7 +20,7 @@ export function CategoryView({
 }) {
   return (
     <motion.div
-      className="dark tv fixed inset-0 z-50 overflow-y-auto bg-paper text-ink"
+      className="dark tv relative min-h-screen bg-paper text-ink"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}

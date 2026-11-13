@@ -419,7 +419,7 @@ function FeaturedRing({ picks, onOpen }: { picks: FeaturedPick[]; onOpen: (p: Pr
       </div>
       <div
         ref={box}
-        style={{ height: size.height, touchAction: "pan-y" }}
+        style={{ height: size.height, touchAction: "pan-y pinch-zoom" }}
         className="relative mt-4 cursor-grab select-none overflow-hidden outline-none active:cursor-grabbing"
         onPointerDown={onDown}
         onPointerMove={onMove}

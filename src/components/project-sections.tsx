@@ -25,13 +25,12 @@ export function ProjectSections({ sections, title }: { sections: Section[]; titl
 
   // highlight the chapter in view
   useEffect(() => {
-    const root = refs.current[0]?.closest(".overflow-y-auto") ?? null
     const io = new IntersectionObserver(
       (es) => {
         const seen = es.filter((e) => e.isIntersecting).map((e) => refs.current.indexOf(e.target as HTMLElement))
         if (seen.length) setActive(Math.min(...seen))
       },
-      { root, rootMargin: "-20% 0px -70% 0px" },
+      { rootMargin: "-20% 0px -70% 0px" },
     )
     refs.current.forEach((el) => el && io.observe(el))
     return () => io.disconnect()
@@ -39,18 +38,18 @@ export function ProjectSections({ sections, title }: { sections: Section[]; titl
 
   const jump = (i: number) => {
     const el = refs.current[i]
-    const scroller = el?.closest(".overflow-y-auto")
-    if (!el || !scroller) return
-    const top = () => el.getBoundingClientRect().top - scroller.getBoundingClientRect().top + scroller.scrollTop - 70
-    scroller.scrollTo({ top: top(), behavior: "smooth" })
+    if (!el) return
+    // just below the top bar and this menu
+    const top = () => el.getBoundingClientRect().top + window.scrollY - 120
+    window.scrollTo({ top: top(), behavior: "smooth" })
     // settle exactly on it once the smooth scroll has finished
-    window.setTimeout(() => scroller.scrollTo({ top: top() }), 700)
+    window.setTimeout(() => window.scrollTo({ top: top() }), 700)
   }
 
   return (
     <div className="mt-14">
       {chapters.length > 1 && (
-      <div className="sticky top-0 z-[35] -mx-4 border-b border-line bg-paper/90 py-3 pl-4 pr-28 backdrop-blur sm:-mx-8 sm:pl-8">
+      <div className="sticky top-[57px] z-[35] -mx-4 border-b border-line bg-paper/90 py-3 pl-4 pr-28 backdrop-blur sm:-mx-8 sm:pl-8">
         <div ref={nav} className="flex gap-2 overflow-x-auto [scrollbar-width:none]">
           {chapters.map((c, i) => (
             <button

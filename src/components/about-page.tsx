@@ -1,6 +1,6 @@
 import { motion } from "framer-motion"
 import { ArrowLeft } from "lucide-react"
-import { useRef, useState } from "react"
+import { useState } from "react"
 import { CharacterWalker } from "@/components/character-scene"
 import { AnalyticsBento } from "@/components/ui/analytics-bento"
 import { DesignProcess, type ProcessStep } from "@/components/design-process"
@@ -134,11 +134,9 @@ function AboutHero() {
 export function AboutPage({ onBack }: { onBack: () => void }) {
   const n = useNumbers()
   const ease = [0.22, 1, 0.36, 1] as const
-  const scroller = useRef<HTMLDivElement>(null)
   return (
     <motion.div
-      ref={scroller}
-      className="dark tv fixed inset-0 z-50 overflow-y-auto overflow-x-hidden bg-paper text-ink"
+      className="dark tv relative min-h-screen overflow-x-clip bg-paper text-ink"
       initial={{ opacity: 0, y: 40 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, ease }}
@@ -224,7 +222,6 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
             const p = "project" in m && allProjects.find((x) => x.title === m.project)
             return { ...m, href: p ? `#/work/${slug(p.category)}/${slug(p.title)}` : undefined }
           })}
-          scroller={scroller}
         />
         <div className="mt-16 flex justify-center">
           <a
@@ -239,7 +236,7 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
 
       {/* how I work: full width, pinned while it slides */}
       <div className="border-b border-line">
-        <DesignProcess steps={PROCESS} scroller={scroller} />
+        <DesignProcess steps={PROCESS} />
       </div>
 
       <div className="mx-auto max-w-6xl px-4 pb-24 sm:px-8">

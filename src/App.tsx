@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useLayoutEffect, useRef, useState } from "react"
 import { motion } from "framer-motion"
 import { OwlSwitch, useIsDark } from "@/components/owl-switch"
 import { BehanceIcon, InstagramIcon, LinkedInIcon } from "@/components/brand-icons"
@@ -262,7 +262,7 @@ function ProjectView({ project, onClose, onOpen }: { project: Project; onClose: 
     film.current?.play().catch(() => {})
   }
   return (
-    <div className="dark tv fixed inset-0 z-[55] overflow-y-auto bg-paper text-ink animate-in fade-in duration-300">
+    <div className="dark tv relative min-h-screen bg-paper text-ink animate-in fade-in duration-300">
       <TopFade />
       <button
         onClick={onClose}
@@ -399,21 +399,36 @@ function App() {
     return () => document.removeEventListener("click", onClick)
   })
 
-  // the page underneath shouldn't scroll while a folder or project is open; Escape goes up a level
+  // Escape goes up a level
   useEffect(() => {
     if (!inWork) return
-    document.body.style.overflow = "hidden"
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && up()
     document.addEventListener("keydown", onKey)
-    return () => {
-      document.body.style.overflow = ""
-      document.removeEventListener("keydown", onKey)
-    }
+    return () => document.removeEventListener("keydown", onKey)
   }, [inWork, up])
+
+  // Folders, projects and About are ordinary pages on the window (so pinch-zoom
+  // behaves as on any site). Each remembers how far down you were: back on a
+  // page you've seen, you land where you left it; a new one opens at the top.
+  const where = route.about ? "about" : route.project ? `p:${route.project.title}` : route.category ? `c:${route.category.name}` : "home"
+  const scrolls = useRef<Record<string, number>>({})
+  const current = useRef(where)
+  useEffect(() => {
+    if ("scrollRestoration" in history) history.scrollRestoration = "manual"
+    const save = () => (scrolls.current[current.current] = window.scrollY)
+    window.addEventListener("scroll", save, { passive: true })
+    return () => window.removeEventListener("scroll", save)
+  }, [])
+  useLayoutEffect(() => {
+    if (current.current === where) return
+    current.current = where
+    window.scrollTo(0, scrolls.current[where] ?? 0)
+  }, [where])
 
   return (
     <div className="min-h-screen bg-paper text-ink">
       <Nav overlay={inWork} />
+      <div className={inWork ? "hidden" : ""}>
       <OwlSwitch />
       <main>
         <Hero />
@@ -427,7 +442,9 @@ function App() {
         />
       </main>
       <Contact />
+      </div>
       {route.category && (
+        <div className={route.project ? "hidden" : ""}>
         <CategoryView
           key={route.category.name}
           category={route.category}
@@ -436,6 +453,7 @@ function App() {
           onBack={up}
           photos={route.category.name === "Photography & Videography" ? gallery.map((g) => ({ ...g, project: projects.find((p) => p.title === g.project)! })).filter((g) => g.project) : undefined}
         />
+        </div>
       )}
       {route.project && <ProjectView key={route.project.title} project={route.project} onClose={up} onOpen={(p) => go(route.category!, p)} />}
       {route.about && <AboutPage onBack={up} />}

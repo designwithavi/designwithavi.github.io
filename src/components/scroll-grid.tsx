@@ -65,21 +65,17 @@ export function ScrollGrid({ images, title }: { images: GalleryImage[]; title: s
   const n = useColumnCount()
   const cols = columnsOf(imgs, n)
   const grid = useRef<HTMLDivElement>(null)
-  const scroller = useRef<HTMLElement | null>(null)
   const [ready, setReady] = useState(false)
   const reduce = useReducedMotion()
   const [zoom, setZoom] = useState<number | null>(null)
 
-  // the project page scrolls inside its own panel, not the window
-  useLayoutEffect(() => {
-    scroller.current = (grid.current?.closest(".overflow-y-auto") as HTMLElement) ?? null
-    setReady(true)
-  }, [])
+  // start the drift once the grid is on the page
+  useLayoutEffect(() => setReady(true), [])
 
   return (
     <>
       <div ref={grid} className="overflow-hidden py-6">
-        {ready && <Columns cols={cols} grid={grid} scroller={scroller} still={!!reduce} onOpen={setZoom} />}
+        {ready && <Columns cols={cols} grid={grid} still={!!reduce} onOpen={setZoom} />}
       </div>
       <AnimatePresence>
         {zoom !== null && <Lightbox images={imgs} index={zoom} onIndex={setZoom} onClose={() => setZoom(null)} title={title} />}
@@ -91,17 +87,15 @@ export function ScrollGrid({ images, title }: { images: GalleryImage[]; title: s
 function Columns({
   cols,
   grid,
-  scroller,
   still,
   onOpen,
 }: {
   cols: { img: Img; i: number }[][]
   grid: React.RefObject<HTMLDivElement | null>
-  scroller: React.RefObject<HTMLElement | null>
   still: boolean
   onOpen: (i: number) => void
 }) {
-  const { scrollYProgress } = useScroll({ target: grid, container: scroller, offset: ["start end", "end start"] })
+  const { scrollYProgress } = useScroll({ target: grid, offset: ["start end", "end start"] })
   // one column: nothing to drift against
   const amp = still || cols.length < 2 ? 0 : 110
   return (

@@ -22,9 +22,9 @@ export type Milestone = {
   href?: string
 }
 
-export function ScrollTimeline({ items, scroller }: { items: Milestone[]; scroller: React.RefObject<HTMLElement | null> }) {
+export function ScrollTimeline({ items }: { items: Milestone[] }) {
   const track = useRef<HTMLDivElement>(null)
-  const { scrollYProgress } = useScroll({ target: track, container: scroller, offset: ["start 70%", "end 60%"] })
+  const { scrollYProgress } = useScroll({ target: track, offset: ["start 70%", "end 60%"] })
   const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 30, mass: 0.3 })
   const [reached, setReached] = useState(-1)
   const dots = useRef<(HTMLDivElement | null)[]>([])
@@ -69,7 +69,7 @@ export function ScrollTimeline({ items, scroller }: { items: Milestone[]; scroll
               <motion.div
                 initial={{ opacity: 0, y: 40, x: 0 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ root: scroller, once: true, margin: "-12% 0px" }}
+                viewport={{ once: true, margin: "-12% 0px" }}
                 transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                 className={`min-w-0 md:row-start-1 ${right ? "md:col-start-3 md:pl-10" : "md:col-start-1 md:pr-10 md:text-right"}`}
               >

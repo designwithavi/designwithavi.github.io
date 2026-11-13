@@ -77,7 +77,7 @@ function Rail() {
 }
 
 /** Wide screens: pinned, scroll-driven. */
-function Pinned({ steps, scroller }: { steps: ProcessStep[]; scroller: React.RefObject<HTMLElement | null> }) {
+function Pinned({ steps }: { steps: ProcessStep[] }) {
   const section = useRef<HTMLDivElement>(null)
   const track = useRef<HTMLDivElement>(null)
   const [travel, setTravel] = useState(0)
@@ -92,7 +92,7 @@ function Pinned({ steps, scroller }: { steps: ProcessStep[]; scroller: React.Ref
     return () => window.removeEventListener("resize", measure)
   }, [])
 
-  const { scrollYProgress } = useScroll({ target: section, container: scroller, offset: ["start start", "end end"] })
+  const { scrollYProgress } = useScroll({ target: section, offset: ["start start", "end end"] })
   const x = useTransform(scrollYProgress, [0.05, 0.95], [0, -travel])
   const sway = useSpring(useTransform(useVelocity(x), [-1500, 0, 1500], [-5, 0, 5]), { stiffness: 120, damping: 12 })
   const progress = useTransform(scrollYProgress, [0.05, 0.95], ["0%", "100%"])
@@ -139,8 +139,8 @@ function Swipe({ steps }: { steps: ProcessStep[] }) {
   )
 }
 
-export function DesignProcess({ steps, scroller }: { steps: ProcessStep[]; scroller: React.RefObject<HTMLElement | null> }) {
+export function DesignProcess({ steps }: { steps: ProcessStep[] }) {
   const wide = useWide()
   const reduce = typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches
-  return wide && !reduce ? <Pinned steps={steps} scroller={scroller} /> : <Swipe steps={steps} />
+  return wide && !reduce ? <Pinned steps={steps} /> : <Swipe steps={steps} />
 }
