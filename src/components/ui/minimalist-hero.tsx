@@ -85,7 +85,52 @@ export const MinimalistHero = ({
 }: MinimalistHeroProps) => {
   const heroRef = React.useRef<HTMLDivElement>(null)
   const nameRef = React.useRef<HTMLSpanElement>(null)
-  useFitWidth(heroRef, nameRef)
+  const titleRef = React.useRef<HTMLHeadingElement>(null)
+  const leftRef = React.useRef<HTMLDivElement>(null)
+  const rightRef = React.useRef<HTMLDivElement>(null)
+  const footRef = React.useRef<HTMLElement>(null)
+
+  // The name spans the full width — unless the screen is too short for that:
+  // on wide layouts it must sit wholly between the two side texts above and the
+  // footer below, so it shrinks (and moves down) to fit that band.
+  React.useLayoutEffect(() => {
+    const hero = heroRef.current, t = nameRef.current, h1 = titleRef.current
+    if (!hero || !t || !h1) return
+    const fit = () => {
+      const cs = getComputedStyle(hero)
+      const target = hero.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)
+      t.style.fontSize = "100px"
+      const w = t.scrollWidth
+      if (!w) return
+      let size = (100 * target) / w
+      h1.style.top = ""
+      const left = leftRef.current, right = rightRef.current, foot = footRef.current
+      if (window.innerWidth >= 1024 && left && right && foot) {
+        // measure where things sit without their entrance offsets
+        const bottomOf = (e: HTMLElement) => e.offsetTop + e.offsetHeight
+        const parent = h1.offsetParent as HTMLElement
+        const origin = parent.getBoundingClientRect().top - hero.getBoundingClientRect().top
+        const gap = 28
+        const top = Math.max(bottomOf(left), bottomOf(right)) + (left.offsetParent as HTMLElement).offsetTop + gap
+        const bottom = foot.offsetTop - gap
+        const lead = 0.78 // the title's line height
+        size = Math.min(size, Math.max(120, (bottom - top) / lead))
+        t.style.fontSize = `${size}px`
+        const half = (size * lead) / 2
+        // stay centred if there's room; otherwise sit just below the side texts
+        const centre = parent.offsetHeight / 2 + origin
+        const y = Math.min(Math.max(centre, top + half), bottom - half)
+        h1.style.top = `${y - origin}px`
+        return
+      }
+      t.style.fontSize = `${size}px`
+    }
+    fit()
+    document.fonts?.ready.then(fit) // re-measure once the real font has loaded
+    const ro = new ResizeObserver(fit)
+    ro.observe(hero)
+    return () => ro.disconnect()
+  }, [])
   return (
     <div
       ref={heroRef}
@@ -101,6 +146,7 @@ export const MinimalistHero = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.8 }}
+          ref={leftRef}
           className="z-20 order-2 text-center lg:order-1 lg:self-start lg:pt-16 lg:text-left"
         >
           <p className="mx-auto max-w-xs text-sm leading-relaxed text-ink/80 lg:mx-0">{mainText}</p>
@@ -124,6 +170,7 @@ export const MinimalistHero = ({
           </motion.div>
 
           <motion.h1
+            ref={titleRef}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease, delay: 0.5 }}
@@ -155,6 +202,7 @@ export const MinimalistHero = ({
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1 }}
+          ref={rightRef}
           className="z-20 order-3 text-center lg:ml-auto lg:max-w-[16rem] lg:self-start lg:pt-16 lg:text-right"
         >
           <p className="text-xs uppercase tracking-[0.2em] text-ink/60">{sideText.title}</p>
@@ -163,7 +211,7 @@ export const MinimalistHero = ({
       </div>
 
       {/* Footer Elements */}
-      <footer className="z-30 mt-8 flex w-full max-w-7xl items-center justify-between">
+      <footer ref={footRef} className="z-30 mt-8 flex w-full max-w-7xl items-center justify-between">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
