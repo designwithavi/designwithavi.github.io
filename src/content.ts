@@ -1573,8 +1573,9 @@ export const gallery: { src: string; w: number; h: number; project: string }[] =
 //  Each project gets two cards (one picture each), so the ring stays full.
 //  image / image2: tall pictures for its cards;  pos: which part to show (x% y%).
 // ─────────────────────────────────────────────────────────────
-export const featuredProjects: { title: string; image: string; pos?: string; image2: string; pos2?: string }[] = [
-  { title: "Sipwise — Visual Design Internship", image: "about/sipwise/booth-3d.webp", pos: "48% 50%", image2: "about/sipwise/diwali.webp", pos2: "82% 40%" },
+// title2: the second card can show a different project (otherwise it's the same one, another picture)
+export const featuredProjects: { title: string; image: string; pos?: string; image2: string; pos2?: string; title2?: string }[] = [
+  { title: "Sipwise — Visual Design Internship", image: "about/sipwise/booth-3d.webp", pos: "48% 50%", title2: "Crunchyroll × Comic Con", image2: "work/visual-merchandising/crunchyroll/model/01.webp", pos2: "56% 50%" },
   { title: "Fashion Editorial Shoot", image: "work/photography-videography/fashion-editorial/02.webp", image2: "work/photography-videography/fashion-editorial/08.webp" },
   { title: "Xyricon", image: "work/branding/xyricon/12.webp", pos: "80% 50%", image2: "work/branding/xyricon/17.webp", pos2: "30% 50%" },
   { title: "#WhatIsSexy? — Styling Campaign", image: "work/photography-videography/durex-styling/shoot/01.webp", image2: "work/photography-videography/durex-styling/shoot/09.webp" },

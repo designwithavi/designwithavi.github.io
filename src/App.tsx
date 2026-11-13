@@ -419,7 +419,7 @@ function App() {
         <Hero />
         <TvBrowse
           featured={featured.map((f) => ({ ...f, project: projects.find((p) => p.title === f.title)! })).filter((f) => f.project)}
-          picks={[...featuredProjects.map((f) => ({ ...f })), ...featuredProjects.map((f) => ({ ...f, image: f.image2, pos: f.pos2 }))].map((f) => ({ image: f.image, pos: f.pos, project: projects.find((p) => p.title === f.title)! })).filter((f) => f.project)}
+          picks={[...featuredProjects.map((f) => ({ ...f })), ...featuredProjects.map((f) => ({ ...f, title: f.title2 ?? f.title, image: f.image2, pos: f.pos2 }))].map((f) => ({ image: f.image, pos: f.pos, project: projects.find((p) => p.title === f.title)! })).filter((f) => f.project)}
           categories={categories}
           projects={projects}
           onOpen={(p) => go(categories.find((c) => c.name === p.category)!, p)}
