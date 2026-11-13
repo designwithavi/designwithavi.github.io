@@ -74,13 +74,13 @@ export type Category = {
 }
 
 export const categories: Category[] = [
-  { name: "Internship", art: "glacier", tone: "dark", image: "" },
-  { name: "Visual Merchandising", art: "dusk", tone: "light", image: "" },
-  { name: "Photography & Videography", art: "aurora", tone: "light", image: "" },
   { name: "Branding", art: "verdant", tone: "light", image: "" },
   { name: "Graphics & Publication Design", art: "glacier", tone: "light", image: "" },
-  { name: "UX Design", art: "ember", tone: "dark", image: "" },
+  { name: "Internship", art: "glacier", tone: "dark", image: "" },
+  { name: "Photography & Videography", art: "aurora", tone: "light", image: "" },
   { name: "Product Design", art: "dusk", tone: "dark", image: "" },
+  { name: "UX Design", art: "ember", tone: "dark", image: "" },
+  { name: "Visual Merchandising", art: "dusk", tone: "light", image: "" },
 ]
 
 // ─────────────────────────────────────────────────────────────
