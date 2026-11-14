@@ -10,7 +10,7 @@ import { ProjectSections } from "@/components/project-sections"
 import { categories, featured, featuredProjects, gallery, projects, site, type Category, type Project } from "@/content"
 import { Shelf, TvBrowse } from "@/components/tv-browse"
 import { CategoryView } from "@/components/category-view"
-import { useRoute } from "@/route"
+import { slug, useRoute } from "@/route"
 import { PageLoader, preload } from "@/components/page-loader"
 import { AboutPage } from "@/components/about-page"
 
@@ -419,6 +419,20 @@ function App() {
     window.addEventListener("scroll", save, { passive: true })
     return () => window.removeEventListener("scroll", save)
   }, [])
+  // count each page view: home, a folder, a project or About (see GoatCounter in index.html)
+  useEffect(() => {
+    const path = route.about ? "/about" : route.category ? `/work/${slug(route.category.name)}${route.project ? `/${slug(route.project.title)}` : ""}` : "/"
+    const title = route.project?.title ?? route.category?.name ?? (route.about ? "About" : "Home")
+    if (location.hostname === "localhost") return
+    let tries = 0
+    const send = () => {
+      const gc = (window as unknown as { goatcounter?: { count?: (o: { path: string; title: string }) => void } }).goatcounter
+      if (gc?.count) gc.count({ path, title })
+      else if (tries++ < 20) window.setTimeout(send, 250) // the counter script loads after the page
+    }
+    send()
+  }, [where]) // eslint-disable-line react-hooks/exhaustive-deps
+
   useLayoutEffect(() => {
     if (current.current === where) return
     current.current = where

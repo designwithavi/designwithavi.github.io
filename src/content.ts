@@ -46,7 +46,7 @@ export const site = {
   ],
 
   // Put your CV PDF inside the "public" folder and name it cv.pdf
-  cvFile: "", // put cv.pdf in the "public" folder, then write "cv.pdf" here to show the button
+  cvFile: "avishkar-kale-cv.pdf", // the CV in the "public" folder; "" hides the button
 
   contact: {
     email: "kaleavishkar11@gmail.com",
@@ -567,7 +567,7 @@ export const projects: Project[] = [
     year: "2024",
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Props", "3D"],
-    stats: { views: 343, appreciations: 17 }, // Behance, 25 Oct 2026
+    stats: { views: 357, appreciations: 17 }, // Behance, 14 Nov 2026
     summary: "Mumbai's auto-rickshaw meets the Chumbak owl in a moving in-store display.",
     description:
       "Designed for a Chumbak store in Mumbai, this set draws its inspiration from the city. " +
@@ -666,7 +666,7 @@ export const projects: Project[] = [
     year: "2026",
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Photography", "Styling"],
-    stats: { views: 103, appreciations: 7 }, // Behance, 25 Oct 2026
+    stats: { views: 107, appreciations: 7 }, // Behance, 14 Nov 2026
     summary: "An editorial shoot for a designer collection, built on mood and atmosphere.",
     description: "An editorial-style fashion shoot for a designer collection, focusing on mood and atmosphere.",
     behance: "https://www.behance.net/gallery/250810673/Fashion-Editorial-Shoot",
@@ -705,7 +705,7 @@ export const projects: Project[] = [
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Styling", "Photography", "Branding"],
     team: true,
-    stats: { views: 1, appreciations: 1 }, // Behance, 25 Oct 2026 (published that day)
+    stats: { views: 14, appreciations: 1 }, // Behance, 14 Nov 2026
     summary: "Five looks styled for a Durex campaign on consent, respect and confidence — from brand research to billboards.",
     description: "An academic fashion styling exercise exploring the intersection of fashion, visual storytelling, and responsible brand communication. Inspired by Durex's bold communication identity, #WhatIsSexy? challenges conventional perceptions of attraction by highlighting consent, respect, confidence, personal boundaries, and emotional safety. An independent academic concept developed for educational purposes, not an official Durex campaign. Team: Aashana Ramavat, Avishkar Kale, Prajakta Mahindrakar, Paraj Parikh, Sanskruti Zankar.",
     behance: "https://www.behance.net/gallery/257582083/Fashion-Styling-ft-Durex",
@@ -862,7 +862,7 @@ export const projects: Project[] = [
     year: "2026",
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Photography"],
-    stats: { views: 3, appreciations: 1 }, // Behance, 4 Nov 2026
+    stats: { views: 5, appreciations: 2 }, // Behance, 14 Nov 2026
     summary: "Product photography of carved marble objects — form, texture and light on black.",
     description: "STHETIX IN STONE is a product photography project that explores the timeless beauty of sculptural stone objects through form, texture, and light. The series captures the intricate craftsmanship, organic curves, and natural patterns of marble, transforming functional objects into artistic statements.\\n\\nSet against a minimal black backdrop, the photographs emphasize the contrast between light and shadow, highlighting the unique textures, polished surfaces, and intricate detailing of each piece. Carefully controlled lighting brings out the depth and dimensionality of the stone, while thoughtfully composed frames create a sense of sophistication and exclusivity.\\n\\nThe project combines minimalist product photography with an editorial luxury aesthetic, celebrating the relationship between material, craftsmanship, and visual storytelling. Through dramatic contrasts and refined compositions, STHETIX IN STONE presents everyday objects as timeless pieces of art.",
     behance: "https://www.behance.net/gallery/258007489/Product-Shoot-STHETIX-IN-STONE",
@@ -906,7 +906,7 @@ export const projects: Project[] = [
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Styling", "Photography"],
     team: true,
-    stats: { views: 78, appreciations: 3 }, // Behance, 25 Oct 2026
+    stats: { views: 81, appreciations: 3 }, // Behance, 14 Nov 2026
     summary: "Helena from A Midsummer Night's Dream, reimagined in 1880s colonial Bengal.",
     description: "This project reimagines A Midsummer Night's Dream by adapting the character of Helena into the setting of 1880s colonial Bengal (Alipore, Calcutta). The goal was to reconstruct her identity within a new cultural and historical context, blending Bengali traditions with British colonial influences. Through character study and research on textiles, folktales, and social dynamics, a new visual interpretation of Helena was developed. The final outcome is expressed through a cohesive styling approach, translating the character into a fully realised visual narrative. Team: Aashana Ramavati, Avishkar Kale, Prajakta Mahindrakar, Paraj Parikh, Sanskruti Zankar.",
     behance: "https://www.behance.net/gallery/248551049/Shorona-Costume-Styling",
@@ -1086,7 +1086,7 @@ export const projects: Project[] = [
     year: "2025",
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Photography", "Styling"],
-    stats: { views: 51, appreciations: 5 }, // Behance, 25 Oct 2026
+    stats: { views: 52, appreciations: 5 }, // Behance, 14 Nov 2026
     summary: "Characters from the Manipuri folktale Keibu Keioiba, brought to life in the studio.",
     // DRAFT — written from the images; check it
     description: "A studio photography project that showcases characters from the Manipuri folklore Keibu Keioiba — from the story and its characters to the moodboard, makeup and final portraits.",
@@ -1136,7 +1136,7 @@ export const projects: Project[] = [
     year: "2025",
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Photography", "Styling"],
-    stats: { views: 102, appreciations: 4 }, // Behance, 25 Oct 2026
+    stats: { views: 121, appreciations: 5 }, // Behance, 14 Nov 2026
     summary: "Concept-based food photography that turns Buldak's heat into image.",
     description: "This project explores concept-based food photography for Buldak, focusing on visually expressing the intensity of spice. Combining studio photography with illustrative elements, the visuals highlight texture, movement, and heat through bold compositions and high-contrast lighting. By blending real imagery with expressive overlays, the project moves beyond traditional food photography to create a dynamic and sensory representation of Buldak's fiery identity.",
     behance: "https://www.behance.net/gallery/248170591/Studio-Photography-Buldak-Ramen",
@@ -1156,7 +1156,7 @@ export const projects: Project[] = [
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Photography", "Styling", "Props", "3D"],
     team: true,
-    stats: { views: 31, appreciations: 4 }, // Behance, 25 Oct 2026
+    stats: { views: 41, appreciations: 5 }, // Behance, 14 Nov 2026
     summary: "Food photography and styling for Faredoon's, from moodboard to a planned set.",
     // DRAFT — written from the images; check it
     description: "A food photography and styling project for Faredoon's — from the moodboard and colour palette to a 3D-planned set and the final shoot. Shot on a Sony A7 III and edited in Capture One, Lightroom and Photoshop.",
@@ -1213,7 +1213,7 @@ export const projects: Project[] = [
     year: "2024",
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Photography", "Editorial"],
-    stats: { views: 210, appreciations: 8 }, // Behance, 25 Oct 2026
+    stats: { views: 213, appreciations: 8 }, // Behance, 14 Nov 2026
     summary: "A coffee table book: a slow walk through Nashik.",
     description: "This coffee table book is a slow walk through Nashik, seen through my lens and shaped by instinct rather than intent. The photographs move between the sacred and the ordinary — early mornings, restless streets, fading light, and unnoticed details that often go unrecorded. Each image lingers like a pause, inviting the viewer to experience the city not as a destination, but as a feeling: layered, lived-in, and quietly enduring.",
     behance: "https://www.behance.net/gallery/215579545/EXPERIENCE-NASHIK-PHOTOBOOK",
@@ -1240,7 +1240,7 @@ export const projects: Project[] = [
     year: "2023",
     medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Photography"],
-    stats: { views: 166, appreciations: 13 }, // Behance, 25 Oct 2026
+    stats: { views: 166, appreciations: 13 }, // Behance, 14 Nov 2026
     summary: "A bold product poster for Sprite, made in Semester 1 of the Foundation Programme at NIFT Hyderabad.",
     description: "A product advertisement for Sprite, made for the Digital Design and Communication course in Semester 1 of the Foundation Programme at NIFT Hyderabad.",
     behance: "https://www.behance.net/gallery/203334665/Product-advertisement-Sprite-Can",
@@ -1254,7 +1254,7 @@ export const projects: Project[] = [
     year: "2023",
     medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Photography"],
-    stats: { views: 144, appreciations: 12 }, // Behance, 25 Oct 2026
+    stats: { views: 144, appreciations: 12 }, // Behance, 14 Nov 2026
     summary: "A product poster for Zudio's nail paint, made in Semester 1 at NIFT Hyderabad.",
     description: "A product advertisement for Zudio nail paint, made for the Digital Design and Communication course in Semester 1 of the Foundation Programme at NIFT Hyderabad.",
     behance: "https://www.behance.net/gallery/203398089/Product-Advertisement-Zudio-Nail-Paint",
@@ -1275,7 +1275,7 @@ export const projects: Project[] = [
     year: "2026",
     medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Branding", "Typography"],
-    stats: { views: 9, appreciations: 2 }, // Behance, 4 Nov 2026
+    stats: { views: 13, appreciations: 2 }, // Behance, 14 Nov 2026
     summary: "Room Tone: an identity for a one-night electronic music festival in a warehouse.",
     description: "Room Tone is a visual identity for Xyricon, a one-night electronic music festival imagined inside the East Dock warehouse. A jagged waveform runs through the experience, small enough to fit on a wristband and large enough to hang in acid-lime light above the crowd. The warehouse has three rooms, each with its own sound, number and colour. SUB carries the bass, WIRE hosts live electronics, and AIR closes the night with an ambient set. Violet 02 always leads to WIRE, whether you spot it on a street poster, check it in the mobile programme, or follow it through a dark corridor.",
     behance: "https://www.behance.net/gallery/257932255/Logo-Design-Xyricon",
@@ -1311,7 +1311,7 @@ export const projects: Project[] = [
     year: "2026",
     medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Branding", "Props"],
-    stats: { views: 11, appreciations: 2 }, // Behance, 4 Nov 2026
+    stats: { views: 13, appreciations: 2 }, // Behance, 14 Nov 2026
     summary: "Luxury paper packaging where the box becomes a tray after the gift is opened.",
     description: "Aurevia is a luxury paper packaging concept built around a simple question. What happens to the box after the gift is opened? Its signature Pennon box closes with two overlapping ivory flaps. Fold them back and the vermilion lining becomes a shallow tray for a ring on a bedside table or a key by the door. The logo echoes that gesture through two opposing origami forms, one outlined and one solid. Pressed into paper without ink, the mark reveals itself in light and shadow. The same diagonal fold shapes the carrier handle and, at a larger scale, the paper installation in the shop window.",
     behance: "https://www.behance.net/gallery/257929553/Logo-Design-Aurevia",
@@ -1344,7 +1344,7 @@ export const projects: Project[] = [
     year: "2024",
     medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Branding", "3D"],
-    stats: { views: 19, appreciations: 2 }, // Behance, 25 Oct 2026
+    stats: { views: 33, appreciations: 2 }, // Behance, 14 Nov 2026
     summary: "Something flashy, something cool: an identity for a cryogenics startup.",
     // DRAFT — written from the images; check it
     description: "Brand identity for Flash Cryogenics, a startup founded by PhD students of IIT Bombay that builds ultra-low-temperature cooling technology — from the logomark and visual language to brand applications.",
@@ -1378,7 +1378,7 @@ export const projects: Project[] = [
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Styling", "Photography", "Editorial"],
     team: true,
-    stats: { views: 9, appreciations: 2 }, // Behance, 25 Oct 2026
+    stats: { views: 29, appreciations: 3 }, // Behance, 14 Nov 2026
     summary: "A fashion styling feature on consent, respect and confidence, laid out as a Femina special.",
     description: "Developed as an academic fashion styling exercise exploring the intersection of fashion, visual storytelling, and responsible brand communication. Inspired by Durex's bold communication identity, #WhatIsSexy? challenges conventional perceptions of attraction by highlighting consent, respect, confidence, personal boundaries, and emotional safety. An independent academic concept developed for educational purposes, not an official Durex campaign. Concept & creative direction: Aashana Ramavat, Avishkar Kale, Prajakta Mahindrakar, Paraj Parikh, Sanskruti Zankar.",
     behance: "https://www.behance.net/gallery/257578227/Fashion-Styling-whatissexy",
@@ -1674,7 +1674,7 @@ export const projects: Project[] = [
     medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Editorial", "Typography"],
     team: true,
-    stats: { views: 88, appreciations: 6 }, // Behance, 25 Oct 2026
+    stats: { views: 93, appreciations: 6 }, // Behance, 14 Nov 2026
     summary: "Editorial design for Verve magazine: cover, layouts and spreads.",
     // DRAFT — written from the images; check it
     description: "Editorial design for Verve magazine — cover, layouts and spreads. A team project with Aarya Tambe, Keerti Manojna, Gargi Gujar and Komal Vishwakarma. Images used for educational purposes only.",
@@ -1698,7 +1698,7 @@ export const projects: Project[] = [
     year: "2024",
     medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Typography"],
-    stats: { views: 67, appreciations: 4 }, // Behance, 25 Oct 2026
+    stats: { views: 67, appreciations: 4 }, // Behance, 14 Nov 2026
     summary: "A Devanagari typeface inspired by the upside-down jellyfish.",
     description: "Cassiopea is a Devanagari typeface derived from the form of the upside-down jellyfish. Organic textures, flowing strokes, and subtle irregularities translate marine movement into letterforms. Cassiopea explores how type can feel alive, balancing readability with fluid, bio-inspired expression.",
     behance: "https://www.behance.net/gallery/248290199/Cassiopea-Typeface-design-Script-Devanagari",
@@ -1726,7 +1726,7 @@ export const projects: Project[] = [
     medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["UX", "Branding"],
     team: true,
-    stats: { views: 80, appreciations: 5 }, // Behance, 25 Oct 2026
+    stats: { views: 83, appreciations: 5 }, // Behance, 14 Nov 2026
     summary: "Perfume reimagined as a journey of self-discovery.",
     description: "Novus reimagines perfume as a journey of self-discovery. Instead of choosing a fragrance, users create one that reflects who they are. The project tackles a key challenge: translating scent into a digital experience. Through an archetype-based quiz and cross-sensory design (visuals, motion, and sound), Novus allows users to 'feel' a fragrance before it exists. Extending beyond screens, the physical store becomes a customization lab where users interact, experiment, and co-create their signature scent. Minimal, calm, and intentional, Novus turns perfume from a product into a personal expression. Team: Aashana Ramavati, Keerti Manojna, Avishkar Kale, Jyotsana K, Sivnandan KS.",
     behance: "https://www.behance.net/gallery/248288401/NOVUS-User-Experience-Design",
@@ -1795,7 +1795,7 @@ export const projects: Project[] = [
     medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Branding", "Props"],
     team: true,
-    stats: { views: 1, appreciations: 0 }, // Behance, 4 Nov 2026 (published that day)
+    stats: { views: 4, appreciations: 1 }, // Behance, 14 Nov 2026
     summary: "Colour psychology for a smartwatch collab: Pichwai-inspired pastel faces, straps and packaging.",
     description: "A conceptual watch collaboration blending traditional Pichwai art with contemporary design. Rooted in colour psychology, the collection uses soothing pastels, intricate floral motifs and cultural symbolism to evoke elegance, serenity and nostalgia. From watch faces to packaging, every detail celebrates Indian heritage through modern craftsmanship and timeless storytelling. A concept project. Team: Avishkar Kale & Shreya Arya.",
     behance: "https://www.behance.net/gallery/258032813/Colour-Psychology-Titan-x-Anita-Dongre",
@@ -1820,7 +1820,7 @@ export const projects: Project[] = [
     medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["3D"],
     team: true,
-    stats: { views: 88, appreciations: 6 }, // Behance, 25 Oct 2026
+    stats: { views: 4, appreciations: 1 }, // Behance, 14 Nov 2026
     summary: "Emergency Care Orbit: an amphibious transport concept for emergency medical services.",
     // DRAFT — written from the images; check it
     description: "ECO (Emergency Care Orbit) is an amphibious transport concept for emergency medical services — from research into the problem and context to a 3D-modelled solution built in Blender.",
