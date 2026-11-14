@@ -892,8 +892,14 @@ export const projects: Project[] = [
     year: "2026",
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Film", "Photography"],
-    summary: "A documentary filmed from December 2025 to January 2026.",
-    description: "", // TODO: description
+    team: true,
+    summary: "A 3-minute documentary for WIPO on innovation on campus — which I directed and shot (November 2025 – January 2026).",
+    // DRAFT — written from the CV and the film itself; check it
+    description:
+      "A short documentary made for WIPO (the World Intellectual Property Organization), following a researcher through her days on campus: " +
+      "the lab and the CAD room, conversations with mentors and peers, the hardware she builds, and the quieter moments in between, " +
+      "framed by an interview on how ideas grow into protected innovations. " +
+      "I directed and filmed it, working with an 8–10 member production team from November 2025 to January 2026.",
     video: { src: "work/photography-videography/wipo-documentary/film.mp4", poster: "work/photography-videography/wipo-documentary/poster.webp" },
     cover: "work/photography-videography/wipo-documentary/poster.webp",
     images: [],
