@@ -896,12 +896,14 @@ export const projects: Project[] = [
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
     skills: ["Film", "Photography"],
     team: true,
-    summary: "A 3-minute documentary for WIPO on innovation on campus — which I directed and shot (November 2025 – January 2026).",
-    // DRAFT — written from the CV and the film itself; check it
+    summary: "A 3-minute documentary on the WIPO-sponsored BioDesign fellowship, which brings innovators from Africa to India — which I directed and shot.",
+    // written from the film's testimonial and the CV
     description:
-      "A short documentary made for WIPO (the World Intellectual Property Organization), following a researcher through her days on campus: " +
-      "the lab and the CAD room, conversations with mentors and peers, the hardware she builds, and the quieter moments in between, " +
-      "framed by an interview on how ideas grow into protected innovations. " +
+      "A short documentary on the WIPO-sponsored BioDesign fellowship, run with India's Department of Biotechnology, which brings innovators from Africa and other developing countries to India " +
+      "to learn the art of innovation — taking ideas from the lab to the market. The film follows one fellow through her days on an IIT campus: the CAD room, " +
+      "the lab bench and the hardware she builds, conversations with mentors and fellow innovators, and the quieter moments in between. " +
+      "It is anchored by a testimonial from a professor in the Department of Biosciences and Bioengineering, one of the fellowship's hosts, on how the fellows work on real-life problems — " +
+      "finding a solution, building and testing a prototype and taking it to market — mentored by senior clinicians and industry experts. " +
       "I directed and filmed it, working with an 8–10 member production team from November 2025 to January 2026.",
     video: { src: "work/photography-videography/wipo-documentary/film.mp4", poster: "work/photography-videography/wipo-documentary/poster.webp" },
     cover: "work/photography-videography/wipo-documentary/poster.webp",
