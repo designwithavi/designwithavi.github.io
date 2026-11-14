@@ -699,6 +699,8 @@ export const projects: Project[] = [
           { src: "work/photography-videography/fashion-editorial/16.webp", w: 513, h: 770 },
           { src: "work/photography-videography/fashion-editorial/17.webp", w: 514, h: 770 },
           { src: "work/photography-videography/fashion-editorial/18.webp", w: 514, h: 770 },
+          { src: "work/photography-videography/fashion-editorial/19.webp", w: 700, h: 1051 },
+          { src: "work/photography-videography/fashion-editorial/20.webp", w: 629, h: 419 },
         ],
       },
     ],
