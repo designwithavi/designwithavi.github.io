@@ -556,6 +556,7 @@ function Divider() {
 export function TvBrowse({
   featured,
   picks,
+  photos,
   categories,
   projects,
   onOpen,
@@ -563,6 +564,7 @@ export function TvBrowse({
 }: {
   featured: Featured[]
   picks: FeaturedPick[]
+  photos: GalleryPhoto[]
   categories: Category[]
   projects: Project[]
   onOpen: (p: Project) => void
@@ -575,6 +577,18 @@ export function TvBrowse({
       <Divider />
       <div className="relative z-10">
         <FeaturedRing picks={picks} onOpen={onOpen} />
+        <section className="mt-20 border-t border-white/10 pt-12">
+          <div className="mx-auto mb-8 flex max-w-7xl flex-wrap items-end justify-between gap-3 px-5 sm:px-10">
+            <div>
+              <h3 className="text-2xl font-semibold text-white sm:text-3xl">Through my lens</h3>
+              <p className="mt-1 text-sm text-white/45">Frames from the shoots · tap one to see it large</p>
+            </div>
+            <button type="button" onClick={() => onCategory(byName("Photography & Videography"))} className="group inline-flex items-center gap-1 text-sm font-semibold text-white/70 hover:text-white">
+              All photography <ChevronRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+            </button>
+          </div>
+          <PhotoMarquee photos={photos} onOpen={onOpen} />
+        </section>
         <div className="mx-auto mt-20 max-w-7xl border-t border-white/10 px-5 pt-12 sm:px-10">
           <h3 className="text-2xl font-semibold text-white sm:text-3xl">All projects</h3>
           <p className="mt-1 text-sm text-white/45">By discipline</p>

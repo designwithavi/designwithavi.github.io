@@ -74,10 +74,10 @@ export type Category = {
 }
 
 export const categories: Category[] = [
+  { name: "Photography & Videography", art: "aurora", tone: "light", image: "" },
   { name: "Branding", art: "verdant", tone: "light", image: "" },
   { name: "Graphics & Publication Design", art: "glacier", tone: "light", image: "" },
   { name: "Internship", art: "glacier", tone: "dark", image: "" },
-  { name: "Photography & Videography", art: "aurora", tone: "light", image: "" },
   { name: "Product Design", art: "dusk", tone: "dark", image: "" },
   { name: "UX Design", art: "ember", tone: "dark", image: "" },
   { name: "Visual Merchandising", art: "dusk", tone: "light", image: "" },
@@ -1860,13 +1860,14 @@ export const projects: Project[] = [
 //  each with a wide, cinematic backdrop image. Change the order or swap them freely.
 // ─────────────────────────────────────────────────────────────
 export const featured: { title: string; backdrop: string; line?: string }[] = [
-  { title: "Sipwise — Visual Design Internship", backdrop: "about/sipwise/booth-3d.webp", line: "Eight weeks as a visual design intern — from an exhibition booth to packaging, web and print." },
-  { title: "Xyricon", backdrop: "work/branding/xyricon/20.webp" },
-  { title: "Shorona: Costume Styling", backdrop: "work/photography-videography/shorona/shoot/01.webp" },
-  { title: "Studio Photography: Keibu Keioiba", backdrop: "work/photography-videography/keibu-keioiba/shoot/02.webp" },
   { title: "Fashion Editorial Shoot", backdrop: "work/photography-videography/fashion-editorial/01.webp" },
-  { title: "Aurevia", backdrop: "work/branding/aurevia/18.webp" },
+  { title: "Shorona: Costume Styling", backdrop: "work/photography-videography/shorona/shoot/01.webp" },
+  { title: "i-DOLL: K-pop Idol Styling", backdrop: "work/photography-videography/i-doll/shoot/05.webp" },
+  { title: "Studio Photography: Keibu Keioiba", backdrop: "work/photography-videography/keibu-keioiba/shoot/02.webp" },
   { title: "#WhatIsSexy? — Styling Campaign", backdrop: "work/photography-videography/durex-styling/59.webp" },
+  { title: "Sthetix in Stone", backdrop: "work/photography-videography/sthetix-in-stone/cover.webp" },
+  { title: "Sipwise — Visual Design Internship", backdrop: "about/sipwise/booth-3d.webp", line: "Eight weeks as a visual design intern — from an exhibition booth to packaging, web and print." },
+  { title: "NIFT Prospectus — Admissions 2026", backdrop: "work/graphic-design/nift-prospectus/mockups/04.webp" },
 ]
 
 
@@ -1903,13 +1904,14 @@ export const gallery: { src: string; w: number; h: number; project: string }[] =
 // ─────────────────────────────────────────────────────────────
 // title2: the second card can show a different project (otherwise it's the same one, another picture)
 export const featuredProjects: { title: string; image: string; pos?: string; image2: string; pos2?: string; title2?: string }[] = [
+  { title: "Fashion Editorial Shoot", image: "work/photography-videography/fashion-editorial/02.webp", image2: "work/photography-videography/fashion-editorial/08.webp" },
+  { title: "Shorona: Costume Styling", image: "work/photography-videography/shorona/shoot/02.webp", image2: "work/photography-videography/shorona/shoot/13.webp" },
+  { title: "i-DOLL: K-pop Idol Styling", image: "work/photography-videography/i-doll/shoot/03.webp", image2: "work/photography-videography/i-doll/shoot/13.webp" },
+  { title: "#WhatIsSexy? — Styling Campaign", image: "work/photography-videography/durex-styling/shoot/01.webp", image2: "work/photography-videography/durex-styling/shoot/09.webp" },
+  { title: "Studio Photography: Keibu Keioiba", image: "work/photography-videography/keibu-keioiba/shoot/04.webp", title2: "Studio Photography: Buldak Ramen", image2: "work/photography-videography/buldak-ramen/01.webp", pos2: "50% 70%" },
+  { title: "Faredoon's Food Photography", image: "work/photography-videography/faredoons/shoot/03.webp", image2: "work/photography-videography/faredoons/shoot/06.webp" },
   { title: "Sipwise — Visual Design Internship", image: "about/sipwise/booth-3d.webp", pos: "48% 50%", title2: "Crunchyroll × Comic Con", image2: "work/visual-merchandising/crunchyroll/model/01.webp", pos2: "56% 50%" },
   { title: "NIFT Prospectus — Admissions 2026", image: "work/graphic-design/nift-prospectus/mockups/01.webp", pos: "50% 50%", image2: "work/graphic-design/nift-prospectus/book/043.webp", pos2: "70% 50%" },
-  { title: "Fashion Editorial Shoot", image: "work/photography-videography/fashion-editorial/02.webp", image2: "work/photography-videography/fashion-editorial/08.webp" },
-  { title: "Xyricon", image: "work/branding/xyricon/12.webp", pos: "80% 50%", image2: "work/branding/xyricon/17.webp", pos2: "30% 50%" },
-  { title: "#WhatIsSexy? — Styling Campaign", image: "work/photography-videography/durex-styling/shoot/01.webp", image2: "work/photography-videography/durex-styling/shoot/09.webp" },
-  { title: "Shorona: Costume Styling", image: "work/photography-videography/shorona/shoot/02.webp", image2: "work/photography-videography/shorona/shoot/13.webp" },
-  { title: "Faredoon's Food Photography", image: "work/photography-videography/faredoons/shoot/03.webp", image2: "work/photography-videography/faredoons/shoot/06.webp" },
 ]
 
 // ─────────────────────────────────────────────────────────────
