@@ -119,6 +119,8 @@ export type Project = {
   /** Optional embedded viewer (e.g. a Heyzine flipbook) shown after the description. */
   embed?: { src: string; label: string }
   /** Optional magazine to page through, shown after the description: pages in reading order, page width ÷ height. */
+  /** show the internship journey (the milestone timeline) on this project's page */
+  journey?: boolean
   flipbook?: { label: string; pages: string[]; ratio: number; /** one page at a time, even on wide screens */ single?: boolean; /** each page is already a whole two-page spread */ spreads?: boolean }
   /**
    * Optional chapters: the project page is laid out section by section, with a
@@ -139,6 +141,7 @@ export const projects: Project[] = [
   {
     title: "Sipwise — Visual Design Internship",
     backdrop: "about/sipwise/booth-3d.webp",
+    journey: true,
     category: "Internship",
     year: "2026",
     badge: "Internship",

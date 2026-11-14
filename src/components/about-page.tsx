@@ -5,8 +5,7 @@ import { CharacterWalker } from "@/components/character-scene"
 import { AnalyticsBento } from "@/components/ui/analytics-bento"
 import { DesignProcess, type ProcessStep } from "@/components/design-process"
 import * as Art from "@/components/process-illustrations"
-import { categories, internship, projects as allProjects, site } from "@/content"
-import { ScrollTimeline } from "@/components/scroll-timeline"
+import { categories, projects as allProjects, site } from "@/content"
 
 // a project without a year yet can't be placed on the timeline: leave it out until it has one
 const projects = allProjects.filter((p) => /^\d{4}$/.test(p.year) && !p.partOf)
@@ -207,32 +206,6 @@ export function AboutPage({ onBack }: { onBack: () => void }) {
         </section>
 
       </div>
-
-      {/* the internship, as a journey */}
-      <section className="mx-auto max-w-6xl border-b border-line px-4 py-16 sm:px-8">
-        <div className="mb-12 md:text-center">
-          <p className="mb-4 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-ink-3 md:justify-center">
-            <span className="size-2 rounded-full bg-[#3b5bff]" /> Internship · {internship.period}
-          </p>
-          <h3 className="font-heading text-4xl leading-none sm:text-6xl">Eight weeks at {internship.company}</h3>
-          <p className="mt-3 text-ink-3">{internship.role}</p>
-        </div>
-        <ScrollTimeline
-          items={internship.milestones.map((m) => {
-            const p = "project" in m && allProjects.find((x) => x.title === m.project)
-            return { ...m, href: p ? `#/work/${slug(p.category)}/${slug(p.title)}` : undefined }
-          })}
-        />
-        <div className="mt-16 flex justify-center">
-          <a
-            href="#/work/internship/sipwise-visual-design-internship"
-            className="group inline-flex items-center gap-2 rounded-full bg-[#3b5bff] px-7 py-3.5 text-sm font-semibold text-white shadow-[0_10px_30px_-10px_rgba(59,91,255,.9)] transition hover:scale-[1.03]"
-          >
-            See the full internship project
-            <span className="transition-transform group-hover:translate-x-1">→</span>
-          </a>
-        </div>
-      </section>
 
       {/* how I work: full width, pinned while it slides */}
       <div className="border-b border-line">

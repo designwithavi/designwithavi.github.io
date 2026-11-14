@@ -11,6 +11,7 @@ import { categories, featured, featuredProjects, gallery, projects, site, type C
 import { Shelf, TvBrowse } from "@/components/tv-browse"
 import { CategoryView } from "@/components/category-view"
 import { slug, useRoute } from "@/route"
+import { InternshipJourney } from "@/components/scroll-timeline"
 import { PageLoader, preload } from "@/components/page-loader"
 import { AboutPage } from "@/components/about-page"
 
@@ -315,6 +316,7 @@ function ProjectView({ project, onClose, onOpen }: { project: Project; onClose: 
             </div>
           </section>
         )}
+        {project.journey && <InternshipJourney />}
         {project.sections ? (
           <>
             <ProjectSections sections={project.sections} title={project.title} />

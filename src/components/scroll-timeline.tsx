@@ -1,6 +1,8 @@
 import { useRef, useState } from "react"
 import { AnimatePresence, motion, useScroll, useSpring, useMotionValueEvent } from "framer-motion"
 import { Lightbox } from "@/components/project-gallery"
+import { internship, projects } from "@/content"
+import { slug } from "@/route"
 
 /**
  * A journey told as a vertical timeline — in the spirit of ibrandify's "Scroll
@@ -101,5 +103,26 @@ export function ScrollTimeline({ items }: { items: Milestone[] }) {
         {zoom !== null && <Lightbox images={pics} index={zoom} onIndex={setZoom} onClose={() => setZoom(null)} title="Internship at Sipwise" />}
       </AnimatePresence>
     </div>
+  )
+}
+
+/** The internship told as a journey, milestone by milestone, each linking to its project. */
+export function InternshipJourney() {
+  return (
+    <section className="mt-20 border-t border-line pt-14">
+      <div className="mb-12 md:text-center">
+        <p className="mb-4 flex items-center gap-2 font-mono text-xs uppercase tracking-[0.2em] text-ink-3 md:justify-center">
+          <span className="size-2 rounded-full bg-[#3b5bff]" /> The journey · {internship.period}
+        </p>
+        <h3 className="font-heading text-4xl leading-none sm:text-6xl">Eight weeks at {internship.company}</h3>
+        <p className="mt-3 text-ink-3">{internship.role}</p>
+      </div>
+      <ScrollTimeline
+        items={internship.milestones.map((m) => {
+          const p = "project" in m && projects.find((x) => x.title === m.project)
+          return { ...m, href: p ? `#/work/${slug(p.category)}/${slug(p.title)}` : undefined }
+        })}
+      />
+    </section>
   )
 }
