@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { motion, useReducedMotion } from "framer-motion"
 
 /**
- * A glowing sun by day that turns and melts into a glowing moon by night.
+ * A glowing sun by day (a soft orb, like the moon) that turns and melts into a glowing moon by night.
  * Fills its parent; give the parent a size.
  */
 
@@ -11,20 +11,11 @@ const BLEND = { duration: 2, ease: [0.65, 0, 0.35, 1] as const }
 const ORB_CSS = `
 .orb { position: relative; width: 100%; height: 100%; }
 .orb-halo { position: absolute; inset: -38%; border-radius: 50%; pointer-events: none; transition: opacity 2s ease; animation: orb-breathe 6s ease-in-out infinite; }
-.orb-halo--sun { background: radial-gradient(circle, rgba(255, 196, 92, .55) 0%, rgba(255, 170, 70, .28) 34%, rgba(255, 160, 60, .08) 52%, transparent 68%); }
+.orb-halo--sun { background: radial-gradient(circle, rgba(255, 200, 110, .5) 0%, rgba(255, 176, 80, .24) 36%, rgba(255, 160, 60, .06) 54%, transparent 68%); }
 .orb-halo--moon { opacity: 0; background: radial-gradient(circle, rgba(196, 214, 255, .42) 0%, rgba(150, 178, 240, .18) 36%, rgba(130, 160, 230, .05) 54%, transparent 68%); }
 .orb[data-night] .orb-halo--sun { opacity: 0; }
 .orb[data-night] .orb-halo--moon { opacity: 1; }
 @keyframes orb-breathe { 50% { transform: scale(1.06); } }
-
-/* rays shine from the top and sides only — below, they'd show through the portrait's faded edge */
-.orb-rays-wrap {
-  position: absolute; inset: -16%; pointer-events: none;
-  -webkit-mask-image: linear-gradient(to bottom, #000 42%, transparent 66%);
-  mask-image: linear-gradient(to bottom, #000 42%, transparent 66%);
-}
-.orb-rays { width: 100%; height: 100%; animation: orb-spin 20s linear infinite; }
-@keyframes orb-spin { to { transform: rotate(360deg); } }
 
 .orb-disc { position: absolute; inset: 0; border-radius: 50%; }
 
@@ -32,14 +23,14 @@ const ORB_CSS = `
 .orb-float { position: absolute; inset: 0; }
 .orb[data-night] .orb-float { animation: orb-float 9s ease-in-out infinite; }
 @keyframes orb-float { 0%, 100% { transform: translate(0, 0); } 30% { transform: translate(4px, -10px); } 65% { transform: translate(-3px, -4px); } }
-.orb[data-night] .orb-halo--moon { animation: orb-moonglow 5s ease-in-out infinite; }
+.orb-halo--sun, .orb[data-night] .orb-halo--moon { animation: orb-moonglow 5s ease-in-out infinite; }
 @keyframes orb-moonglow { 0%, 100% { transform: scale(1); filter: brightness(1); } 50% { transform: scale(1.12); filter: brightness(1.35); } }
 .orb-moon-face { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; }
 .orb[data-night] .orb-moon-face { animation: orb-spin 160s linear infinite; }
 .orb-face { position: absolute; inset: 0; border-radius: 50%; }
 .orb-sun {
-  background: radial-gradient(circle at 40% 35%, #fff6d2 0%, #ffd866 30%, #fbb240 68%, #ef8b2b 100%);
-  box-shadow: 0 0 40px 6px rgba(255, 190, 90, .55), 0 0 120px 30px rgba(255, 170, 70, .25), inset -18px -22px 50px rgba(214, 104, 24, .35);
+  background: radial-gradient(circle at 38% 32%, #fffaf0 0%, #ffe4a3 40%, #fcc56b 76%, #f2a14a 100%);
+  box-shadow: 0 0 40px 6px rgba(255, 200, 110, .5), 0 0 120px 30px rgba(255, 176, 80, .22), inset -20px -24px 50px rgba(205, 120, 40, .3);
 }
 .orb-moon {
   background: radial-gradient(circle at 38% 32%, #fdfcf8 0%, #e9eaec 42%, #c9cfd9 78%, #a9b2c1 100%);
@@ -48,33 +39,9 @@ const ORB_CSS = `
 .orb-crater { position: absolute; border-radius: 50%; background: radial-gradient(circle at 60% 62%, rgba(255, 255, 255, .5), rgba(150, 160, 178, .55) 55%, rgba(120, 130, 150, .4)); box-shadow: inset 2px 3px 5px rgba(80, 90, 110, .35); }
 
 @media (prefers-reduced-motion: reduce) {
-  .orb-halo, .orb-rays, .orb-float, .orb-moon-face { animation: none !important; }
+  .orb-halo, .orb-float, .orb-moon-face { animation: none !important; }
 }
 `
-
-/** Soft tapered rays around the sun. */
-function Rays() {
-  const rays = Array.from({ length: 16 }, (_, i) => i * (360 / 16))
-  return (
-    <svg className="orb-rays" viewBox="-100 -100 200 200" aria-hidden="true">
-      <defs>
-        <linearGradient id="orb-ray" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0" stopColor="#ffcf6a" stopOpacity="0" />
-          <stop offset=".55" stopColor="#ffc457" stopOpacity=".55" />
-          <stop offset="1" stopColor="#ffb340" stopOpacity="0" />
-        </linearGradient>
-      </defs>
-      {rays.map((a, i) => (
-        <path
-          key={a}
-          d={i % 2 ? "M-2.4 -99 L0 -76 L2.4 -99 Z" : "M-4 -100 L0 -70 L4 -100 Z"}
-          fill="url(#orb-ray)"
-          transform={`rotate(${a})`}
-        />
-      ))}
-    </svg>
-  )
-}
 
 const CRATERS = [
   { x: 24, y: 30, s: 16 },
@@ -126,15 +93,6 @@ export function CelestialOrb({ night: theme }: { night: boolean }) {
       <style>{ORB_CSS}</style>
       <div className="orb-halo orb-halo--sun" />
       <div className="orb-halo orb-halo--moon" />
-      {/* the rays draw in as the sun sets and fan out again at sunrise */}
-      <motion.div
-        className="orb-rays-wrap"
-        initial={false}
-        animate={{ opacity: night ? 0 : 1, scale: night ? 0.72 : 1 }}
-        transition={t}
-      >
-        <Rays />
-      </motion.div>
       {/* the disc turns a full revolution while the sun melts into the moon */}
       <div className="orb-float">
         <motion.div className="orb-disc" initial={false} animate={{ rotate: turns * 360 }} transition={t}>
