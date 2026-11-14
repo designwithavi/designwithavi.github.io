@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react"
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { ChevronLeft, ChevronRight, Maximize2, Minimize2 } from "lucide-react"
 
 /**
@@ -33,12 +33,22 @@ function useNarrow(query = "(max-width: 639px)") {
   return narrow
 }
 
+/** true when every page is already a whole spread: its fold runs down the middle */
+const WholeSpreads = createContext(false)
+
 function Page({ src, side, eager }: { src: string | null; side: "l" | "r"; eager?: boolean }) {
+  const whole = useContext(WholeSpreads)
   if (!src) return null
   return (
     <div className="absolute inset-0 overflow-hidden bg-white">
       <img src={src} alt="" draggable={false} loading={eager ? "eager" : "lazy"} className="h-full w-full select-none object-cover" />
       {/* the fold: a soft shadow into the spine */}
+      {whole ? (
+        <div
+          className="pointer-events-none absolute inset-y-0 left-1/2 w-[12%] -translate-x-1/2"
+          style={{ background: "linear-gradient(to right, rgba(0,0,0,0), rgba(0,0,0,.14) 50%, rgba(0,0,0,0))" }}
+        />
+      ) : (
       <div
         className="pointer-events-none absolute inset-y-0 w-[12%]"
         style={{
@@ -46,13 +56,14 @@ function Page({ src, side, eager }: { src: string | null; side: "l" | "r"; eager
           background: `linear-gradient(to ${side === "l" ? "left" : "right"}, rgba(0,0,0,.18), rgba(0,0,0,0))`,
         }}
       />
+      )}
     </div>
   )
 }
 
-export function Flipbook({ pages, ratio, title, single: onePage }: { pages: string[]; ratio: number; title: string; single?: boolean }) {
+export function Flipbook({ pages, ratio, title, single: onePage, spreads: whole }: { pages: string[]; ratio: number; title: string; single?: boolean; spreads?: boolean }) {
   const narrow = useNarrow()
-  const single = narrow || !!onePage
+  const single = narrow || !!onePage || !!whole
   const spreads = spreadsOf(pages, single)
   const [at, setAt] = useState(0)
   const [flip, setFlip] = useState<Flip | null>(null)
@@ -135,6 +146,7 @@ export function Flipbook({ pages, ratio, title, single: onePage }: { pages: stri
     "grid size-10 place-items-center rounded-full border border-line bg-paper text-ink transition hover:bg-ink hover:text-paper disabled:pointer-events-none disabled:opacity-30"
 
   return (
+    <WholeSpreads.Provider value={!!whole}>
     <div
       ref={box}
       className={`outline-none ${full ? "flex flex-col justify-center bg-paper p-6" : ""}`}
@@ -245,5 +257,6 @@ export function Flipbook({ pages, ratio, title, single: onePage }: { pages: stri
         </button>
       </div>
     </div>
+    </WholeSpreads.Provider>
   )
 }

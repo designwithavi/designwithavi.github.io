@@ -293,7 +293,7 @@ function ProjectView({ project, onClose, onOpen }: { project: Project; onClose: 
         {project.flipbook && !project.sections && (
           <section className="mt-12">
             <h3 className="mb-6 font-heading text-3xl sm:text-4xl">{project.flipbook.label}</h3>
-            <Flipbook pages={project.flipbook.pages} ratio={project.flipbook.ratio} title={project.title} single={project.flipbook.single} />
+            <Flipbook pages={project.flipbook.pages} ratio={project.flipbook.ratio} title={project.title} single={project.flipbook.single} spreads={project.flipbook.spreads} />
           </section>
         )}
         {project.embed && (
@@ -321,7 +321,7 @@ function ProjectView({ project, onClose, onOpen }: { project: Project; onClose: 
         {project.flipbook && (
           <section className="mt-20 border-t border-line pt-14">
             <h3 className="mb-6 font-heading text-3xl sm:text-4xl">{project.flipbook.label}</h3>
-            <Flipbook pages={project.flipbook.pages} ratio={project.flipbook.ratio} title={project.title} single={project.flipbook.single} />
+            <Flipbook pages={project.flipbook.pages} ratio={project.flipbook.ratio} title={project.title} single={project.flipbook.single} spreads={project.flipbook.spreads} />
           </section>
         )}
           </>
