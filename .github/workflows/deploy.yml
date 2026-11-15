@@ -4,6 +4,8 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
+    # the weekly stats report doesn't change the site
+    paths-ignore: ["stats/**"]
   workflow_dispatch:
 
 permissions:

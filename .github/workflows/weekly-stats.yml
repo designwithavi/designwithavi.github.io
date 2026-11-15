@@ -1,0 +1,30 @@
+# Every Monday morning (India time), fetch last week's visitor numbers from
+# GoatCounter and save them in the stats/ folder. Can also be run by hand from
+# the Actions tab ("Run workflow").
+name: Weekly stats
+
+on:
+  schedule:
+    - cron: "30 3 * * 1" # Mondays 03:30 UTC = 09:00 IST
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  stats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - run: node .github/scripts/weekly-stats.mjs
+        env:
+          GOATCOUNTER_TOKEN: ${{ secrets.GOATCOUNTER_TOKEN }}
+      - name: Save the report
+        run: |
+          git config user.name "stats-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add stats
+          git diff --cached --quiet || (git commit -m "Weekly stats" && git push)
