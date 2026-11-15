@@ -13,10 +13,14 @@ if (!token) {
 const day = (d) => d.toISOString().slice(0, 10)
 const end = new Date()
 const start = new Date(end.getTime() - 7 * 864e5)
-const range = `start=${day(start)}&end=${day(end)}`
+// the API wants full timestamps (RFC 3339), e.g. 2026-11-08T00:00:00Z
+const iso = (d) => d.toISOString().replace(/\.\d+Z$/, "Z")
+const range = `start=${iso(start)}&end=${iso(end)}`
 
 async function get(path) {
   const r = await fetch(`${SITE}/api/v0/${path}`, { headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" } })
+  // a week with no visits yet can come back as "not found": count it as nothing
+  if (r.status === 404) return {}
   if (!r.ok) throw new Error(`${path}: ${r.status} ${await r.text()}`)
   return r.json()
 }
