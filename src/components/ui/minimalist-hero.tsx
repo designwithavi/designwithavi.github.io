@@ -203,9 +203,14 @@ export const MinimalistHero = ({
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 1 }}
           ref={rightRef}
-          className="z-20 order-3 text-center lg:ml-auto lg:max-w-[16rem] lg:self-start lg:pt-16 lg:text-right"
+          className="z-20 order-3 text-center lg:ml-auto lg:max-w-[20rem] lg:self-start lg:pt-16 lg:text-right"
         >
-          <p className="text-xs uppercase tracking-[0.2em] text-ink/60">{sideText.title}</p>
+          <p className="text-xs uppercase tracking-[0.2em] text-ink/60">
+            {/* "role · place": one per line, never broken mid-phrase */}
+            {sideText.title.split(" · ").map((part, i) => (
+              <span key={part} className={`block whitespace-nowrap ${i ? "mt-1" : ""}`}>{part}</span>
+            ))}
+          </p>
           <p className="mt-2 font-heading text-2xl text-ink">{sideText.detail}</p>
         </motion.div>
       </div>

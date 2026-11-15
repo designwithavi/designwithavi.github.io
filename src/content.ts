@@ -13,8 +13,8 @@ export const site = {
   // Your cut-out photo (PNG, transparent background). public/me.png is the original;
   // the site loads a smaller copy, me-web.png — ask to regenerate it if you swap the photo.
   portrait: "me-web.png",
-  role: "Design student · NIFT Mumbai",
-  tagline: "I design thoughtful things where craft meets culture.",
+  role: "Photographer & visual designer · NIFT Mumbai",
+  tagline: "I shoot and design thoughtful things where craft meets culture.",
   availability: "Open to freelance & internship opportunities",
 
   about:
@@ -592,18 +592,17 @@ export const projects: Project[] = [
   // Years are when each was posted on Behance — correct them if they differ.
   // Text is from Behance where there was any; entries marked DRAFT were written from the images.
   {
-    title: "i-DOLL: K-pop Idol Styling",
+    title: "i-DOLL: K-pop Idol Shoot",
     category: "Photography & Videography",
     year: "2026",
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
-    skills: ["Styling", "Photography"],
-    // DRAFT — written from the lookbook; check it
-    summary: "Two looks for a K-pop idol — from the practice room to the concert stage.",
+    skills: ["Photography", "Styling"],
+    summary: "A K-pop idol in two worlds, shot from the practice room to the concert stage.",
     description:
-      "A fashion styling project on K-pop subculture: styling a fourth-generation idol, AKMU, across the two sides of an idol's life. " +
+      "A photography project on K-pop subculture, following a fourth-generation idol, AKMU, across the two sides of an idol's life — lit and framed for each world: cold, quiet light in the practice room; hard red light and low angles on stage. " +
       "Look 1, the practice session — varsity jacket, baggy jeans, bandana, silver chain and no-makeup makeup, built for comfort in the same silhouette as the stage. " +
       "Look 2, the live concert — padded-shoulder blazer, red satin deep-V shirt, layered chains, rings, oversized lowers and Chelsea boots. " +
-      "Styled, shot and laid out as a lookbook.",
+      "I styled the looks, shot the series and laid it out as a lookbook.",
     cover: "work/photography-videography/i-doll/shoot/05.webp",
     images: [],
     sections: [
@@ -671,7 +670,7 @@ export const projects: Project[] = [
     skills: ["Photography", "Styling"],
     stats: { views: 107, appreciations: 7 }, // Behance, 14 Nov 2026
     summary: "An editorial shoot for a designer collection, built on mood and atmosphere.",
-    description: "An editorial-style fashion shoot for a designer collection, focusing on mood and atmosphere.",
+    description: "An editorial fashion shoot for a designer collection, built on mood and atmosphere: golden-hour light, open grassland and pylons on the hills, and the slow hour after sunset.",
     behance: "https://www.behance.net/gallery/250810673/Fashion-Editorial-Shoot",
     cover: "work/photography-videography/fashion-editorial/01.webp",
     images: [],
@@ -707,15 +706,15 @@ export const projects: Project[] = [
     color: "#cfc4d9",
   },
   {
-    title: "#WhatIsSexy? — Styling Campaign",
+    title: "#WhatIsSexy? — Campaign Shoot",
     category: "Photography & Videography",
     year: "2026",
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
-    skills: ["Styling", "Photography", "Branding"],
+    skills: ["Photography", "Styling", "Branding"],
     team: true,
     stats: { views: 14, appreciations: 1 }, // Behance, 14 Nov 2026
-    summary: "Five looks styled for a Durex campaign on consent, respect and confidence — from brand research to billboards.",
-    description: "An academic fashion styling exercise exploring the intersection of fashion, visual storytelling, and responsible brand communication. Inspired by Durex's bold communication identity, #WhatIsSexy? challenges conventional perceptions of attraction by highlighting consent, respect, confidence, personal boundaries, and emotional safety. An independent academic concept developed for educational purposes, not an official Durex campaign. Team: Aashana Ramavat, Avishkar Kale, Prajakta Mahindrakar, Paraj Parikh, Sanskruti Zankar.",
+    summary: "A five-look campaign shoot for Durex on consent, respect and confidence — from brand research to billboards.",
+    description: "An academic campaign shoot exploring the intersection of fashion photography, visual storytelling, and responsible brand communication. Inspired by Durex's bold communication identity, #WhatIsSexy? challenges conventional perceptions of attraction by highlighting consent, respect, confidence, personal boundaries, and emotional safety. An independent academic concept developed for educational purposes, not an official Durex campaign. Team: Aashana Ramavat, Avishkar Kale, Prajakta Mahindrakar, Paraj Parikh, Sanskruti Zankar.",
     behance: "https://www.behance.net/gallery/257582083/Fashion-Styling-ft-Durex",
     cover: "work/photography-videography/durex-styling/cover.webp", // the Behance cover
     images: [],
@@ -916,15 +915,15 @@ export const projects: Project[] = [
     color: "#a9bfa4",
   },
   {
-    title: "Shorona: Costume Styling",
+    title: "Shorona: Character Shoot",
     category: "Photography & Videography",
     year: "2026",
     medium: "hands", // "hands" (made / shot) or "screen" (digital) — for the About page
-    skills: ["Styling", "Photography"],
+    skills: ["Photography", "Styling"],
     team: true,
     stats: { views: 81, appreciations: 3 }, // Behance, 14 Nov 2026
-    summary: "Helena from A Midsummer Night's Dream, reimagined in 1880s colonial Bengal.",
-    description: "This project reimagines A Midsummer Night's Dream by adapting the character of Helena into the setting of 1880s colonial Bengal (Alipore, Calcutta). The goal was to reconstruct her identity within a new cultural and historical context, blending Bengali traditions with British colonial influences. Through character study and research on textiles, folktales, and social dynamics, a new visual interpretation of Helena was developed. The final outcome is expressed through a cohesive styling approach, translating the character into a fully realised visual narrative. Team: Aashana Ramavati, Avishkar Kale, Prajakta Mahindrakar, Paraj Parikh, Sanskruti Zankar.",
+    summary: "Helena from A Midsummer Night's Dream, reimagined in 1880s colonial Bengal and photographed on location.",
+    description: "This project reimagines A Midsummer Night's Dream by adapting the character of Helena into the setting of 1880s colonial Bengal (Alipore, Calcutta). The goal was to reconstruct her identity within a new cultural and historical context, blending Bengali traditions with British colonial influences. Through character study and research on textiles, folktales, and social dynamics, a new visual interpretation of Helena was developed. The character was then brought to life in a location shoot — light, setting and pose working with the costume to tell her story in a series of portraits. Team: Aashana Ramavati, Avishkar Kale, Prajakta Mahindrakar, Paraj Parikh, Sanskruti Zankar.",
     behance: "https://www.behance.net/gallery/248551049/Shorona-Costume-Styling",
     cover: "work/photography-videography/shorona/01.webp",
     images: [],
@@ -1866,10 +1865,10 @@ export const projects: Project[] = [
 // ─────────────────────────────────────────────────────────────
 export const featured: { title: string; backdrop: string; line?: string }[] = [
   { title: "Fashion Editorial Shoot", backdrop: "work/photography-videography/fashion-editorial/01.webp" },
-  { title: "Shorona: Costume Styling", backdrop: "work/photography-videography/shorona/shoot/01.webp" },
-  { title: "i-DOLL: K-pop Idol Styling", backdrop: "work/photography-videography/i-doll/shoot/05.webp" },
+  { title: "Shorona: Character Shoot", backdrop: "work/photography-videography/shorona/shoot/01.webp" },
+  { title: "i-DOLL: K-pop Idol Shoot", backdrop: "work/photography-videography/i-doll/shoot/05.webp" },
   { title: "Studio Photography: Keibu Keioiba", backdrop: "work/photography-videography/keibu-keioiba/shoot/02.webp" },
-  { title: "#WhatIsSexy? — Styling Campaign", backdrop: "work/photography-videography/durex-styling/59.webp" },
+  { title: "#WhatIsSexy? — Campaign Shoot", backdrop: "work/photography-videography/durex-styling/59.webp" },
   { title: "Sthetix in Stone", backdrop: "work/photography-videography/sthetix-in-stone/cover.webp" },
   { title: "Sipwise — Visual Design Internship", backdrop: "about/sipwise/booth-3d.webp", line: "Eight weeks as a visual design intern — from an exhibition booth to packaging, web and print." },
   { title: "NIFT Prospectus — Admissions 2026", backdrop: "work/graphic-design/nift-prospectus/mockups/04.webp" },
@@ -1881,27 +1880,27 @@ export const featured: { title: string; backdrop: string; line?: string }[] = [
 //  projects and the rest. Each photo names the project it belongs to.
 // ─────────────────────────────────────────────────────────────
 export const gallery: { src: string; w: number; h: number; project: string }[] = [
-  { src: "work/photography-videography/i-doll/shoot/18.webp", w: 1400, h: 2100, project: "i-DOLL: K-pop Idol Styling" },
-  { src: "work/photography-videography/shorona/shoot/02.webp", w: 1400, h: 2099, project: "Shorona: Costume Styling" },
-  { src: "work/photography-videography/i-doll/shoot/09.webp", w: 1400, h: 2100, project: "i-DOLL: K-pop Idol Styling" },
+  { src: "work/photography-videography/i-doll/shoot/18.webp", w: 1400, h: 2100, project: "i-DOLL: K-pop Idol Shoot" },
+  { src: "work/photography-videography/shorona/shoot/02.webp", w: 1400, h: 2099, project: "Shorona: Character Shoot" },
+  { src: "work/photography-videography/i-doll/shoot/09.webp", w: 1400, h: 2100, project: "i-DOLL: K-pop Idol Shoot" },
   { src: "work/photography-videography/fashion-editorial/05.webp", w: 1400, h: 2100, project: "Fashion Editorial Shoot" },
-  { src: "work/photography-videography/i-doll/shoot/10.webp", w: 2100, h: 1400, project: "i-DOLL: K-pop Idol Styling" },
+  { src: "work/photography-videography/i-doll/shoot/10.webp", w: 2100, h: 1400, project: "i-DOLL: K-pop Idol Shoot" },
   { src: "work/photography-videography/keibu-keioiba/shoot/04.webp", w: 1400, h: 2100, project: "Studio Photography: Keibu Keioiba" },
-  { src: "work/photography-videography/durex-styling/shoot/01.webp", w: 1190, h: 1684, project: "#WhatIsSexy? — Styling Campaign" },
-  { src: "work/photography-videography/shorona/shoot/06.webp", w: 1400, h: 2099, project: "Shorona: Costume Styling" },
+  { src: "work/photography-videography/durex-styling/shoot/01.webp", w: 1190, h: 1684, project: "#WhatIsSexy? — Campaign Shoot" },
+  { src: "work/photography-videography/shorona/shoot/06.webp", w: 1400, h: 2099, project: "Shorona: Character Shoot" },
   { src: "work/photography-videography/fashion-editorial/13.webp", w: 1600, h: 1067, project: "Fashion Editorial Shoot" },
-  { src: "work/photography-videography/i-doll/shoot/03.webp", w: 1400, h: 2100, project: "i-DOLL: K-pop Idol Styling" },
+  { src: "work/photography-videography/i-doll/shoot/03.webp", w: 1400, h: 2100, project: "i-DOLL: K-pop Idol Shoot" },
   { src: "work/photography-videography/keibu-keioiba/shoot/01.webp", w: 1400, h: 932, project: "Studio Photography: Keibu Keioiba" },
   { src: "work/photography-videography/sthetix-in-stone/02.webp", w: 1400, h: 934, project: "Sthetix in Stone" },
-  { src: "work/photography-videography/shorona/shoot/12.webp", w: 1400, h: 1867, project: "Shorona: Costume Styling" },
+  { src: "work/photography-videography/shorona/shoot/12.webp", w: 1400, h: 1867, project: "Shorona: Character Shoot" },
   { src: "work/photography-videography/fashion-editorial/07.webp", w: 1400, h: 2100, project: "Fashion Editorial Shoot" },
-  { src: "work/photography-videography/i-doll/shoot/13.webp", w: 1400, h: 2100, project: "i-DOLL: K-pop Idol Styling" },
-  { src: "work/photography-videography/durex-styling/shoot/05.webp", w: 1190, h: 1684, project: "#WhatIsSexy? — Styling Campaign" },
+  { src: "work/photography-videography/i-doll/shoot/13.webp", w: 1400, h: 2100, project: "i-DOLL: K-pop Idol Shoot" },
+  { src: "work/photography-videography/durex-styling/shoot/05.webp", w: 1190, h: 1684, project: "#WhatIsSexy? — Campaign Shoot" },
   { src: "work/photography-videography/faredoons/shoot/03.webp", w: 1594, h: 1061, project: "Faredoon's Food Photography" },
   { src: "work/photography-videography/keibu-keioiba/shoot/05.webp", w: 1400, h: 934, project: "Studio Photography: Keibu Keioiba" },
   { src: "work/photography-videography/fashion-editorial/02.webp", w: 1400, h: 2100, project: "Fashion Editorial Shoot" },
-  { src: "work/photography-videography/i-doll/shoot/15.webp", w: 1400, h: 2100, project: "i-DOLL: K-pop Idol Styling" },
-  { src: "work/photography-videography/shorona/shoot/16.webp", w: 1400, h: 2488, project: "Shorona: Costume Styling" },
+  { src: "work/photography-videography/i-doll/shoot/15.webp", w: 1400, h: 2100, project: "i-DOLL: K-pop Idol Shoot" },
+  { src: "work/photography-videography/shorona/shoot/16.webp", w: 1400, h: 2488, project: "Shorona: Character Shoot" },
   { src: "work/photography-videography/sthetix-in-stone/07.webp", w: 1600, h: 1068, project: "Sthetix in Stone" },
 ]
 
@@ -1913,9 +1912,9 @@ export const gallery: { src: string; w: number; h: number; project: string }[] =
 // title2: the second card can show a different project (otherwise it's the same one, another picture)
 export const featuredProjects: { title: string; image: string; pos?: string; image2: string; pos2?: string; title2?: string }[] = [
   { title: "Fashion Editorial Shoot", image: "work/photography-videography/fashion-editorial/02.webp", image2: "work/photography-videography/fashion-editorial/08.webp" },
-  { title: "Shorona: Costume Styling", image: "work/photography-videography/shorona/shoot/02.webp", image2: "work/photography-videography/shorona/shoot/13.webp" },
-  { title: "i-DOLL: K-pop Idol Styling", image: "work/photography-videography/i-doll/shoot/03.webp", image2: "work/photography-videography/i-doll/shoot/13.webp" },
-  { title: "#WhatIsSexy? — Styling Campaign", image: "work/photography-videography/durex-styling/shoot/01.webp", image2: "work/photography-videography/durex-styling/shoot/09.webp" },
+  { title: "Shorona: Character Shoot", image: "work/photography-videography/shorona/shoot/02.webp", image2: "work/photography-videography/shorona/shoot/13.webp" },
+  { title: "i-DOLL: K-pop Idol Shoot", image: "work/photography-videography/i-doll/shoot/03.webp", image2: "work/photography-videography/i-doll/shoot/13.webp" },
+  { title: "#WhatIsSexy? — Campaign Shoot", image: "work/photography-videography/durex-styling/shoot/01.webp", image2: "work/photography-videography/durex-styling/shoot/09.webp" },
   { title: "Studio Photography: Keibu Keioiba", image: "work/photography-videography/keibu-keioiba/shoot/04.webp", title2: "Studio Photography: Buldak Ramen", image2: "work/photography-videography/buldak-ramen/01.webp", pos2: "50% 70%" },
   { title: "Faredoon's Food Photography", image: "work/photography-videography/faredoons/shoot/03.webp", image2: "work/photography-videography/faredoons/shoot/06.webp" },
   { title: "Sipwise — Visual Design Internship", image: "about/sipwise/booth-3d.webp", pos: "48% 50%", title2: "Crunchyroll × Comic Con", image2: "work/visual-merchandising/crunchyroll/model/01.webp", pos2: "56% 50%" },
