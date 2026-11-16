@@ -1863,9 +1863,10 @@ export const projects: Project[] = [
 //  FEATURED — the projects that rotate in the big hero at the top of Work,
 //  each with a wide, cinematic backdrop image. Change the order or swap them freely.
 // ─────────────────────────────────────────────────────────────
-export const featured: { title: string; backdrop: string; line?: string; pos?: string }[] = [
+// pos: the part of a photo the banner keeps on phones; tall: a portrait photo, shown whole on wide screens
+export const featured: { title: string; backdrop: string; line?: string; pos?: string; tall?: boolean }[] = [
   { title: "Fashion Editorial Shoot", backdrop: "work/photography-videography/fashion-editorial/01.webp" },
-  { title: "Shorona: Character Shoot", backdrop: "work/photography-videography/shorona/shoot/03.webp" },
+  { title: "Shorona: Character Shoot", backdrop: "work/photography-videography/shorona/shoot/12.webp", pos: "50% 52%", tall: true },
   { title: "i-DOLL: K-pop Idol Shoot", backdrop: "work/photography-videography/i-doll/shoot/05.webp" },
   { title: "Studio Photography: Keibu Keioiba", backdrop: "work/photography-videography/keibu-keioiba/shoot/01.webp" },
   { title: "#WhatIsSexy? — Campaign Shoot", backdrop: "work/photography-videography/durex-styling/59.webp" },
