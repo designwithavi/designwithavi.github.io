@@ -1863,11 +1863,11 @@ export const projects: Project[] = [
 //  FEATURED — the projects that rotate in the big hero at the top of Work,
 //  each with a wide, cinematic backdrop image. Change the order or swap them freely.
 // ─────────────────────────────────────────────────────────────
-export const featured: { title: string; backdrop: string; line?: string }[] = [
+export const featured: { title: string; backdrop: string; line?: string; pos?: string }[] = [
   { title: "Fashion Editorial Shoot", backdrop: "work/photography-videography/fashion-editorial/01.webp" },
-  { title: "Shorona: Character Shoot", backdrop: "work/photography-videography/shorona/shoot/01.webp" },
+  { title: "Shorona: Character Shoot", backdrop: "work/photography-videography/shorona/shoot/02.webp", pos: "50% 14%" },
   { title: "i-DOLL: K-pop Idol Shoot", backdrop: "work/photography-videography/i-doll/shoot/05.webp" },
-  { title: "Studio Photography: Keibu Keioiba", backdrop: "work/photography-videography/keibu-keioiba/shoot/02.webp" },
+  { title: "Studio Photography: Keibu Keioiba", backdrop: "work/photography-videography/keibu-keioiba/shoot/01.webp" },
   { title: "#WhatIsSexy? — Campaign Shoot", backdrop: "work/photography-videography/durex-styling/59.webp" },
   { title: "Sthetix in Stone", backdrop: "work/photography-videography/sthetix-in-stone/cover.webp" },
   { title: "Sipwise — Visual Design Internship", backdrop: "about/sipwise/booth-3d.webp", line: "Eight weeks as a visual design intern — from an exhibition booth to packaging, web and print." },

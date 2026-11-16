@@ -13,7 +13,8 @@ import { GlowCard } from "@/components/ui/spotlight-card"
  * focus effect. Always dark: the artwork does the talking.
  */
 
-export type Featured = { project: Project; backdrop: string; line?: string }
+/** pos: which part of the picture the wide banner keeps (CSS object-position), for tall photos */
+export type Featured = { project: Project; backdrop: string; line?: string; pos?: string }
 
 const SLIDE_MS = 7000
 const ease = [0.22, 1, 0.36, 1] as const
@@ -57,6 +58,7 @@ function Hero({ items, onOpen, onCategory }: { items: Featured[]; onOpen: (p: Pr
             src={f.backdrop}
             alt=""
             className="h-full w-full object-cover"
+            style={{ objectPosition: f.pos ?? "center" }}
             initial={{ scale: 1.08 }}
             animate={{ scale: reduce ? 1.08 : 1 }}
             transition={{ duration: SLIDE_MS / 1000 + 1.5, ease: "linear" }}
