@@ -1865,7 +1865,7 @@ export const projects: Project[] = [
 // ─────────────────────────────────────────────────────────────
 export const featured: { title: string; backdrop: string; line?: string; pos?: string }[] = [
   { title: "Fashion Editorial Shoot", backdrop: "work/photography-videography/fashion-editorial/01.webp" },
-  { title: "Shorona: Character Shoot", backdrop: "work/photography-videography/shorona/shoot/02.webp", pos: "50% 14%" },
+  { title: "Shorona: Character Shoot", backdrop: "work/photography-videography/shorona/shoot/03.webp" },
   { title: "i-DOLL: K-pop Idol Shoot", backdrop: "work/photography-videography/i-doll/shoot/05.webp" },
   { title: "Studio Photography: Keibu Keioiba", backdrop: "work/photography-videography/keibu-keioiba/shoot/01.webp" },
   { title: "#WhatIsSexy? — Campaign Shoot", backdrop: "work/photography-videography/durex-styling/59.webp" },
