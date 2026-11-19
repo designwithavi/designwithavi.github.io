@@ -338,7 +338,7 @@ function ProjectView({ project, onClose, onOpen }: { project: Project; onClose: 
           </section>
         )}
           </>
-        ) : (
+        ) : project.flipbook && !project.images.length ? null : (
         <div className="mt-12">
           {project.cover ? (
             <ProjectGallery

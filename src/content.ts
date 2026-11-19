@@ -1692,6 +1692,37 @@ export const projects: Project[] = [
     color: "#e8603c",
   },
   {
+    title: "Cascade of Shades — Exhibition Catalogue",
+    category: "Graphics & Publication Design",
+    year: "2025",
+    medium: "screen", // "hands" (made / shot) or "screen" (digital) — for the About page
+    skills: ["Editorial", "Typography"],
+    // written from the catalogue itself; check it
+    summary: "An exhibition catalogue for painter Ragini Sinkar's solo show at Jehangir Art Gallery, Mumbai.",
+    description:
+      "Cascade of Shades is a solo exhibition of abstract acrylic paintings by Ragini Sinkar, shown at Jehangir Art Gallery, Kala Ghoda, Mumbai, from 21 to 27 April 2025. " +
+      "I designed its eight-page catalogue: a cover framed in the show's pink-to-gold gradient, the inauguration invite, the artist's note on how a painting keeps growing in the viewer's mind, " +
+      "a sequence of works (Fusion, Emerald, Sapphire, Chroma, Green Mirage, Fusion 3, Dusky Violet) given room to breathe on white, and an 'About the Artist' spread. " +
+      "Soft serif headings and generous margins let the paintings carry the colour.",
+    cover: "work/graphic-design/cascade-of-shades/book/01.webp",
+    images: [],
+    flipbook: {
+      label: "Flip through the catalogue",
+      ratio: 1200 / 1543,
+      pages: [
+        "work/graphic-design/cascade-of-shades/book/01.webp",
+        "work/graphic-design/cascade-of-shades/book/02.webp",
+        "work/graphic-design/cascade-of-shades/book/03.webp",
+        "work/graphic-design/cascade-of-shades/book/04.webp",
+        "work/graphic-design/cascade-of-shades/book/05.webp",
+        "work/graphic-design/cascade-of-shades/book/06.webp",
+        "work/graphic-design/cascade-of-shades/book/07.webp",
+        "work/graphic-design/cascade-of-shades/book/08.webp",
+      ],
+    },
+    color: "#b05f8f",
+  },
+  {
     title: "Verve Magazine Design",
     category: "Graphics & Publication Design",
     year: "2024",
