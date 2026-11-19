@@ -20,6 +20,8 @@ export type WalkScreen = {
   spot?: [number, number, number, number]
   /** round glow (for circular things like ingredients) */
   round?: boolean
+  /** the prototype's own animation after this tap, played before the next screen */
+  clip?: string
 }
 
 const W = 415
@@ -54,12 +56,30 @@ export function PrototypeGuide({ screens, link, title, label }: { screens: WalkS
     for (const x of screens.slice(at + 1, at + 4)) new Image().src = x.src
   }, [at, screens])
 
+  // after a tap: play the prototype's own animation (if it has one), then show the next screen
+  const [playing, setPlaying] = useState(false)
+  const video = useRef<HTMLVideoElement>(null)
+  const safety = useRef(0)
+  const advance = () => {
+    window.clearTimeout(safety.current)
+    setPlaying(false)
+    setDir(s.clip ? 0 : 1)
+    setAt((i) => Math.min(i + 1, screens.length - 1))
+  }
   const go = () => {
-    if (at >= screens.length - 1) return
-    setDir(1)
-    setAt(at + 1)
+    if (at >= screens.length - 1 || playing) return
+    const v = video.current
+    if (s.clip && v && !reduce) {
+      setPlaying(true)
+      v.currentTime = 0
+      v.play().catch(advance)
+      // never get stuck if the clip stalls
+      safety.current = window.setTimeout(advance, ((v.duration || 4) + 1.5) * 1000)
+    } else advance()
   }
   const restart = () => {
+    window.clearTimeout(safety.current)
+    setPlaying(false)
     setDir(-1)
     setAt(0)
   }
@@ -126,16 +146,35 @@ export function PrototypeGuide({ screens, link, title, label }: { screens: WalkS
                   src={s.src}
                   alt={`${title}: ${s.say}`}
                   draggable={false}
-                  initial={reduce ? { opacity: 0 } : { opacity: 0, x: dir * 40 }}
+                  // arriving from a clip, the clip's last frame is this screen: swap in place, no fade
+                  initial={!dir ? false : reduce ? { opacity: 0 } : { opacity: 0, x: dir * 40 }}
                   animate={{ opacity: 1, x: 0 }}
-                  exit={reduce ? { opacity: 0 } : { opacity: 0, x: -dir * 30 }}
-                  transition={{ duration: 0.35, ease }}
+                  exit={reduce || !dir ? { opacity: 0 } : { opacity: 0, x: -dir * 30 }}
+                  transition={{ duration: dir ? 0.35 : 0, ease }}
                   className="absolute inset-0 h-full w-full select-none"
                 />
               </AnimatePresence>
 
-              {/* everything but the glow is dimmed and doesn't respond */}
-              {s.spot ? <Spot key={at} spot={s.spot} round={s.round} nudge={nudge} onTap={go} onMiss={() => setNudge((n) => n + 1)} /> : <div className="absolute inset-0" />}
+              {/* the prototype's own animation, waiting to play from this screen */}
+              {s.clip && (
+                <video
+                  key={s.clip}
+                  ref={video}
+                  src={s.clip}
+                  muted
+                  playsInline
+                  preload="auto"
+                  onEnded={advance}
+                  className={`absolute inset-0 h-full w-full ${playing ? "opacity-100" : "opacity-0"}`}
+                />
+              )}
+
+              {/* everything but the spotlight is dimmed and doesn't respond */}
+              {s.spot && !playing ? (
+                <Spot key={at} spot={s.spot} round={s.round} nudge={nudge} onTap={go} onMiss={() => setNudge((n) => n + 1)} />
+              ) : (
+                <div className="absolute inset-0" />
+              )}
             </div>
           </div>
           <div className="mt-4 flex justify-center">
@@ -154,42 +193,37 @@ export function PrototypeGuide({ screens, link, title, label }: { screens: WalkS
 }
 
 function Spot({ spot: [x, y, w, h], round, nudge, onTap, onMiss }: { spot: [number, number, number, number]; round?: boolean; nudge: number; onTap: () => void; onMiss: () => void }) {
-  const r = round ? "9999px" : "14px"
-  const pad = 6
-  const box = { left: x - pad, top: y - pad, width: w + pad * 2, height: h + pad * 2 }
+  // a soft round spotlight on the middle of the thing to tap; the whole thing still answers the tap
+  const cx = x + w / 2
+  const cy = y + h / 2
+  const r = round ? Math.max(w, h) / 2 + 8 : Math.min(54, Math.max(26, Math.min(w, h) / 2 + 10))
   return (
     <>
-      {/* the dimmed rest of the screen (a hole cut by a giant shadow); taps here only nudge the glow */}
-      <div className="absolute inset-0" onClick={onMiss}>
-        <motion.div
-          className="pointer-events-none absolute"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.4, delay: 0.25 }}
-          style={{ ...box, borderRadius: r, boxShadow: "0 0 0 2000px rgba(0,0,0,.45)" }}
-        />
-      </div>
-      {/* the glow */}
-      <motion.button
-        type="button"
-        aria-label="Tap here"
-        onClick={(e) => (e.stopPropagation(), onTap())}
-        className="absolute cursor-pointer outline-none"
-        style={{ ...box, borderRadius: r }}
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.4, delay: 0.25, ease }}
-      >
-        <span className="absolute inset-0 animate-pulse border-[3px] border-[#ef8b2b] shadow-[0_0_24px_6px_rgba(239,139,43,.75)]" style={{ borderRadius: r }} />
-        <motion.span
-          key={nudge}
-          className="absolute -inset-2 border-2 border-[#ffb36b]"
-          style={{ borderRadius: r }}
-          initial={{ opacity: nudge ? 1 : 0, scale: 1 }}
-          animate={{ opacity: 0, scale: 1.25 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-        />
-      </motion.button>
+      <motion.div
+        className="absolute inset-0"
+        onClick={onMiss}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.45, delay: 0.15 }}
+        style={{ background: `radial-gradient(circle at ${cx}px ${cy}px, rgba(0,0,0,0) ${r}px, rgba(0,0,0,.28) ${r + 26}px, rgba(0,0,0,.55) ${r + 120}px)` }}
+      />
+      {/* the light itself: a warm glow that breathes, and a ripple spreading from where to tap */}
+      <motion.div
+        className="pointer-events-none absolute rounded-full"
+        style={{ left: cx - r, top: cy - r, width: r * 2, height: r * 2, background: "radial-gradient(circle, rgba(255,190,120,.35), rgba(239,139,43,.12) 60%, rgba(239,139,43,0) 72%)" }}
+        initial={{ opacity: 0, scale: 0.6 }}
+        animate={{ opacity: [0, 1, 0.75, 1], scale: [0.6, 1, 0.94, 1] }}
+        transition={{ duration: 1.6, delay: 0.15, repeat: Infinity, repeatType: "mirror", ease: "easeInOut" }}
+      />
+      <motion.span
+        key={nudge}
+        className="pointer-events-none absolute rounded-full border-2 border-[#ffb36b]"
+        style={{ left: cx - r * 0.55, top: cy - r * 0.55, width: r * 1.1, height: r * 1.1 }}
+        initial={{ opacity: 0.9, scale: 0.6 }}
+        animate={{ opacity: 0, scale: 1.9 }}
+        transition={{ duration: 1.4, repeat: Infinity, ease: "easeOut", delay: nudge ? 0 : 0.4 }}
+      />
+      <button type="button" aria-label="Tap here" onClick={(e) => (e.stopPropagation(), onTap())} className="absolute cursor-pointer rounded-xl outline-none" style={{ left: x - 6, top: y - 6, width: w + 12, height: h + 12 }} />
     </>
   )
 }
