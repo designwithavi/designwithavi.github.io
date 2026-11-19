@@ -117,7 +117,9 @@ export type Project = {
   /** Optional film, played at the top of the project page (poster = its still). */
   video?: { src: string; poster: string }
   /** Optional embedded viewer (e.g. a Heyzine flipbook) shown after the description. */
-  embed?: { src: string; label: string }
+  embed?: { src: string; label: string; /** where "Open full screen" goes, if not src */ link?: string }
+  /** big pictures shown first on the page, before the embed and the chapters */
+  showcase?: { src: string; w: number; h: number }[]
   /** Optional magazine to page through, shown after the description: pages in reading order, page width ÷ height. */
   /** show the internship journey (the milestone timeline) on this project's page */
   journey?: boolean
@@ -1745,6 +1747,16 @@ export const projects: Project[] = [
     summary: "Perfume reimagined as a journey of self-discovery.",
     description: "Novus reimagines perfume as a journey of self-discovery. Instead of choosing a fragrance, users create one that reflects who they are. The project tackles a key challenge: translating scent into a digital experience. Through an archetype-based quiz and cross-sensory design (visuals, motion, and sound), Novus allows users to 'feel' a fragrance before it exists. Extending beyond screens, the physical store becomes a customization lab where users interact, experiment, and co-create their signature scent. Minimal, calm, and intentional, Novus turns perfume from a product into a personal expression. Team: Aashana Ramavati, Keerti Manojna, Avishkar Kale, Jyotsana K, Sivnandan KS.",
     behance: "https://www.behance.net/gallery/248288401/NOVUS-User-Experience-Design",
+    showcase: [
+      { src: "work/ux-design/novus/screens-01.webp", w: 2000, h: 1500 },
+      { src: "work/ux-design/novus/screens-02.webp", w: 2000, h: 1500 },
+      { src: "work/ux-design/novus/screens-03.webp", w: 2000, h: 1500 },
+    ],
+    embed: {
+      label: "Try the app prototype",
+      src: "https://embed.figma.com/proto/DLK6ifQbQIgEtz6QR4kugb/NOVUS-APP?node-id=1726-3001&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1726%3A3251&embed-host=share",
+      link: "https://www.figma.com/proto/DLK6ifQbQIgEtz6QR4kugb/NOVUS-APP?node-id=1726-3001&p=f&viewport=575%2C288%2C0.18&t=vuKGEl9M5nkTyKkk-0&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1726%3A3251&show-proto-sidebar=1",
+    },
     cover: "work/ux-design/novus/01.webp",
     images: [],
     sections: [

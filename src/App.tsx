@@ -297,11 +297,18 @@ function ProjectView({ project, onClose, onOpen }: { project: Project; onClose: 
             <Flipbook pages={project.flipbook.pages} ratio={project.flipbook.ratio} title={project.title} single={project.flipbook.single} spreads={project.flipbook.spreads} />
           </section>
         )}
+        {project.showcase && (
+          <section className="mt-12 space-y-4 sm:space-y-6">
+            {project.showcase.map((img, i) => (
+              <img key={img.src} src={img.src} width={img.w} height={img.h} alt={`${project.title}, screens ${i + 1}`} loading={i ? "lazy" : "eager"} className="block h-auto w-full rounded-2xl" />
+            ))}
+          </section>
+        )}
         {project.embed && (
           <section className="mt-12">
             <div className="mb-4 flex items-baseline justify-between gap-4">
               <h3 className="font-heading text-3xl sm:text-4xl">{project.embed.label}</h3>
-              <a href={project.embed.src} target="_blank" rel="noopener noreferrer" className="shrink-0 text-sm text-ink-3 underline underline-offset-4 hover:text-ink">
+              <a href={project.embed.link ?? project.embed.src} target="_blank" rel="noopener noreferrer" className="shrink-0 text-sm text-ink-3 underline underline-offset-4 hover:text-ink">
                 Open full screen ↗
               </a>
             </div>
