@@ -181,20 +181,24 @@ export const MinimalistHero = ({
             </span>
           </motion.h1>
 
-          <motion.img
-            src={imageSrc}
-            alt={imageAlt}
-            className="hero-portrait relative z-10 h-auto max-h-[78svh] w-[min(92vw,360px)] max-w-none shrink-0 object-contain md:w-[440px] lg:w-[540px] translate-y-14 lg:translate-y-16"
-            style={{ maskImage: "linear-gradient(to bottom, #000 78%, transparent 100%)", WebkitMaskImage: "linear-gradient(to bottom, #000 78%, transparent 100%)" }}
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, ease, delay: 0.4 }}
-            onError={(e) => {
-              const target = e.target as HTMLImageElement
-              target.onerror = null
-              if (fallbackImageSrc) target.src = fallbackImageSrc
-            }}
-          />
+          {/* the portrait stays solid all the way down (a see-through fade let the name behind show
+              through on some screens); its lower edge melts into the page with a background-coloured wash instead */}
+          <div className="relative z-10 shrink-0 translate-y-14 lg:translate-y-16">
+            <motion.img
+              src={imageSrc}
+              alt={imageAlt}
+              className="hero-portrait block h-auto max-h-[78svh] w-[min(92vw,360px)] max-w-none object-contain md:w-[440px] lg:w-[540px]"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1, ease, delay: 0.4 }}
+              onError={(e) => {
+                const target = e.target as HTMLImageElement
+                target.onerror = null
+                if (fallbackImageSrc) target.src = fallbackImageSrc
+              }}
+            />
+            <div aria-hidden="true" className="pointer-events-none absolute inset-x-0 bottom-0 h-[24%] bg-gradient-to-t from-paper via-paper/80 to-transparent" />
+          </div>
         </div>
 
         {/* Right Text */}
