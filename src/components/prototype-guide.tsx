@@ -1,148 +1,195 @@
-import { useState } from "react"
-import { AnimatePresence, motion } from "framer-motion"
-import { ArrowLeft, ArrowRight, RotateCcw } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion"
+import { RotateCcw } from "lucide-react"
 
 /**
- * A clickable prototype (Figma) with a guided tour beside it. Prototypes only
- * work along the paths that were wired up, so instead of letting visitors tap
- * around, each step says what to do and a little phone map shows exactly where
- * to tap. The frame can't tell us what was tapped, so the visitor moves the
- * steps along themselves; "Start over" reloads the prototype at the beginning.
+ * A guided run through an app prototype, built from its real screens. Only the
+ * next thing to tap glows and responds, so visitors follow the finished path
+ * and never land in the parts that aren't built yet. Each tap moves the story
+ * on by itself; the text beside the phone always says what to do next.
+ * The full, live prototype (Figma) stays one click away.
  */
 
-export type GuideStep = {
-  title: string
-  text: string
-  /** where to tap, as fractions across and down the phone screen */
-  tap?: [number, number]
-  /** what the thing they tap says, shown beside the dot */
-  label?: string
+export type WalkScreen = {
+  src: string
+  /** what to do on this screen */
+  say: string
+  /** which part of the journey this belongs to (for the progress list) */
+  stage: string
+  /** the one place that responds: x, y, width, height in the 415 × 890 phone */
+  spot?: [number, number, number, number]
+  /** round glow (for circular things like ingredients) */
+  round?: boolean
 }
 
+const W = 415
+const H = 890
 const ease = [0.22, 1, 0.36, 1] as const
 
-/** A tiny phone with a pulsing dot where to tap. */
-function TapMap({ tap, label }: { tap?: [number, number]; label?: string }) {
-  return (
-    <div className="relative mx-auto aspect-[9/19] w-[92px] shrink-0 rounded-[18px] border-2 border-white/25 bg-white/[.04] sm:w-[104px] lg:w-[128px]">
-      <div className="absolute left-1/2 top-1.5 h-1.5 w-1.5 -translate-x-1/2 rounded-full bg-white/30" />
-      <div className="absolute inset-x-2.5 top-5 h-[3px] rounded bg-white/15" />
-      <div className="absolute inset-x-2.5 top-7 h-[3px] w-1/2 rounded bg-white/10" />
-      {tap && (
-        <motion.div
-          key={`${tap[0]}-${tap[1]}`}
-          className="absolute"
-          style={{ left: `${tap[0] * 100}%`, top: `${tap[1] * 100}%` }}
-          initial={{ opacity: 0, scale: 0.4 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.4, ease }}
-        >
-          <span className="absolute -left-3 -top-3 size-6 animate-ping rounded-full bg-[#ef8b2b]/60" />
-          <span className="absolute -left-2 -top-2 size-4 rounded-full border-2 border-white bg-[#ef8b2b] shadow-[0_0_12px_rgba(239,139,43,.9)]" />
-          {label && (
-            <span className={`absolute top-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-white px-2 py-0.5 text-[10px] font-semibold text-black ${tap[0] > 0.6 ? "right-4" : "left-4"}`}>
-              {label}
-            </span>
-          )}
-        </motion.div>
-      )}
-    </div>
-  )
-}
-
-export function PrototypeGuide({ src, link, title, label, steps }: { src: string; link?: string; title: string; label: string; steps: GuideStep[] }) {
+export function PrototypeGuide({ screens, link, title, label }: { screens: WalkScreen[]; link?: string; title: string; label: string }) {
   const [at, setAt] = useState(0)
-  const [run, setRun] = useState(0) // bump to reload the prototype from the start
-  const s = steps[at]
-  const restart = () => {
-    setAt(0)
-    setRun((n) => n + 1)
+  const [dir, setDir] = useState(1)
+  const [nudge, setNudge] = useState(0) // bumps when someone taps outside the glow
+  const reduce = useReducedMotion()
+  const s = screens[at]
+  const stages = [...new Set(screens.map((x) => x.stage))]
+  const stage = stages.indexOf(s.stage)
+
+  // the phone scales to its column
+  const frame = useRef<HTMLDivElement>(null)
+  const [k, setK] = useState(0.7)
+  useEffect(() => {
+    const el = frame.current
+    if (!el) return
+    // on phones the instructions sit above, so leave them room on screen
+    const fit = () => setK(Math.min(el.clientWidth / W, (window.innerHeight * (window.innerWidth < 1024 ? 0.7 : 0.82)) / H, 1))
+    fit()
+    const ro = new ResizeObserver(fit)
+    ro.observe(el)
+    return () => ro.disconnect()
+  }, [])
+
+  // fetch the next screens ahead so every tap answers at once
+  useEffect(() => {
+    for (const x of screens.slice(at + 1, at + 4)) new Image().src = x.src
+  }, [at, screens])
+
+  const go = () => {
+    if (at >= screens.length - 1) return
+    setDir(1)
+    setAt(at + 1)
   }
-  const btn = "inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition disabled:opacity-30"
+  const restart = () => {
+    setDir(-1)
+    setAt(0)
+  }
+
+  // count steps within a stage (the quiz questions) so people know where they are
+  const sameStage = screens.filter((x) => x.stage === s.stage && x.spot)
+  const within = sameStage.indexOf(s) + 1
 
   return (
     <section className="mt-12">
-      <div className="mb-4 flex items-baseline justify-between gap-4">
+      <div className="mb-6 flex items-baseline justify-between gap-4">
         <h3 className="font-heading text-3xl sm:text-4xl">{label}</h3>
-        <a href={link ?? src} target="_blank" rel="noopener noreferrer" className="shrink-0 text-sm text-ink-3 underline underline-offset-4 hover:text-ink">
-          Open full screen ↗
-        </a>
+        {link && (
+          <a href={link} target="_blank" rel="noopener noreferrer" className="shrink-0 text-sm text-ink-3 underline underline-offset-4 hover:text-ink">
+            Live Figma prototype ↗
+          </a>
+        )}
       </div>
-      <p className="mb-6 max-w-2xl text-sm leading-relaxed text-ink-3">
-        A working prototype, so not every button is wired up yet. Follow the steps and the orange dot shows exactly where to tap.
-      </p>
 
-      <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:items-stretch">
-        {/* the guide */}
-        <div className="flex flex-col rounded-2xl border border-line bg-white/[.03] p-5 sm:p-6">
-          <div className="flex items-center justify-between gap-3">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#ef8b2b]">
-              Step {at + 1} of {steps.length}
-            </p>
-            <button type="button" onClick={restart} className="inline-flex items-center gap-1.5 text-xs font-semibold text-ink-3 hover:text-ink">
-              <RotateCcw className="h-3.5 w-3.5" /> Start over
-            </button>
-          </div>
-          {/* progress */}
-          <div className="mt-3 flex gap-1">
-            {steps.map((st, i) => (
-              <button
-                key={st.title}
-                type="button"
-                onClick={() => setAt(i)}
-                aria-label={`Step ${i + 1}: ${st.title}`}
-                className={`h-1 flex-1 rounded-full transition-colors ${i <= at ? "bg-[#ef8b2b]" : "bg-white/15 hover:bg-white/30"}`}
-              />
-            ))}
-          </div>
+      <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center lg:gap-14">
+        {/* what to do */}
+        <div className="lg:order-1">
+          <p className="font-mono text-xs uppercase tracking-[0.2em] text-[#ef8b2b]">
+            {s.stage}
+            {sameStage.length > 2 && within > 0 ? ` · ${within} of ${sameStage.length}` : ""}
+          </p>
+          <AnimatePresence mode="wait">
+            <motion.p
+              key={at}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -6 }}
+              transition={{ duration: 0.25, ease }}
+              className="mt-2 min-h-[3.5rem] font-heading text-2xl leading-tight sm:text-3xl lg:mt-3 lg:min-h-0 lg:text-4xl"
+            >
+              {s.say}
+            </motion.p>
+          </AnimatePresence>
+          {s.spot && <p className="mt-3 hidden text-sm text-ink-3 lg:block">Tap the glowing spot on the phone.</p>}
 
-          <div className="mt-6 flex flex-1 items-start gap-5">
-            <TapMap tap={s.tap} label={s.label} />
-            <AnimatePresence mode="wait">
-              <motion.div key={at} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -12 }} transition={{ duration: 0.3, ease }} className="min-w-0">
-                <h4 className="font-heading text-2xl leading-tight sm:text-3xl">{s.title}</h4>
-                <p className="mt-2 text-[15px] leading-relaxed text-ink-2">{s.text}</p>
-              </motion.div>
-            </AnimatePresence>
-          </div>
-
-          {/* the whole route at a glance; any step can be jumped to */}
-          <ol className="mt-6 hidden gap-x-4 gap-y-1.5 border-t border-line pt-5 text-sm lg:grid lg:grid-cols-2">
-            {steps.map((st, i) => (
-              <li key={st.title}>
-                <button
-                  type="button"
-                  onClick={() => setAt(i)}
-                  className={`flex w-full items-baseline gap-2 text-left transition-colors ${i === at ? "text-white" : i < at ? "text-ink-3" : "text-ink-4 hover:text-ink-2"}`}
-                >
-                  <span className={`font-mono text-[11px] ${i === at ? "text-[#ef8b2b]" : ""}`}>{String(i + 1).padStart(2, "0")}</span>
-                  <span className={i === at ? "font-semibold" : ""}>{st.title}</span>
-                </button>
+          {/* the journey */}
+          <ol className="mt-8 hidden space-y-2.5 lg:block">
+            {stages.map((st, i) => (
+              <li key={st} className={`flex items-center gap-3 text-sm transition-colors ${i === stage ? "font-semibold text-white" : i < stage ? "text-ink-3" : "text-ink-4"}`}>
+                <span className={`grid size-5 place-items-center rounded-full border text-[10px] ${i < stage ? "border-[#ef8b2b] bg-[#ef8b2b] text-black" : i === stage ? "border-[#ef8b2b] text-[#ef8b2b]" : "border-white/20"}`}>
+                  {i < stage ? "✓" : i + 1}
+                </span>
+                {st}
               </li>
             ))}
           </ol>
-
-          <div className="mt-6 flex items-center justify-between gap-3">
-            <button type="button" onClick={() => setAt((i) => Math.max(0, i - 1))} disabled={at === 0} className={`${btn} bg-white/10 text-white hover:bg-white/20`}>
-              <ArrowLeft className="h-4 w-4" /> Back
-            </button>
-            {at < steps.length - 1 ? (
-              <button type="button" onClick={() => setAt((i) => i + 1)} className={`${btn} bg-white text-black hover:bg-white/90`}>
-                Done, next step <ArrowRight className="h-4 w-4" />
-              </button>
-            ) : (
-              <button type="button" onClick={restart} className={`${btn} bg-white text-black hover:bg-white/90`}>
-                <RotateCcw className="h-4 w-4" /> Try again
-              </button>
-            )}
-          </div>
+          <button type="button" onClick={restart} className="mt-8 hidden items-center gap-1.5 text-sm font-semibold text-ink-3 hover:text-ink lg:inline-flex">
+            <RotateCcw className="h-4 w-4" /> Start over
+          </button>
         </div>
 
-        {/* the prototype */}
-        <div className="h-[640px] overflow-hidden rounded-2xl border border-line bg-black sm:h-[720px] lg:h-[760px]">
-          <iframe key={run} src={src} title={`${title} — ${label}`} loading="lazy" allowFullScreen className="h-full w-full" />
+        {/* the phone */}
+        <div ref={frame} className="mx-auto w-full max-w-[415px] lg:order-2 lg:w-[415px]">
+          <div className="relative mx-auto overflow-hidden" style={{ width: W * k, height: H * k }}>
+            <div className="absolute left-0 top-0 origin-top-left" style={{ width: W, height: H, transform: `scale(${k})` }}>
+              <AnimatePresence initial={false} custom={dir}>
+                <motion.img
+                  key={at}
+                  src={s.src}
+                  alt={`${title}: ${s.say}`}
+                  draggable={false}
+                  initial={reduce ? { opacity: 0 } : { opacity: 0, x: dir * 40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={reduce ? { opacity: 0 } : { opacity: 0, x: -dir * 30 }}
+                  transition={{ duration: 0.35, ease }}
+                  className="absolute inset-0 h-full w-full select-none"
+                />
+              </AnimatePresence>
+
+              {/* everything but the glow is dimmed and doesn't respond */}
+              {s.spot ? <Spot key={at} spot={s.spot} round={s.round} nudge={nudge} onTap={go} onMiss={() => setNudge((n) => n + 1)} /> : <div className="absolute inset-0" />}
+            </div>
+          </div>
+          <div className="mt-4 flex justify-center">
+            <button
+              type="button"
+              onClick={restart}
+              className={`inline-flex items-center gap-1.5 rounded-full px-5 py-2.5 text-sm font-semibold ${s.spot ? "text-ink-3 hover:text-ink lg:hidden" : "bg-white text-black hover:bg-white/90"}`}
+            >
+              <RotateCcw className="h-4 w-4" /> {s.spot ? "Start over" : "Try it again"}
+            </button>
+          </div>
         </div>
       </div>
     </section>
+  )
+}
+
+function Spot({ spot: [x, y, w, h], round, nudge, onTap, onMiss }: { spot: [number, number, number, number]; round?: boolean; nudge: number; onTap: () => void; onMiss: () => void }) {
+  const r = round ? "9999px" : "14px"
+  const pad = 6
+  const box = { left: x - pad, top: y - pad, width: w + pad * 2, height: h + pad * 2 }
+  return (
+    <>
+      {/* the dimmed rest of the screen (a hole cut by a giant shadow); taps here only nudge the glow */}
+      <div className="absolute inset-0" onClick={onMiss}>
+        <motion.div
+          className="pointer-events-none absolute"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.4, delay: 0.25 }}
+          style={{ ...box, borderRadius: r, boxShadow: "0 0 0 2000px rgba(0,0,0,.45)" }}
+        />
+      </div>
+      {/* the glow */}
+      <motion.button
+        type="button"
+        aria-label="Tap here"
+        onClick={(e) => (e.stopPropagation(), onTap())}
+        className="absolute cursor-pointer outline-none"
+        style={{ ...box, borderRadius: r }}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.4, delay: 0.25, ease }}
+      >
+        <span className="absolute inset-0 animate-pulse border-[3px] border-[#ef8b2b] shadow-[0_0_24px_6px_rgba(239,139,43,.75)]" style={{ borderRadius: r }} />
+        <motion.span
+          key={nudge}
+          className="absolute -inset-2 border-2 border-[#ffb36b]"
+          style={{ borderRadius: r }}
+          initial={{ opacity: nudge ? 1 : 0, scale: 1 }}
+          animate={{ opacity: 0, scale: 1.25 }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        />
+      </motion.button>
+    </>
   )
 }

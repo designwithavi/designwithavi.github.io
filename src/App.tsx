@@ -305,10 +305,10 @@ function ProjectView({ project, onClose, onOpen }: { project: Project; onClose: 
             ))}
           </section>
         )}
-        {project.embed?.guide && (
-          <PrototypeGuide src={project.embed.src} link={project.embed.link} title={project.title} label={project.embed.label} steps={project.embed.guide} />
+        {project.embed?.walkthrough && (
+          <PrototypeGuide screens={project.embed.walkthrough} link={project.embed.link ?? project.embed.src} title={project.title} label={project.embed.label} />
         )}
-        {project.embed && !project.embed.guide && (
+        {project.embed && !project.embed.walkthrough && (
           <section className="mt-12">
             <div className="mb-4 flex items-baseline justify-between gap-4">
               <h3 className="font-heading text-3xl sm:text-4xl">{project.embed.label}</h3>

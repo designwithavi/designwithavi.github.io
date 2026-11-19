@@ -122,8 +122,8 @@ export type Project = {
     label: string
     /** where "Open full screen" goes, if not src */
     link?: string
-    /** a step-by-step tour beside a prototype: what to do, and where to tap (fractions across/down the phone screen) */
-    guide?: { title: string; text: string; tap?: [number, number]; label?: string }[]
+    /** a guided walkthrough built from the prototype's real screens: only the glowing spot responds */
+    walkthrough?: { src: string; say: string; stage: string; spot?: [number, number, number, number]; round?: boolean }[]
   }
   /** big pictures shown first on the page, before the embed and the chapters */
   showcase?: { src: string; w: number; h: number }[]
@@ -1791,20 +1791,35 @@ export const projects: Project[] = [
       { src: "work/ux-design/novus/screens-03.webp", w: 2000, h: 1500 },
     ],
     embed: {
-      label: "Try the app prototype",
+      label: "Try the app",
       src: "https://embed.figma.com/proto/DLK6ifQbQIgEtz6QR4kugb/NOVUS-APP?node-id=1726-3001&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1726%3A3251&embed-host=share",
       link: "https://www.figma.com/proto/DLK6ifQbQIgEtz6QR4kugb/NOVUS-APP?node-id=1726-3001&p=f&viewport=575%2C288%2C0.18&t=vuKGEl9M5nkTyKkk-0&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1726%3A3251&show-proto-sidebar=1",
-      // the path that's wired up in the prototype, checked tap by tap
-      guide: [
-        { title: "Start your journey", text: "On the home screen, tap Discover your essence.", tap: [0.5, 0.8], label: "Discover your essence" },
-        { title: "Answer the 10 questions", text: "Each question has a few pictures. Tap one to answer and the next question slides in. The top picture always works.", tap: [0.5, 0.4], label: "tap a picture" },
-        { title: "Meet your archetype", text: "Give it a second: the card turns to reveal your archetype. Then tap Customize your essence.", tap: [0.5, 0.84], label: "Customize" },
-        { title: "Build your perfume", text: "Pick a top note (the middle ingredient), then tap Next. Do the same for the heart note and the base note, and watch the bottle fill.", tap: [0.5, 0.68], label: "pick, then Next" },
-        { title: "Your bottle", text: "Your perfume is ready. Choose a volume and quantity if you like, then tap Buy Now.", tap: [0.69, 0.87], label: "Buy Now" },
-        { title: "Your cart", text: "Check the price details, then tap Checkout.", tap: [0.74, 0.9], label: "Checkout" },
-        { title: "Delivery details", text: "No need to type anything. Just tap Save Address.", tap: [0.5, 0.9], label: "Save Address" },
-        { title: "Pay", text: "Tap Pay Now.", tap: [0.5, 0.9], label: "Pay Now" },
-        { title: "Order confirmed", text: "That's the full journey, from quiz to doorstep. Scroll the phone screen to see the suggestions for your next scent." },
+      // the finished path through the prototype, as real screens: only the glowing spot responds
+      walkthrough: [
+        { src: "work/ux-design/novus/walk/00.webp", say: "Tap Discover your essence to start.", stage: "Start", spot: [112, 683, 190, 42] },
+        { src: "work/ux-design/novus/walk/01.webp", say: "Question 1 of 10: pick a comforting scent.", stage: "Find your archetype", spot: [48, 308, 318, 104] },
+        { src: "work/ux-design/novus/walk/02.webp", say: "Question 2 of 10: pick a freshness.", stage: "Find your archetype", spot: [48, 308, 318, 104] },
+        { src: "work/ux-design/novus/walk/03.webp", say: "Question 3 of 10: pick a playful touch.", stage: "Find your archetype", spot: [48, 308, 318, 104] },
+        { src: "work/ux-design/novus/walk/04.webp", say: "Question 4 of 10: pick how you shine in a team.", stage: "Find your archetype", spot: [48, 308, 318, 104] },
+        { src: "work/ux-design/novus/walk/05.webp", say: "Question 5 of 10: pick your ideal weekend.", stage: "Find your archetype", spot: [48, 308, 318, 104] },
+        { src: "work/ux-design/novus/walk/06.webp", say: "Question 6 of 10: pick your energy.", stage: "Find your archetype", spot: [48, 308, 318, 104] },
+        { src: "work/ux-design/novus/walk/07.webp", say: "Question 7 of 10: pick what recharges you.", stage: "Find your archetype", spot: [48, 308, 318, 104] },
+        { src: "work/ux-design/novus/walk/08.webp", say: "Question 8 of 10: pick what drives your choices.", stage: "Find your archetype", spot: [48, 308, 318, 104] },
+        { src: "work/ux-design/novus/walk/09.webp", say: "Question 9 of 10: pick the place that feels like you.", stage: "Find your archetype", spot: [48, 308, 318, 104] },
+        { src: "work/ux-design/novus/walk/10.webp", say: "Last question: pick the mood for your scent.", stage: "Find your archetype", spot: [48, 308, 318, 104] },
+        { src: "work/ux-design/novus/walk/11.webp", say: "Your archetype is ready. Tap the card to reveal it.", stage: "Meet your archetype", spot: [55, 166, 302, 419] },
+        { src: "work/ux-design/novus/walk/12.webp", say: "You're a HERO. Now tap Customize your essence.", stage: "Meet your archetype", spot: [103, 716, 208, 42] },
+        { src: "work/ux-design/novus/walk/13.webp", say: "Choose your top note: tap Eucalyptus.", stage: "Build your perfume", spot: [165, 553, 84, 84], round: true },
+        { src: "work/ux-design/novus/walk/14.webp", say: "The bottle starts to fill. Tap Next.", stage: "Build your perfume", spot: [107, 773, 200, 44] },
+        { src: "work/ux-design/novus/walk/15.webp", say: "Now the heart note: tap Eucalyptus.", stage: "Build your perfume", spot: [165, 553, 84, 84], round: true },
+        { src: "work/ux-design/novus/walk/16.webp", say: "Tap Next.", stage: "Build your perfume", spot: [107, 773, 200, 44] },
+        { src: "work/ux-design/novus/walk/17.webp", say: "Last, the base note: tap Cedarwood.", stage: "Build your perfume", spot: [165, 553, 84, 84], round: true },
+        { src: "work/ux-design/novus/walk/18.webp", say: "Your blend is complete. Tap Next.", stage: "Build your perfume", spot: [107, 773, 200, 44] },
+        { src: "work/ux-design/novus/walk/19.webp", say: "Here's your perfume. Tap Buy Now.", stage: "Checkout", spot: [232, 740, 104, 42] },
+        { src: "work/ux-design/novus/walk/20.webp", say: "Your cart. Tap Checkout.", stage: "Checkout", spot: [245, 762, 110, 42] },
+        { src: "work/ux-design/novus/walk/21.webp", say: "Delivery details are filled in for you. Tap Save Address.", stage: "Checkout", spot: [150, 762, 114, 42] },
+        { src: "work/ux-design/novus/walk/22.webp", say: "Tap Pay Now.", stage: "Checkout", spot: [160, 762, 94, 42] },
+        { src: "work/ux-design/novus/walk/23.webp", say: "Order confirmed! That's the whole journey, from a quiz to a perfume made for you.", stage: "Done" },
       ],
     },
     backdrop: "work/ux-design/novus/screens-02.webp",
