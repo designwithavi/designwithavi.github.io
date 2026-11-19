@@ -117,7 +117,14 @@ export type Project = {
   /** Optional film, played at the top of the project page (poster = its still). */
   video?: { src: string; poster: string }
   /** Optional embedded viewer (e.g. a Heyzine flipbook) shown after the description. */
-  embed?: { src: string; label: string; /** where "Open full screen" goes, if not src */ link?: string }
+  embed?: {
+    src: string
+    label: string
+    /** where "Open full screen" goes, if not src */
+    link?: string
+    /** a step-by-step tour beside a prototype: what to do, and where to tap (fractions across/down the phone screen) */
+    guide?: { title: string; text: string; tap?: [number, number]; label?: string }[]
+  }
   /** big pictures shown first on the page, before the embed and the chapters */
   showcase?: { src: string; w: number; h: number }[]
   /** Optional magazine to page through, shown after the description: pages in reading order, page width ÷ height. */
@@ -1756,8 +1763,21 @@ export const projects: Project[] = [
       label: "Try the app prototype",
       src: "https://embed.figma.com/proto/DLK6ifQbQIgEtz6QR4kugb/NOVUS-APP?node-id=1726-3001&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1726%3A3251&embed-host=share",
       link: "https://www.figma.com/proto/DLK6ifQbQIgEtz6QR4kugb/NOVUS-APP?node-id=1726-3001&p=f&viewport=575%2C288%2C0.18&t=vuKGEl9M5nkTyKkk-0&scaling=scale-down&content-scaling=fixed&starting-point-node-id=1726%3A3251&show-proto-sidebar=1",
+      // the path that's wired up in the prototype, checked tap by tap
+      guide: [
+        { title: "Start your journey", text: "On the home screen, tap Discover your essence.", tap: [0.5, 0.8], label: "Discover your essence" },
+        { title: "Answer the 10 questions", text: "Each question has a few pictures. Tap one to answer and the next question slides in. The top picture always works.", tap: [0.5, 0.4], label: "tap a picture" },
+        { title: "Meet your archetype", text: "Give it a second: the card turns to reveal your archetype. Then tap Customize your essence.", tap: [0.5, 0.84], label: "Customize" },
+        { title: "Build your perfume", text: "Pick a top note (the middle ingredient), then tap Next. Do the same for the heart note and the base note, and watch the bottle fill.", tap: [0.5, 0.68], label: "pick, then Next" },
+        { title: "Your bottle", text: "Your perfume is ready. Choose a volume and quantity if you like, then tap Buy Now.", tap: [0.69, 0.87], label: "Buy Now" },
+        { title: "Your cart", text: "Check the price details, then tap Checkout.", tap: [0.74, 0.9], label: "Checkout" },
+        { title: "Delivery details", text: "No need to type anything. Just tap Save Address.", tap: [0.5, 0.9], label: "Save Address" },
+        { title: "Pay", text: "Tap Pay Now.", tap: [0.5, 0.9], label: "Pay Now" },
+        { title: "Order confirmed", text: "That's the full journey, from quiz to doorstep. Scroll the phone screen to see the suggestions for your next scent." },
+      ],
     },
-    cover: "work/ux-design/novus/01.webp",
+    backdrop: "work/ux-design/novus/screens-02.webp",
+    cover: "work/ux-design/novus/screens-02.webp",
     images: [],
     sections: [
       {

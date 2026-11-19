@@ -12,6 +12,7 @@ import { Shelf, TvBrowse } from "@/components/tv-browse"
 import { CategoryView } from "@/components/category-view"
 import { slug, useRoute } from "@/route"
 import { InternshipJourney } from "@/components/scroll-timeline"
+import { PrototypeGuide } from "@/components/prototype-guide"
 import { PageLoader, preload } from "@/components/page-loader"
 import { AboutPage } from "@/components/about-page"
 
@@ -304,7 +305,10 @@ function ProjectView({ project, onClose, onOpen }: { project: Project; onClose: 
             ))}
           </section>
         )}
-        {project.embed && (
+        {project.embed?.guide && (
+          <PrototypeGuide src={project.embed.src} link={project.embed.link} title={project.title} label={project.embed.label} steps={project.embed.guide} />
+        )}
+        {project.embed && !project.embed.guide && (
           <section className="mt-12">
             <div className="mb-4 flex items-baseline justify-between gap-4">
               <h3 className="font-heading text-3xl sm:text-4xl">{project.embed.label}</h3>
