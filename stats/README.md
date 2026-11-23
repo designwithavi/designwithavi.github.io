@@ -1,33 +1,32 @@
-# Portfolio stats · 2026-11-09 → 2026-11-16
+# Portfolio stats · 2026-11-16 → 2026-11-23
 
 **0 page views** in the last 7 days.
 
 ## Most viewed pages
 | Page | Views |
 |---|---|
-| Home | 40 |
-| #WhatIsSexy? — Campaign Shoot | 9 |
+| Home | 68 |
+| About | 11 |
+| #WhatIsSexy? — Campaign Shoot | 10 |
 | Fashion Editorial Shoot | 8 |
-| Shorona: Character Shoot | 5 |
-| i-DOLL: K-pop Idol Shoot | 5 |
-| NIFT Prospectus — Admissions 2026 | 4 |
-| Faredoon's Food Photography | 4 |
+| NOVUS | 6 |
+| i-DOLL: K-pop Idol Shoot | 4 |
+| Crunchyroll × Comic Con | 3 |
 | Photography & Videography | 3 |
-| NOVUS | 3 |
-| Sipwise — Visual Design Internship | 3 |
+| Verve Magazine Design | 2 |
 | Studio Photography: Keibu Keioiba | 2 |
-| Crunchyroll × Comic Con | 2 |
-| About | 2 |
-| Sthetix in Stone | 2 |
-| Flash Cryogenics | 1 |
+| Studio Photography: Buldak Ramen | 2 |
+| Chumbak | 2 |
+| Shorona: Character Shoot | 2 |
+| Sipwise — Visual Design Internship | 2 |
+| Faredoon's Food Photography | 2 |
 
 ## Where visitors came from
 | Source | Visits |
 |---|---|
-| www.linkedin.com | 48 |
-| com.linkedin.android | 29 |
-| (direct / unknown) | 21 |
-| lnkd.in | 1 |
+| (direct / unknown) | 56 |
+| www.linkedin.com | 54 |
+| com.linkedin.android | 22 |
 
 ## Countries
 | Country | Visits |
@@ -37,10 +36,10 @@
 ## Devices
 | System | Visits |
 |---|---|
-| iOS | 35 |
-| Android | 31 |
-| macOS | 22 |
-| Windows | 10 |
-| Linux | 1 |
+| Android | 52 |
+| macOS | 47 |
+| iOS | 44 |
+| Windows | 40 |
+| Linux | 5 |
 
 _Full dashboard: https://designwithavi.goatcounter.com · updated automatically every Monday._
