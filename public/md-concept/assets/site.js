@@ -137,7 +137,7 @@
           links.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + en.target.id); });
         });
       }, { rootMargin: '-40% 0px -55% 0px' });
-      ['overview', 'measurements', 'more'].forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+      ['highlights', 'overview', 'measurements', 'more'].forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
     }
   }
 })();

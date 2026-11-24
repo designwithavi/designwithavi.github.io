@@ -227,6 +227,12 @@ button{font:inherit;color:inherit;cursor:pointer}
 .acc .body{padding:0 0 22px;font-size:15px;line-height:1.6;color:var(--muted);max-width:760px}
 .acc .body li{margin-left:20px}
 
+/* product highlights (listing images) */
+.highlights{padding-top:72px}
+.hl-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.hl-grid img{width:100%;height:auto;aspect-ratio:1/1;object-fit:cover;background:var(--grey);outline:1px solid var(--line);outline-offset:-1px}
+.hl-grid img:first-child{grid-column:1/span 2;width:calc(50% - 8px);justify-self:center}
+
 /* toast */
 .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--navy);color:#fff;padding:14px 20px;border-radius:12px;font-size:14px;font-weight:600;opacity:0;pointer-events:none;transition:all .25s;max-width:calc(100% - 32px);box-shadow:0 8px 24px rgba(0,0,0,.2);z-index:50}
 .toast.on{opacity:1;transform:translate(-50%,0)}
@@ -289,6 +295,9 @@ button{font:inherit;color:inherit;cursor:pointer}
   .stage .pills{display:none}
   .counter{display:inline-flex;position:absolute;right:16px;bottom:16px}
   .ptag .amt{font-size:32px}
+  .highlights{padding-top:40px}
+  .hl-grid{grid-template-columns:minmax(0,1fr);gap:12px;margin:0 calc(-1 * var(--pad))}
+  .hl-grid img:first-child{grid-column:auto;width:100%}
   .details{background:#fff;margin-top:40px}
   .details .wrap{padding-bottom:40px}
   .details-card{padding:0;gap:32px}
